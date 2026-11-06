@@ -16,6 +16,7 @@
   ],
   "engines": { "node": ">=18" },
   "scripts": {
+    "site": "node scripts/build-site.mjs",
     "doctor": "node skills/rudywizz-motion/engine/cli.mjs doctor",
     "list": "node skills/rudywizz-motion/engine/cli.mjs list",
     "tour": "node skills/rudywizz-motion/engine/cli.mjs render tour --out out/tour.mp4",

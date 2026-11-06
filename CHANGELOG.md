@@ -2,6 +2,15 @@
 
 All notable changes to this project. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Added
+- Project website with a filterable live gallery (GitHub Pages, built by `npm run site`).
+- Logo (light and dark) in the README.
+
+### Changed
+- CI installs ffmpeg with the OS package manager instead of a third-party action.
+
 ## 2.1.0 — 2026-11
 
 ### Added

@@ -22,7 +22,7 @@ gerçek kamera hareketleri, 20 shader geçişi, film tadında renk ve motion blu
 **Bir CLI ve bir dizi ajan skill'i.** Tek komut → MP4, kurgu programın için şeffaf MOV/WebM, GIF ya da animasyonlu WebP.<br>
 After Effects yok, satın alınacak şablon yok, yapay zekâ video modeli yok: her kare kodla çiziliyor, aynı girdi her seferinde aynı videoyu verir.
 
-[Galeri](#galeri) · [Kurulum](#kurulum) · [Hızlı başlangıç](#hızlı-başlangıç) · [Şablonlar](#şablonlar) · [Ajanlar](#claude-code-ya-da-başka-bir-ajanla) · [Referans](#referans) · [English](README.md)
+**[Web sitesi ve canlı galeri](https://rudywizz.github.io/rudywizz-motion/)** · [Galeri](#galeri) · [Kurulum](#kurulum) · [Hızlı başlangıç](#hızlı-başlangıç) · [Şablonlar](#şablonlar) · [Ajanlar](#claude-code-ya-da-başka-bir-ajanla) · [Referans](#referans) · [English](README.md)
 
 </div>
 
@@ -203,6 +203,9 @@ Kompozisyon şeması ve ajan iş akışının tamamı: [`skills/rudywizz-motion/
 - **Tek bağımlılık:** Playwright (Microsoft). Motor, derleme adımı olmayan, okunabilir düz JavaScript.
 - Render sunucusu yalnızca `127.0.0.1`'i dinler, her çalıştırmada rastgele bir anahtarla korunur ve render bitince kapanır.
 - Ayrıntılar ve gizli güvenlik bildirimi: [SECURITY.md](SECURITY.md).
+
+
+rudywizz-motion sana After Effects başında bir akşam kazandırdıysa, bir ⭐ başkalarının da bulmasına yardım eder.
 
 ## Katkı
 

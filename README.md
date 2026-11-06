@@ -22,7 +22,7 @@ with real camera moves, 20 shader transitions, film-grade colour and motion blur
 **A CLI and a set of agent skills.** One command → an MP4, a transparent MOV/WebM for your editor, a GIF or an animated WebP.<br>
 No After Effects, no templates to buy, no AI video model: every frame is drawn by code, so every render is exact and repeatable.
 
-[Gallery](#gallery) · [Install](#install) · [Quick start](#quick-start) · [Templates](#templates) · [Agents](#use-it-from-claude-code-or-any-agent) · [Reference](#reference) · [Türkçe](README.tr.md)
+**[Website & live gallery](https://rudywizz.github.io/rudywizz-motion/)** · [Gallery](#gallery) · [Install](#install) · [Quick start](#quick-start) · [Templates](#templates) · [Agents](#use-it-from-claude-code-or-any-agent) · [Reference](#reference) · [Türkçe](README.tr.md)
 
 </div>
 
@@ -248,6 +248,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Ideas are welcome in [issues](https://gi
 - [ ] Automatic BPM detection from `--audio`
 - [ ] Parallel frame rendering
 - [ ] More map regions and languages
+
+If rudywizz-motion saves you an evening in After Effects, a ⭐ helps other people find it.
 
 ## Credits & license
 
