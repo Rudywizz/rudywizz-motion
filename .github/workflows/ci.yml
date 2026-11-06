@@ -33,9 +33,10 @@ jobs:
       # OS package managers instead of a third-party action (fewer moving parts, no API rate limits)
       - name: Install ffmpeg
         shell: bash
+        timeout-minutes: 10
         run: |
           case "$RUNNER_OS" in
-            Linux)   sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg ;;
+            Linux)   sudo apt-get -o Acquire::Retries=3 update -qq && sudo apt-get -o Acquire::Retries=3 install -y -qq --no-install-recommends ffmpeg ;;
             macOS)   brew install ffmpeg ;;
             Windows) choco install ffmpeg -y --no-progress ;;
           esac
