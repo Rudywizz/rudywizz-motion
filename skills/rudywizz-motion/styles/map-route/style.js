@@ -365,6 +365,8 @@ export default {
         const lw = ctx.measureText(label).width;
         let lx = x + 34 * S;
         if (lx + lw > W - 40 * S) lx = x - 34 * S - lw;
+        // keep the label inside the frame while its pin is on screen
+        if (x > 0 && x < W) lx = Math.max(32 * S, Math.min(W - 32 * S - lw, lx));
         const ly = y - (p.theme === 'atlas' ? 26 : 30) * S;
         if (T.labelBg !== 'rgba(0,0,0,0)') {
           ctx.fillStyle = T.labelBg;
