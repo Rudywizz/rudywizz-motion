@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <!-- Original demo illustration for rudywizz-motion (CC0). A traveller on a hill looking at a distant city. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8f8b84"/>
+      <stop offset="0.55" stop-color="#e6dccb"/>
+      <stop offset="0.72" stop-color="#f6eedc"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.5" stop-color="#fbf4e4"/>
+      <stop offset="1" stop-color="#f6eedc" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5a544a"/>
+      <stop offset="1" stop-color="#1e1b17"/>
+    </linearGradient>
+    <linearGradient id="kaftan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2a2622"/>
+      <stop offset="0.55" stop-color="#4b443b"/>
+      <stop offset="1" stop-color="#8a8072"/>
+    </linearGradient>
+    <linearGradient id="turban" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9c9483"/>
+      <stop offset="0.6" stop-color="#e9e2d2"/>
+      <stop offset="1" stop-color="#fbf7ee"/>
+    </linearGradient>
+    <linearGradient id="cloak" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1915"/>
+      <stop offset="1" stop-color="#57504a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#sky)"/>
+  <circle cx="790" cy="1010" r="230" fill="url(#sun)"/>
+  <circle cx="790" cy="1010" r="70" fill="#fffdf6"/>
+
+  <!-- clouds -->
+  <g fill="#cfc6b4" opacity="0.8">
+    <ellipse cx="260" cy="520" rx="240" ry="38"/>
+    <ellipse cx="380" cy="490" rx="150" ry="34"/>
+    <ellipse cx="820" cy="700" rx="200" ry="26"/>
+  </g>
+
+  <!-- far mountains -->
+  <path d="M0 1080 L140 990 L260 1040 L400 930 L520 1010 L640 960 L780 1050 L900 990 L1080 1060 L1080 1200 L0 1200 Z" fill="#b9b1a2"/>
+  <path d="M0 1130 L180 1070 L330 1110 L500 1050 L700 1120 L880 1080 L1080 1130 L1080 1240 L0 1240 Z" fill="#a39b8c"/>
+
+  <!-- distant city: domes and minarets -->
+  <g fill="#6f685d">
+    <rect x="120" y="1110" width="430" height="70"/>
+    <path d="M190 1110 a70 70 0 0 1 140 0 Z"/>
+    <path d="M340 1100 a95 95 0 0 1 190 0 Z"/>
+    <rect x="425" y="1000" width="8" height="10"/>
+    <path d="M250 1060 a22 22 0 0 1 44 0 Z"/>
+    <rect x="160" y="980" width="14" height="130"/>
+    <path d="M160 980 L167 940 L174 980 Z"/>
+    <rect x="545" y="960" width="14" height="150"/>
+    <path d="M545 960 L552 915 L559 960 Z"/>
+    <rect x="315" y="1000" width="12" height="110"/>
+    <path d="M315 1000 L321 965 L327 1000 Z"/>
+    <rect x="600" y="1130" width="150" height="50"/>
+    <path d="M620 1130 a40 40 0 0 1 80 0 Z"/>
+  </g>
+  <!-- sea band -->
+  <rect x="0" y="1180" width="1080" height="60" fill="#cfc6b3"/>
+  <g stroke="#e9e1cf" stroke-width="3" opacity="0.9">
+    <line x1="560" y1="1195" x2="980" y2="1195"/>
+    <line x1="620" y1="1212" x2="900" y2="1212"/>
+    <line x1="700" y1="1228" x2="860" y2="1228"/>
+  </g>
+
+  <!-- foreground hill -->
+  <path d="M0 1350 C 220 1250, 420 1230, 620 1300 C 800 1360, 960 1330, 1080 1290 L1080 1920 L0 1920 Z" fill="url(#hill)"/>
+  <g stroke="#2a2621" stroke-width="5" stroke-linecap="round">
+    <path d="M80 1330 l-10 -40 M100 1325 l6 -46 M130 1318 l-4 -38 M860 1340 l8 -40 M890 1336 l-6 -44 M930 1330 l4 -34"/>
+  </g>
+  <!-- path down the hill -->
+  <path d="M520 1920 C 560 1700, 620 1560, 700 1330" stroke="#6e665a" stroke-width="40" fill="none" opacity="0.6"/>
+
+  <!-- the traveller -->
+  <g transform="translate(360 760)">
+    <!-- staff -->
+    <path d="M300 60 L250 640" stroke="#1d1a16" stroke-width="16" stroke-linecap="round"/>
+    <!-- cloak / kaftan -->
+    <path d="M110 230 C 60 380, 30 520, 20 640 L 260 640 C 250 520, 235 380, 215 230 Z" fill="url(#kaftan)"/>
+    <path d="M100 240 C 40 330, 0 460, -10 600 C 40 560, 80 470, 120 300 Z" fill="url(#cloak)"/>
+    <!-- sash -->
+    <path d="M100 360 C 150 380, 200 375, 232 355 L 236 392 C 200 410, 150 412, 98 395 Z" fill="#c9bfae"/>
+    <!-- satchel -->
+    <path d="M200 380 C 250 380, 270 430, 262 480 L 210 486 C 196 450, 194 410, 200 380 Z" fill="#3a342d"/>
+    <path d="M150 240 L 228 400" stroke="#2b2620" stroke-width="10"/>
+    <!-- arm holding staff -->
+    <path d="M205 240 C 260 260, 290 300, 300 330 L 284 346 C 260 316, 236 294, 200 284 Z" fill="#3e3830"/>
+    <ellipse cx="296" cy="336" rx="18" ry="22" fill="#7a6a58"/>
+    <!-- neck + head (seen 3/4 from behind) -->
+    <path d="M140 170 C 150 220, 200 225, 210 175 Z" fill="#7a6a58"/>
+    <ellipse cx="178" cy="150" rx="46" ry="54" fill="#8a7864"/>
+    <path d="M205 140 C 225 150, 228 175, 214 188" stroke="#5a4b3c" stroke-width="6" fill="none"/>
+    <!-- turban -->
+    <ellipse cx="172" cy="96" rx="78" ry="56" fill="url(#turban)"/>
+    <path d="M100 100 C 140 70, 210 66, 248 92" stroke="#a69d8a" stroke-width="7" fill="none"/>
+    <path d="M104 118 C 150 90, 214 90, 246 112" stroke="#b7ae9b" stroke-width="6" fill="none"/>
+    <ellipse cx="170" cy="46" rx="22" ry="16" fill="#3b342c"/>
+    <!-- boots -->
+    <path d="M60 640 l 60 0 l 6 30 l -76 0 Z M160 640 l 62 0 l 10 30 l -78 0 Z" fill="#14120f"/>
+  </g>
+</svg>

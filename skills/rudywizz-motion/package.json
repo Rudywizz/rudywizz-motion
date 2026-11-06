@@ -1,0 +1,9 @@
+{
+  "name": "rudywizz-motion-engine",
+  "private": true,
+  "type": "module",
+  "description": "Render engine for the rudywizz-motion skill",
+  "bin": { "rudywizz-motion": "engine/cli.mjs" },
+  "engines": { "node": ">=18" },
+  "dependencies": { "playwright": "^1.48.0" }
+}

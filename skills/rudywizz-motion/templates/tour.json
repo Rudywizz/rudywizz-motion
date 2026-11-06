@@ -1,0 +1,16 @@
+{
+  "description": "A 30-second tour of styles, cameras and transitions (the README hero)",
+  "look": { "grade": "teal-orange", "bloom": 0.3, "grain": 0.04, "aberration": 0.2 },
+  "scenes": [
+    { "style": "map-route", "route": ["İstanbul", "Kapadokya", "Antalya"], "text": "Rota", "duration": 4.6, "transition": { "type": "whip", "duration": 0.4, "dir": "left" } },
+    { "style": "neon-sign", "duration": 3, "camera": "orbit", "transition": { "type": "burn", "duration": 0.7 } },
+    { "style": "history-title", "duration": 3.6, "transition": { "type": "ink", "duration": 0.7 } },
+    { "image": "../assets/demo/seyyah.svg", "look": { "type": "engrave", "reveal": 2.2 }, "duration": 3.2, "camera": "push-in", "transition": { "type": "glitch", "duration": 0.35 } },
+    { "style": "inflate", "duration": 2.8, "camera": "crash-zoom", "transition": { "type": "zoom", "duration": 0.45 } },
+    { "style": "split-flap", "duration": 2.8, "transition": { "type": "cube", "duration": 0.5 } },
+    { "style": "murmuration", "duration": 4.2, "transition": { "type": "leak", "duration": 0.6 } },
+    { "style": "receipt", "duration": 3.6, "camera": "drift", "transition": { "type": "liquid", "duration": 0.6 } },
+    { "style": "led-marquee", "duration": 3.2, "transition": { "type": "pixelate", "duration": 0.5 } },
+    { "style": "halftone-press", "duration": 3 }
+  ]
+}

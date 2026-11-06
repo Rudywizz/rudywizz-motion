@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <!-- Original demo portrait for rudywizz-motion (CC0). A fictional scholar, not a real person. -->
+  <defs>
+    <radialGradient id="bg" cx="0.42" cy="0.38" r="0.75">
+      <stop offset="0" stop-color="#d9d1c0"/>
+      <stop offset="0.55" stop-color="#8b8273"/>
+      <stop offset="1" stop-color="#2b2722"/>
+    </radialGradient>
+    <radialGradient id="face" cx="0.38" cy="0.35" r="0.75">
+      <stop offset="0" stop-color="#efe2cf"/>
+      <stop offset="0.6" stop-color="#bfa68a"/>
+      <stop offset="1" stop-color="#6c5844"/>
+    </radialGradient>
+    <linearGradient id="turban" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.5" stop-color="#e2dccf"/>
+      <stop offset="1" stop-color="#8f8778"/>
+    </linearGradient>
+    <linearGradient id="robe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5b5246"/>
+      <stop offset="0.5" stop-color="#2f2a24"/>
+      <stop offset="1" stop-color="#16130f"/>
+    </linearGradient>
+    <linearGradient id="fur" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#cbbfa9"/>
+      <stop offset="1" stop-color="#5e5446"/>
+    </linearGradient>
+    <linearGradient id="beard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5a5248"/>
+      <stop offset="1" stop-color="#1b1815"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+
+  <!-- robe + fur collar -->
+  <path d="M120 1920 C 140 1560, 260 1380, 540 1360 C 820 1380, 940 1560, 960 1920 Z" fill="url(#robe)"/>
+  <path d="M300 1420 C 380 1560, 460 1700, 540 1920 C 620 1700, 700 1560, 780 1420 C 700 1380, 620 1372, 540 1372 C 460 1372, 380 1380, 300 1420 Z" fill="#2a251f"/>
+  <path d="M250 1450 C 330 1390, 420 1370, 470 1380 C 440 1520, 430 1700, 450 1920 L 300 1920 C 280 1750, 260 1600, 250 1450 Z" fill="url(#fur)"/>
+  <path d="M830 1450 C 750 1390, 660 1370, 610 1380 C 640 1520, 650 1700, 630 1920 L 780 1920 C 800 1750, 820 1600, 830 1450 Z" fill="url(#fur)" opacity="0.7"/>
+
+  <!-- neck -->
+  <path d="M450 1180 L 630 1180 L 640 1360 L 440 1360 Z" fill="#8c7660"/>
+
+  <!-- face -->
+  <ellipse cx="540" cy="980" rx="200" ry="250" fill="url(#face)"/>
+  <!-- ear -->
+  <ellipse cx="732" cy="990" rx="34" ry="62" fill="#9e8670"/>
+  <!-- cheek shadows -->
+  <ellipse cx="660" cy="1040" rx="70" ry="120" fill="#7d6650" opacity="0.45"/>
+  <!-- brows -->
+  <path d="M410 905 C 450 880, 500 882, 520 900" stroke="#2c2620" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <path d="M570 900 C 600 880, 650 880, 680 902" stroke="#2c2620" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <!-- eyes -->
+  <path d="M425 950 C 450 930, 495 930, 515 952 C 490 965, 450 966, 425 950 Z" fill="#f4ede0"/>
+  <circle cx="472" cy="950" r="14" fill="#1b1714"/>
+  <path d="M575 952 C 600 930, 645 930, 668 950 C 645 966, 600 966, 575 952 Z" fill="#f4ede0"/>
+  <circle cx="622" cy="950" r="14" fill="#1b1714"/>
+  <path d="M420 960 C 450 985, 500 985, 520 965" stroke="#7a6450" stroke-width="5" fill="none"/>
+  <path d="M572 965 C 600 985, 650 985, 672 960" stroke="#7a6450" stroke-width="5" fill="none"/>
+  <!-- nose -->
+  <path d="M545 950 C 540 1010, 525 1050, 510 1070 C 530 1085, 560 1088, 585 1072" stroke="#6b5541" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <ellipse cx="575" cy="1040" rx="26" ry="50" fill="#6b5541" opacity="0.3"/>
+
+  <!-- beard + moustache -->
+  <path d="M352 1040 C 360 1240, 450 1380, 540 1400 C 630 1380, 720 1240, 728 1040 C 690 1110, 640 1140, 600 1120 C 570 1105, 510 1105, 480 1120 C 440 1140, 390 1110, 352 1040 Z" fill="url(#beard)"/>
+  <path d="M460 1110 C 500 1090, 580 1090, 620 1110 C 590 1130, 560 1128, 540 1120 C 520 1128, 490 1130, 460 1110 Z" fill="#141210"/>
+  <path d="M500 1150 C 520 1162, 560 1162, 580 1150" stroke="#b49b80" stroke-width="6" fill="none"/>
+  <g stroke="#3d362f" stroke-width="3" opacity="0.7">
+    <path d="M420 1200 C 440 1260, 470 1320, 500 1360 M470 1210 C 480 1280, 500 1330, 520 1380 M610 1210 C 600 1280, 585 1330, 565 1380 M660 1200 C 640 1260, 610 1320, 580 1360"/>
+  </g>
+
+  <!-- turban -->
+  <path d="M300 830 C 280 620, 380 500, 540 480 C 700 500, 800 620, 780 830 C 700 860, 380 860, 300 830 Z" fill="url(#turban)"/>
+  <g fill="none" stroke="#a49b89" stroke-width="10" stroke-linecap="round">
+    <path d="M320 760 C 420 690, 640 650, 770 720"/>
+    <path d="M310 700 C 420 620, 620 590, 760 650"/>
+    <path d="M330 640 C 430 560, 610 540, 740 590"/>
+    <path d="M370 580 C 460 520, 590 510, 700 545"/>
+  </g>
+  <path d="M300 830 C 380 870, 700 870, 780 830 L 776 860 C 700 900, 380 900, 304 860 Z" fill="#6f6758"/>
+  <ellipse cx="540" cy="470" rx="54" ry="34" fill="#4a3f33"/>
+</svg>

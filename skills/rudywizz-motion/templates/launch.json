@@ -1,0 +1,11 @@
+{
+  "description": "Product launch: broadcast tune-in → orbiting feature rings → chrome reveal → risograph sign-off",
+  "look": { "grade": "kodak", "bloom": 0.3, "leak": 0.3, "grain": 0.05 },
+  "scenes": [
+    { "style": "signal-tune", "text": "Yeni / sürüm", "duration": 4.2, "transition": { "type": "cube", "duration": 0.6 } },
+    { "style": "orbit-ring", "text": "Text · Maps · Film / Kodla çizildi / Tek komut", "duration": 5, "camera": "tilt-left",
+      "transition": { "type": "zoom", "duration": 0.55 } },
+    { "style": "inflate", "text": "v2 / burada", "duration": 4, "camera": "crash-zoom", "transition": { "type": "liquid", "duration": 0.7 } },
+    { "style": "halftone-press", "text": "Ship / it", "duration": 3.6 }
+  ]
+}

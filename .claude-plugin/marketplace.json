@@ -1,0 +1,11 @@
+{
+  "name": "rudywizz",
+  "owner": { "name": "Rudywizz", "url": "https://github.com/Rudywizz" },
+  "plugins": [
+    {
+      "name": "rudywizz-motion",
+      "source": "./",
+      "description": "Cinematic motion graphics from code — text styles, maps, history pack, reels, transitions, grades."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "description": "Music teaser on the beat: stamped words → lyric lines → VHS outro (add --audio song.mp3 --bpm N)",
+  "bpm": 96,
+  "look": { "grade": "cyber", "bloom": 0.4, "aberration": 0.5, "grain": 0.06 },
+  "scenes": [
+    { "style": "beat-cut", "text": "Yeni parça çok yakında", "bpm": 96, "duration": 5, "camera": "beat-punch",
+      "transition": { "type": "glitch", "duration": 0.4 } },
+    { "style": "lyric-video", "bpm": 96, "duration": 8, "camera": "float", "transition": { "type": "flash", "duration": 0.3 } },
+    { "style": "vhs-memory", "text": "Side B / 2026", "date": "NOV. 06 2026", "clock": "AM 3:16", "duration": 4 }
+  ]
+}

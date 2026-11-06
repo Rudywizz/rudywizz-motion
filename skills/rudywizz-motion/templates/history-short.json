@@ -1,0 +1,15 @@
+{
+  "description": "Sepia documentary short: gilded year card → antique map route → engraved character → handwritten letter",
+  "lang": "tr",
+  "look": { "grade": "sepia", "film": 0.6, "grain": 0.07, "weave": 1, "vignette": 0.5, "bloom": 0.2 },
+  "scenes": [
+    { "style": "history-title", "text": "1453 / İstanbul'un Fethi / Bir çağın sonu", "duration": 5, "camera": "drift",
+      "transition": { "type": "burn", "duration": 0.9 } },
+    { "style": "map-route", "theme": "atlas", "route": ["Edirne", "İstanbul"], "text": "Edirne'den Kostantiniyye'ye", "duration": 6,
+      "camera": "tilt-reveal", "transition": { "type": "ink", "duration": 0.9 } },
+    { "image": "../assets/demo/seyyah.svg", "look": { "type": "engrave", "reveal": 4 }, "duration": 6, "camera": "push-in",
+      "overlay": { "style": "captions", "text": "Bir seyyahın gözünden", "pill": "#6b3d12", "position": 0.84 },
+      "transition": { "type": "leak", "duration": 0.8 } },
+    { "style": "parchment-letter", "duration": 8, "camera": "drift" }
+  ]
+}

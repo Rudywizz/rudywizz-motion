@@ -1,0 +1,20 @@
+{
+  "name": "rudywizz-motion",
+  "version": "2.0.0",
+  "description": "Cinematic motion graphics rendered from code — text styles, map routes, sepia history pack, reels with camera moves, shader transitions and colour grades. Works as Claude Code skills or a plain CLI.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Rudywizz (https://github.com/Rudywizz)",
+  "repository": { "type": "git", "url": "https://github.com/Rudywizz/rudywizz-motion.git" },
+  "bin": { "rudywizz-motion": "skills/rudywizz-motion/engine/cli.mjs" },
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "doctor": "node skills/rudywizz-motion/engine/cli.mjs doctor",
+    "list": "node skills/rudywizz-motion/engine/cli.mjs list",
+    "tour": "node skills/rudywizz-motion/engine/cli.mjs render tour --out out/tour.mp4",
+    "gallery": "node scripts/build-gallery.mjs",
+    "skills": "node scripts/gen-skills.mjs"
+  },
+  "dependencies": { "playwright": "^1.48.0" },
+  "keywords": ["motion-graphics", "video", "animation", "reels", "tiktok", "maps", "claude", "claude-code", "skills", "ffmpeg", "webgl", "kinetic-typography"]
+}

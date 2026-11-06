@@ -1,0 +1,56 @@
+{
+  "description": "Travel reel: globe flight with route → departures board → distance counter → neon sign-off",
+  "look": {
+    "grade": "teal-orange",
+    "bloom": 0.35,
+    "leak": 0.25,
+    "aberration": 0.3,
+    "grain": 0.04
+  },
+  "scenes": [
+    {
+      "style": "map-route",
+      "route": [
+        "İstanbul",
+        "Roma",
+        "Barselona"
+      ],
+      "text": "Akdeniz Turu",
+      "duration": 6.5,
+      "camera": "drift",
+      "transition": {
+        "type": "whip",
+        "duration": 0.45,
+        "dir": "left"
+      }
+    },
+    {
+      "style": "split-flap",
+      "text": "Barselona / 14:20 / Kapı B7",
+      "title": "KALKIŞ · DEPARTURES",
+      "duration": 3.4,
+      "camera": "drift",
+      "transition": {
+        "type": "zoom",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "odometer",
+      "text": "3240 km yol",
+      "duration": 3.4,
+      "camera": "push-in",
+      "transition": {
+        "type": "flash",
+        "duration": 0.35
+      }
+    },
+    {
+      "style": "neon-sign",
+      "text": "Yakında / görüşürüz",
+      "duration": 3.4,
+      "camera": "float"
+    }
+  ],
+  "lang": "tr"
+}
