@@ -19,7 +19,7 @@ TMP=$(node -p "require('os').tmpdir()")
 Read `$RM/SKILL.md` once for setup, the workflow (check stills → render → verify) and the full catalogue.
 Put the user's text in **single quotes** (write `'\''` for an apostrophe inside it) so the shell never interprets it.
 
-Render (the user's text — `$ARGUMENTS` — goes in `--text`; default "Deniz Aydın / Motion designer · İstanbul"):
+Render (the user's text — `$ARGUMENTS` — goes in `--text`; default "Deniz Kaya / Motion designer · Istanbul"):
 
 ```bash
 node "$RM/engine/cli.mjs" still lower-third --text '<text>' --at 4 --size 540 --out "$TMP/lower-third-check.png"   # look at it first

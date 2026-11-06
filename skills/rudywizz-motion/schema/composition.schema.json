@@ -1303,7 +1303,7 @@
                   "properties": {
                     "text": {
                       "description": "Text (\" / \" or \\n for line breaks)",
-                      "default": "Deniz Aydın / Motion designer · İstanbul",
+                      "default": "Deniz Kaya / Motion designer · Istanbul",
                       "type": "string"
                     },
                     "accent": {
@@ -3044,7 +3044,7 @@
               "properties": {
                 "text": {
                   "description": "Text (\" / \" or \\n for line breaks)",
-                  "default": "Deniz Aydın / Motion designer · İstanbul",
+                  "default": "Deniz Kaya / Motion designer · Istanbul",
                   "type": "string"
                 },
                 "accent": {
@@ -4818,7 +4818,7 @@
               "properties": {
                 "text": {
                   "description": "Text (\" / \" or \\n for line breaks)",
-                  "default": "Deniz Aydın / Motion designer · İstanbul",
+                  "default": "Deniz Kaya / Motion designer · Istanbul",
                   "type": "string"
                 },
                 "accent": {

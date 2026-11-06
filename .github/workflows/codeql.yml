@@ -13,6 +13,8 @@ permissions:
 
 jobs:
   analyze:
+    # free for public repos; private repos need GitHub Advanced Security
+    if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
