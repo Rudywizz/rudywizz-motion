@@ -122,7 +122,7 @@ const RAMPS = {
 export function clipTime(scene, local) {
   const sp = scene.speed ?? 1;
   if (typeof sp === 'number') return local * sp;
-  const f = RAMPS[sp] || (() => 1);
+  const f = Object.hasOwn(RAMPS, sp) ? RAMPS[sp] : () => 1;
   const D = scene.duration;
   const steps = 120;
   const du = Math.min(1, local / D) / steps;
