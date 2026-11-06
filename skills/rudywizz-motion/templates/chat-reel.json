@@ -1,0 +1,12 @@
+{
+  "description": "Story-time reel: a chat plays out → glitch plot twist → follow call to action",
+  "format": "9:16",
+  "look": { "bloom": 0.2, "grain": 0.03, "vignette": 0.25 },
+  "scenes": [
+    { "style": "chat-story", "name": "Mert", "text": "did you see the client email / >no?? / they want it by tomorrow / >the whole video? / yes. 40 scenes. / >ok. give me 10 minutes",
+      "duration": 9, "transition": { "type": "glitch", "duration": 0.5 } },
+    { "style": "glitch-title", "text": "10 minutes / later", "subtitle": "RENDERED WITH CODE", "duration": 3.2, "camera": "crash-zoom",
+      "transition": { "type": "whip", "duration": 0.45 } },
+    { "style": "cta-follow", "text": "@yourhandle / Follow / Part 2 tomorrow", "duration": 4.5 }
+  ]
+}

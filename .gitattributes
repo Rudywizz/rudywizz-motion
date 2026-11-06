@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+*.woff2 binary
+*.gif binary
+*.jpg binary
+*.png binary
+*.mp4 binary
+
+# keep GitHub's language bar and diffs about real source
+skills/rudywizz-motion/engine/vendor/** linguist-vendored
+skills/rudywizz-motion/engine/data/*.json linguist-generated -diff
+skills/rudywizz-motion/schema/*.json linguist-generated
+skills/*/SKILL.md linguist-generated=false

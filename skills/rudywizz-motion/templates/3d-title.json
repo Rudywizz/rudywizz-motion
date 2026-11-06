@@ -1,0 +1,12 @@
+{
+  "description": "3D title sequence: extruded title → spinning cube of keywords → particle sphere → synthwave sign-off",
+  "format": "16:9",
+  "lang": "en",
+  "look": { "grade": "cyber", "bloom": 0.4, "aberration": 0.2, "grain": 0.03, "vignette": 0.3 },
+  "scenes": [
+    { "style": "extrude-3d", "text": "Big / news", "duration": 4, "transition": { "type": "zoom", "duration": 0.6 } },
+    { "style": "cube-spin", "text": "Design / Code / Motion / Ship", "duration": 5.5, "transition": { "type": "liquid", "duration": 0.7 } },
+    { "style": "particle-sphere", "text": "Ideas take shape", "duration": 5, "transition": { "type": "leak", "duration": 0.7 } },
+    { "style": "retro-grid", "text": "Coming / soon", "duration": 4.5 }
+  ]
+}

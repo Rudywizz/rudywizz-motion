@@ -1,20 +1,33 @@
 {
   "name": "rudywizz-motion",
-  "version": "2.0.0",
-  "description": "Cinematic motion graphics rendered from code — text styles, map routes, sepia history pack, reels with camera moves, shader transitions and colour grades. Works as Claude Code skills or a plain CLI.",
+  "version": "2.1.0",
+  "description": "Cinematic motion graphics rendered from code: kinetic typography, 3D titles, map route animations, social templates and reels from your clips, with camera moves, shader transitions and colour grades. A CLI and a set of Claude Code skills.",
   "type": "module",
   "license": "MIT",
   "author": "Rudywizz (https://github.com/Rudywizz)",
-  "repository": { "type": "git", "url": "https://github.com/Rudywizz/rudywizz-motion.git" },
+  "homepage": "https://github.com/Rudywizz/rudywizz-motion#readme",
+  "bugs": { "url": "https://github.com/Rudywizz/rudywizz-motion/issues" },
+  "repository": { "type": "git", "url": "git+https://github.com/Rudywizz/rudywizz-motion.git" },
   "bin": { "rudywizz-motion": "skills/rudywizz-motion/engine/cli.mjs" },
+  "files": [
+    "skills/rudywizz-motion/",
+    "!skills/rudywizz-motion/node_modules/",
+    "THIRD_PARTY_NOTICES.md"
+  ],
   "engines": { "node": ">=18" },
   "scripts": {
     "doctor": "node skills/rudywizz-motion/engine/cli.mjs doctor",
     "list": "node skills/rudywizz-motion/engine/cli.mjs list",
     "tour": "node skills/rudywizz-motion/engine/cli.mjs render tour --out out/tour.mp4",
+    "test": "node scripts/smoke.mjs",
+    "test:quick": "node scripts/smoke.mjs --quick",
     "gallery": "node scripts/build-gallery.mjs",
-    "skills": "node scripts/gen-skills.mjs"
+    "skills": "node scripts/gen-skills.mjs && node scripts/gen-schema.mjs"
   },
   "dependencies": { "playwright": "^1.48.0" },
-  "keywords": ["motion-graphics", "video", "animation", "reels", "tiktok", "maps", "claude", "claude-code", "skills", "ffmpeg", "webgl", "kinetic-typography"]
+  "keywords": [
+    "motion-graphics", "video", "animation", "kinetic-typography", "text-animation", "3d", "reels", "shorts", "tiktok",
+    "instagram", "maps", "map-animation", "lower-third", "captions", "ffmpeg", "webgl", "canvas", "cli", "claude", "claude-code",
+    "agent-skills", "after-effects-alternative"
+  ]
 }

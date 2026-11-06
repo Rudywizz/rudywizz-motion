@@ -124,6 +124,39 @@ export function fitSize(ctx, lines, { family, weight = 400, maxW, maxH = Infinit
   return Math.max(min, Math.floor(size));
 }
 
+/**
+ * Make sure no line is wider than maxW at minSize: wraps long lines by word and
+ * splits words that are still too long into hyphenated chunks
+ * ("Çekoslovakyalılaştıramadıklarımızdan" → "Çekoslovakya-", "lılaştıramadık-", …).
+ * Use before fitSize so very long words stay readable instead of shrinking to a hairline.
+ */
+export function breakLongWords(ctx, lines, { family, weight = 400, maxW, minSize }) {
+  ctx.font = font(minSize, family, weight);
+  const fits = (s) => ctx.measureText(s).width <= maxW;
+  const out = [];
+  for (const line of lines) {
+    if (fits(line)) {
+      out.push(line);
+      continue;
+    }
+    for (const part of wrap(ctx, line, maxW)) {
+      if (fits(part)) {
+        out.push(part);
+        continue;
+      }
+      let cur = '';
+      for (const c of graphemes(part)) {
+        if (cur && !fits(cur + c + '-')) {
+          out.push(cur + '-');
+          cur = c;
+        } else cur += c;
+      }
+      if (cur) out.push(cur);
+    }
+  }
+  return out;
+}
+
 /** Measure each grapheme's x offset for per-letter animation. */
 export function layoutChars(ctx, line) {
   const chars = graphemes(line);

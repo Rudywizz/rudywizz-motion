@@ -1,0 +1,11 @@
+{
+  "description": "Event teaser: 3·2·1 countdown → departures board with date and place → neon sign-off",
+  "format": "9:16",
+  "look": { "grade": "cyber", "bloom": 0.4, "leak": 0.2, "grain": 0.04, "vignette": 0.35 },
+  "scenes": [
+    { "style": "countdown", "text": "Doors / open", "duration": 4.2, "transition": { "type": "blinds", "duration": 0.6 } },
+    { "style": "split-flap", "text": "Friday / 21:00 / Hall B", "title": "TONIGHT · LINE-UP", "duration": 4.5, "camera": "drift",
+      "transition": { "type": "leak", "duration": 0.7 } },
+    { "style": "neon-sign", "text": "See you / there", "duration": 4, "camera": "orbit" }
+  ]
+}

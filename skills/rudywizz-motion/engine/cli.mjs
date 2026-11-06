@@ -6,15 +6,18 @@ import http from 'node:http';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { normalizeComp, clipTime, TRANSITIONS, LOOKS, GRADES } from './timeline.js';
 import { CAMERA_PRESETS } from './camera.js';
+import { validateComp, suggest } from './validate.js';
 
 const ENGINE_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(ENGINE_DIR, '..');
 const STYLES_DIR = path.join(ROOT, 'styles');
 const TEMPLATES_DIR = path.join(ROOT, 'templates');
+const VERSION = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version || '0.0.0';
 
 const FORMATS = { '9:16': [1080, 1920], '1:1': [1080, 1080], '4:5': [1080, 1350], '16:9': [1920, 1080] };
 
@@ -28,6 +31,8 @@ Usage
   rudywizz-motion still <style|comp> --at <s>   One frame → PNG
   rudywizz-motion preview <style|comp>          Live looping preview in your browser
   rudywizz-motion doctor                        Check ffmpeg / browser / WebGL
+  rudywizz-motion init [reel.json]              Write a starter composition to edit
+  rudywizz-motion --version
 
 Content
   --text "..."           Text (use "\\n" or " / " for line breaks)
@@ -45,23 +50,37 @@ Camera & look
   --bpm <n>              Tempo for beat-synced cameras/styles
 
 Output
-  --out <file>           .mp4 (H.264) | .mov (ProRes 4444, alpha) | .webm (VP9, alpha) | .gif
+  --out <file>           .mp4 (H.264) | .mov (ProRes 4444, alpha) | .webm (VP9, alpha) | .gif | .webp (animated)
   --format <ratio>       9:16 (default) | 1:1 | 4:5 | 16:9
   --size <px>            Short side in px (default 1080)
   --duration <s>  --fps <n>  --seed <n>  --lang <tr|en…>
   --alpha                Transparent background (.mov / .webm)
   --audio <file>         Mux an audio track
   --crf <n>              H.264 quality (default 18)
-  --clean                No animated grain/film (automatic for .gif)
-  --quiet  --json
+  --clean                No animated grain/film (automatic for .gif / .webp)
+  --quiet  --json  --strict (treat warnings as errors)
+
+Docs: https://github.com/Rudywizz/rudywizz-motion
 `;
 
 // ---------------------------------------------------------------- args
-const FLAGS = new Set(['alpha', 'quiet', 'help', 'no-open', 'json', 'keep-frames', 'clean']);
+const FLAGS = new Set(['alpha', 'quiet', 'help', 'no-open', 'json', 'keep-frames', 'clean', 'version', 'strict', 'force']);
+const OPTIONS = new Set([
+  'text', 'image', 'clip', 'set', 'params', 'camera', 'look', 'grade', 'bloom', 'grain', 'leak', 'film', 'aberration', 'vignette',
+  'distortion', 'weave', 'motion-blur', 'bpm', 'out', 'format', 'size', 'duration', 'fps', 'seed', 'lang', 'audio', 'crf', 'at',
+]);
 function parseArgs(argv) {
   const args = { _: [], set: {} };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
+    if (a === '-v') {
+      args.version = true;
+      continue;
+    }
+    if (a === '-h') {
+      args.help = true;
+      continue;
+    }
     if (!a.startsWith('--')) {
       args._.push(a);
       continue;
@@ -75,6 +94,9 @@ function parseArgs(argv) {
     } else if (FLAGS.has(key)) {
       args[key] = true;
       continue;
+    } else if (!OPTIONS.has(key)) {
+      const hint = suggest(key, [...OPTIONS, ...FLAGS]);
+      die(`Unknown option --${key}.${hint ? ` Did you mean --${hint}?` : ''} Run \`rudywizz-motion help\`.`);
     } else {
       val = argv[++i];
       if (val === undefined) die(`Missing value for --${key}`);
@@ -84,6 +106,16 @@ function parseArgs(argv) {
       if (j < 1) die(`--set expects key=value, got "${val}"`);
       args.set[val.slice(0, j)] = parseValue(val.slice(j + 1));
     } else args[key] = val;
+  }
+  // numbers: fail loudly instead of silently falling back to defaults
+  const NUM = {
+    size: [16, 4320], duration: [0.1, 3600], fps: [1, 120], seed: [-1e9, 1e9], bpm: [20, 400], crf: [0, 51], at: [0, 3600],
+    'motion-blur': [1, 16], bloom: [0, 2], grain: [0, 1], leak: [0, 2], film: [0, 2], aberration: [0, 2], vignette: [0, 2], distortion: [-2, 2], weave: [0, 4],
+  };
+  for (const [k, [lo, hi]] of Object.entries(NUM)) {
+    if (args[k] == null) continue;
+    const n = Number(args[k]);
+    if (!Number.isFinite(n) || n < lo || n > hi) die(`--${k} expects a number between ${lo} and ${hi}, got "${args[k]}".`);
   }
   return args;
 }
@@ -110,11 +142,27 @@ async function styleMod(id) {
 }
 
 // ---------------------------------------------------------------- media server
-function startServer(media) {
+// Local-only (127.0.0.1, random port). Every URL carries a random per-run token, so
+// other local processes or web pages can't guess paths to the user's media.
+const TOKEN = crypto.randomBytes(16).toString('hex');
+const BASE = `/${TOKEN}`;
+function startServer(media, comp) {
   const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css', '.json': 'application/json', '.woff2': 'font/woff2', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.gif': 'image/gif' };
+  const compJson = JSON.stringify(comp);
   return new Promise((resolve) => {
     const server = http.createServer((req, res) => {
-      const rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+      let rel;
+      try {
+        rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+      } catch {
+        return res.writeHead(400).end();
+      }
+      if (req.method !== 'GET' || !rel.startsWith(BASE + '/')) return res.writeHead(404).end('not found');
+      rel = rel.slice(BASE.length);
+      if (rel === '/comp.json') {
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+        return res.end(compJson);
+      }
       let file = null;
       const m = rel.match(/^\/media\/([a-z0-9]+)(?:\/([\w.-]+))?$/);
       if (m && media.has(m[1])) {
@@ -128,12 +176,15 @@ function startServer(media) {
       res.writeHead(200, { 'Content-Type': MIME[path.extname(file).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-store' });
       fs.createReadStream(file).pipe(res);
     });
-    server.listen(0, '127.0.0.1', () => resolve(server));
+    server.listen(0, '127.0.0.1', () => {
+      server.pageUrl = `http://127.0.0.1:${server.address().port}${BASE}/engine/host.html`;
+      resolve(server);
+    });
   });
 }
 
 // ---------------------------------------------------------------- browser
-async function launchBrowser() {
+async function launchBrowser({ soft = false } = {}) {
   let pw;
   try {
     pw = await import('playwright');
@@ -155,6 +206,7 @@ async function launchBrowser() {
       last = e;
     }
   }
+  if (soft) throw last;
   die('Could not start Chromium. Run `npx playwright install chromium`, install Chrome, or set RM_CHROME=/path/to/chrome.\n  ' + String(last?.message || last).split('\n')[0]);
 }
 
@@ -173,10 +225,11 @@ async function buildComp(args) {
     const file = target.endsWith('.json') ? path.resolve(target) : tpl;
     if (!fs.existsSync(file)) die(`File not found: ${file}`);
     try {
-      comp = JSON.parse(fs.readFileSync(file, 'utf8'));
+      comp = JSON.parse(fs.readFileSync(file, 'utf8').replace(/^﻿/, ''));
     } catch (e) {
       die(`Invalid JSON in ${file}: ${e.message}`);
     }
+    if (!comp || !Array.isArray(comp.scenes) || !comp.scenes.length) die(`${file} needs a non-empty "scenes" array. Run \`rudywizz-motion init\` for an example.`);
     baseDir = path.dirname(file);
     if (args.text != null && comp.scenes?.[0]) comp.scenes[0].text = String(args.text).replace(/\\n/g, '\n');
   } else {
@@ -184,7 +237,11 @@ async function buildComp(args) {
     if (target === 'image' || args.image) scene = { image: args.image || args._[2] };
     else if (target === 'clip' || args.clip) scene = { clip: args.clip || args._[2] };
     else {
-      if (!/^[a-z0-9-]+$/.test(target) || !styleIds().includes(target)) die(`Unknown style or file "${target}". Run \`rudywizz-motion list\`.`);
+      if (!/^[a-z0-9-]+$/.test(target) || !styleIds().includes(target)) {
+        const tpls = fs.existsSync(TEMPLATES_DIR) ? fs.readdirSync(TEMPLATES_DIR).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)) : [];
+        const s = suggest(target, [...styleIds(), ...tpls, 'image', 'clip']);
+        die(`Unknown style, template or file "${target}".${s ? ` Did you mean "${s}"?` : ''} Run \`rudywizz-motion list\`.`);
+      }
       scene = { style: target };
     }
     let fileParams = {};
@@ -223,10 +280,9 @@ async function buildComp(args) {
   if (args['motion-blur']) comp.motionBlur = Number(args['motion-blur']);
   comp.look = { ...(comp.look || {}) };
   for (const k of ['grade', 'bloom', 'grain', 'leak', 'film', 'aberration', 'vignette', 'distortion', 'weave']) if (args[k] != null) comp.look[k] = k === 'grade' ? args[k] : Number(args[k]);
-  if (comp.look.grade && !GRADES.includes(comp.look.grade)) die(`Unknown grade "${comp.look.grade}". Use: ${GRADES.join(', ')}`);
   if (args.duration && comp.scenes.length === 1) comp.scenes[0].duration = Number(args.duration);
   // GIFs compress badly with animated grain: render them clean unless asked otherwise
-  if (args.clean || (String(args.out || '').toLowerCase().endsWith('.gif') && args.grain == null)) {
+  if (args.clean || (/\.(gif|webp)$/i.test(String(args.out || '')) && args.grain == null)) {
     comp.clean = true;
     comp.look.grain = 0;
     comp.look.film = Math.min(comp.look.film ?? 0, 0.2);
@@ -234,17 +290,18 @@ async function buildComp(args) {
   if (args.audio) comp.audio = path.resolve(args.audio);
   else if (comp.audio) comp.audio = path.resolve(baseDir, comp.audio);
 
-  // validate styles + collect defaults
-  for (const sc of comp.scenes) {
-    for (const ref of [sc, sc.overlay].filter(Boolean)) {
-      if (ref.style && !styleIds().includes(ref.style)) die(`Unknown style "${ref.style}" in composition.`);
-      if (ref.style) await styleMod(ref.style);
+  // validate everything (typos fail loudly instead of rendering a black scene)
+  const mods = {};
+  for (const id of styleIds()) {
+    try {
+      mods[id] = await styleMod(id);
+    } catch (e) {
+      process.stderr.write(`\x1b[33mwarning\x1b[0m style "${id}" failed to load: ${e.message}\n`);
     }
   }
-  for (const ov of comp.overlays || []) {
-    if (!styleIds().includes(ov.style)) die(`Unknown overlay style "${ov.style}".`);
-    await styleMod(ov.style);
-  }
+  const { errors, warnings } = validateComp(comp, mods);
+  for (const w of warnings) process.stderr.write(`\x1b[33mwarning\x1b[0m ${w}\n`);
+  if (errors.length || (args.strict && warnings.length)) die(errors.concat(args.strict ? warnings : []).join('\n      '));
   return { comp, baseDir };
 }
 
@@ -253,15 +310,25 @@ function prepareMedia(comp, baseDir, quiet) {
   const media = new Map();
   let n = 0;
   const reg = (file) => {
-    const abs = path.resolve(baseDir, file);
+    if (/^[a-z][a-z0-9+.-]*:\/\//i.test(String(file)) || String(file).startsWith('data:'))
+      die(`"${String(file).slice(0, 80)}" is a URL. rudywizz-motion never downloads anything: save the file locally and pass its path.`);
+    const abs = path.resolve(baseDir, String(file));
     if (!fs.existsSync(abs)) die(`Media file not found: ${abs}`);
     const id = 'm' + n++;
     media.set(id, { file: abs });
-    return `/media/${id}`;
+    return `${BASE}/media/${id}`;
   };
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rm-frames-'));
   const norm = normalizeComp(comp, (id) => styleCache[id]?.defaults);
+  // style options that take image files (e.g. card-carousel `images`) are served like any other media
+  const regStyleImages = (o) => {
+    if (o && Array.isArray(o.images)) o.images = o.images.map((f) => (f ? reg(f) : f));
+    if (o?.params && Array.isArray(o.params.images)) o.params.images = o.params.images.map((f) => (f ? reg(f) : f));
+  };
+  for (const ov of comp.overlays || []) regStyleImages(ov);
   comp.scenes.forEach((sc, i) => {
+    regStyleImages(sc);
+    regStyleImages(sc.overlay);
     if (sc.image) sc.src = reg(sc.image);
     if (Array.isArray(sc.layers)) sc.layers = sc.layers.map((l) => ({ ...l, src: reg(l.src || l.image) }));
     if (sc.clip) {
@@ -280,7 +347,7 @@ function prepareMedia(comp, baseDir, quiet) {
       if (!count) die(`No frames extracted from ${abs} (check "in" and duration).`);
       const id = 'c' + i;
       media.set(id, { dir });
-      sc.frames = { base: `/media/${id}/`, count, fps };
+      sc.frames = { base: `${BASE}/media/${id}/`, count, fps };
     }
   });
   return { media, tmp, norm };
@@ -291,8 +358,8 @@ async function openPage(browser, server, comp, extra = {}) {
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-  const hash = encodeURIComponent(JSON.stringify({ ...comp, ...extra }));
-  await page.goto(`http://127.0.0.1:${server.address().port}/engine/host.html#${hash}`);
+  void extra;
+  await page.goto(server.pageUrl);
   try {
     await page.waitForFunction(() => window.RM && window.RM.ready, null, { timeout: 120000 });
   } catch {
@@ -318,15 +385,17 @@ function ffmpegArgs(out, { fps, alpha, audio, crf, width }) {
       return [...input, ...aud, ...map, '-c:v', 'libvpx-vp9', '-pix_fmt', alpha ? 'yuva420p' : 'yuv420p', '-b:v', '0', '-crf', '30', '-row-mt', '1', ...(audio ? ['-c:a', 'libopus'] : []), out];
     case '.gif':
       return [...input, '-vf', `fps=${Math.min(fps, 15)},scale=${Math.min(width, 480)}:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle`, '-loop', '0', out];
+    case '.webp': // animated WebP: ~5–8× smaller than GIF, full colour, alpha; plays in browsers and GitHub READMEs
+      return [...input, '-vf', `fps=${Math.min(fps, 24)},scale=${Math.min(width, 720)}:-2:flags=lanczos`, '-c:v', 'libwebp_anim', '-lossless', '0', '-q:v', '72', '-compression_level', '6', '-loop', '0', ...(alpha ? ['-pix_fmt', 'yuva420p'] : []), out];
     default:
-      die(`Unsupported output "${ext}". Use .mp4, .mov, .webm or .gif`);
+      die(`Unsupported output "${ext}". Use .mp4, .mov, .webm, .gif or .webp`);
   }
 }
 
 async function withPage(args, fn, extra) {
   const { comp, baseDir } = await buildComp(args);
   const { media, tmp } = prepareMedia(comp, baseDir, args.quiet);
-  const server = await startServer(media);
+  const server = await startServer(media, { ...comp, ...(extra || {}) });
   const browser = await launchBrowser();
   try {
     const { page, info } = await openPage(browser, server, comp, extra);
@@ -342,24 +411,28 @@ async function render(args) {
   checkFfmpeg();
   const name = path.basename(args._[1] || 'out').replace(/\.json$/, '');
   const out = path.resolve(args.out || `${name}.mp4`);
+  ffmpegArgs(out, { fps: 30, alpha: !!args.alpha, crf: 18, width: 1080 }); // fail fast on a bad extension / alpha combo
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const t0 = Date.now();
   await withPage(args, async (page, info, comp) => {
     const total = Math.round(info.duration * info.fps);
     const ff = spawn('ffmpeg', ffmpegArgs(out, { fps: info.fps, alpha: !!comp.alpha, audio: comp.audio, crf: Number(args.crf ?? 18), width: info.width }), { stdio: ['pipe', 'inherit', 'pipe'] });
     let ffErr = '';
+    let ffDead = false;
     ff.stderr.on('data', (d) => (ffErr += d));
-    const done = new Promise((r) => ff.on('close', r));
-    for (let i = 0; i < total; i++) {
+    ff.stdin.on('error', () => (ffDead = true)); // ffmpeg exited early (EPIPE): report its stderr below
+    ff.on('error', (e) => die(`Could not start ffmpeg: ${e.message}`));
+    const done = new Promise((r) => ff.on('close', (c) => ((ffDead = true), r(c))));
+    for (let i = 0; i < total && !ffDead; i++) {
       await page.evaluate((t) => window.RM.render(t), i / info.fps);
       const buf = await page.screenshot({ type: 'png', omitBackground: !!comp.alpha });
-      if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r));
+      if (!ff.stdin.write(buf)) await Promise.race([new Promise((r) => ff.stdin.once('drain', r)), done]);
       if (!args.quiet && (i % 10 === 0 || i === total - 1)) process.stderr.write(`\r  ${name}  frame ${i + 1}/${total}  ${Math.round(((i + 1) / total) * 100)}%   `);
     }
     ff.stdin.end();
     const code = await done;
     if (!args.quiet) process.stderr.write('\n');
-    if (code !== 0) die(`ffmpeg failed (exit ${code}):\n${ffErr}`);
+    if (code !== 0) die(`ffmpeg failed (exit ${code}):\n${ffErr.trim() || '(no output)'}`);
     say(args.quiet, `  \x1b[32m✓\x1b[0m ${out}  (${info.width}x${info.height}, ${info.duration.toFixed(2)}s @ ${info.fps}fps, ${((Date.now() - t0) / 1000).toFixed(1)}s)`);
     if (args.json) process.stdout.write(JSON.stringify({ out, ...info, frames: total }) + '\n');
   });
@@ -379,31 +452,70 @@ async function still(args) {
 async function preview(args) {
   const { comp, baseDir } = await buildComp(args);
   const { media } = prepareMedia(comp, baseDir, false);
-  const server = await startServer(media);
-  const url = `http://127.0.0.1:${server.address().port}/engine/host.html#${encodeURIComponent(JSON.stringify({ ...comp, preview: true }))}`;
+  const server = await startServer(media, { ...comp, preview: true });
+  const url = server.pageUrl; // the composition is served by the local server, never put on a command line
   say(false, `  Preview: ${url}\n  Ctrl+C to stop.`);
   if (!args['no-open']) {
-    const cmd = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'cmd' : 'xdg-open';
-    const cargs = process.platform === 'win32' ? ['/c', 'start', '', url] : [url];
-    spawn(cmd, cargs, { stdio: 'ignore', detached: true }).on('error', () => {}).unref();
+    const cmd = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'explorer.exe' : 'xdg-open';
+    spawn(cmd, [url], { stdio: 'ignore', detached: true }).on('error', () => {}).unref();
   }
 }
 
 async function doctor() {
-  const ok = (b, m) => process.stdout.write(`  ${b ? '\x1b[32m✓' : '\x1b[31m✗'}\x1b[0m ${m}\n`);
-  ok(!spawnSync('ffmpeg', ['-version']).error, 'ffmpeg');
-  const browser = await launchBrowser();
-  const page = await browser.newPage();
-  const gl2 = await page.evaluate(() => !!document.createElement('canvas').getContext('webgl2'));
-  ok(true, `browser ${browser.version()}`);
-  ok(gl2, 'WebGL2');
-  await browser.close();
+  let good = true;
+  const ok = (b, m, fix) => {
+    good &&= !!b;
+    process.stdout.write(`  ${b ? '\x1b[32m✓' : '\x1b[31m✗'}\x1b[0m ${m}${!b && fix ? `\n      → ${fix}` : ''}\n`);
+  };
+  process.stdout.write(`rudywizz-motion ${VERSION} · Node ${process.versions.node} · ${process.platform}-${process.arch}\n`);
+  ok(Number(process.versions.node.split('.')[0]) >= 18, 'Node.js 18+', 'Install Node 18 or newer from https://nodejs.org');
+  const ff = spawnSync('ffmpeg', ['-version']);
+  ok(!ff.error, ff.error ? 'ffmpeg' : `ffmpeg ${String(ff.stdout).split(' ')[2] || ''}`, 'macOS `brew install ffmpeg` · Windows `winget install ffmpeg` · Linux `sudo apt install ffmpeg`');
+  let pw = null;
+  try {
+    pw = await import('playwright');
+  } catch {}
+  ok(!!pw, 'playwright', 'Run `npm install` in the rudywizz-motion folder');
+  if (pw) {
+    let browser = null;
+    try {
+      browser = await launchBrowser({ soft: true });
+    } catch {}
+    ok(!!browser, browser ? `browser ${browser.version()}` : 'browser', '`npx playwright install chromium`, or install Chrome / Edge, or set RM_CHROME=/path/to/chrome');
+    if (browser) {
+      const page = await browser.newPage();
+      const gl2 = await page.evaluate(() => !!document.createElement('canvas').getContext('webgl2'));
+      ok(gl2, 'WebGL2', 'Update your GPU drivers or Chrome; headless SwiftShader should normally work');
+      await browser.close();
+    }
+  }
+  process.stdout.write(good ? '\n  All good. Try: rudywizz-motion render neon-sign --text "Hello"\n' : '\n  Fix the ✗ items above, then run doctor again.\n');
+  if (!good) process.exitCode = 1;
+}
+
+function init(args) {
+  const file = path.resolve(args._[1] || 'reel.json');
+  if (fs.existsSync(file) && !args.force) die(`${file} already exists (use --force to overwrite).`);
+  const starter = {
+    $schema: 'https://raw.githubusercontent.com/Rudywizz/rudywizz-motion/main/skills/rudywizz-motion/schema/composition.schema.json',
+    format: '9:16',
+    look: { grade: 'teal-orange', bloom: 0.3, grain: 0.04, vignette: 0.3 },
+    scenes: [
+      { style: 'map-route', route: ['İstanbul', 'Roma'], text: 'Summer trip', duration: 5, transition: { type: 'whip', duration: 0.45 } },
+      { style: 'split-flap', text: 'NEXT STOP / ROMA', duration: 3, camera: 'push-in', transition: { type: 'zoom', duration: 0.6 } },
+      { style: 'neon-sign', text: 'See you / soon', duration: 3, camera: 'orbit' },
+    ],
+  };
+  fs.writeFileSync(file, JSON.stringify(starter, null, 2) + '\n');
+  say(false, `  \x1b[32m✓\x1b[0m ${file}\n  Edit it (your editor autocompletes from the schema), then:\n    rudywizz-motion still ${path.basename(file)} --at 2 --size 540\n    rudywizz-motion render ${path.basename(file)} --out reel.mp4`);
 }
 
 // ---------------------------------------------------------------- main
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._[0];
-if (!cmd || args.help || cmd === 'help') process.stdout.write(HELP);
+if (args.version || cmd === 'version') process.stdout.write(`${VERSION}\n`);
+else if (!cmd || args.help || cmd === 'help') process.stdout.write(HELP);
+else if (cmd === 'init') init(args);
 else if (cmd === 'list') {
   const ids = styleIds();
   const rows = [];
@@ -423,4 +535,7 @@ else if (cmd === 'list') {
 else if (cmd === 'still') await still(args);
 else if (cmd === 'preview') await preview(args);
 else if (cmd === 'doctor') await doctor();
-else die(`Unknown command "${cmd}". Run \`rudywizz-motion help\`.`);
+else {
+  const s = suggest(cmd, ['list', 'templates', 'render', 'still', 'preview', 'doctor', 'init', 'help', 'version']);
+  die(`Unknown command "${cmd}".${s ? ` Did you mean "${s}"?` : ''} Run \`rudywizz-motion help\`.`);
+}

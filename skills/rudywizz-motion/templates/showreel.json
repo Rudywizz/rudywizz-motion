@@ -1,0 +1,18 @@
+{
+  "description": "The README hero: kinetic type, 3D, social graphics, maps and shader transitions in 30 seconds",
+  "format": "16:9",
+  "lang": "en",
+  "look": { "grade": "teal-orange", "bloom": 0.3, "grain": 0.03, "aberration": 0.15, "vignette": 0.25 },
+  "scenes": [
+    { "style": "glitch-title", "text": "Motion / from code", "subtitle": "RUDYWIZZ-MOTION", "duration": 3.2, "camera": "punch-in",
+      "transition": { "type": "glitch", "duration": 0.45 } },
+    { "style": "word-stack", "text": "Type / that / moves", "duration": 3, "transition": { "type": "whip", "duration": 0.4, "dir": "left" } },
+    { "style": "extrude-3d", "text": "In 3D", "duration": 3.2, "transition": { "type": "zoom", "duration": 0.5 } },
+    { "style": "map-route", "route": ["London", "Paris", "Istanbul"], "text": "Maps", "mode": "globe", "duration": 4.2,
+      "transition": { "type": "burn", "duration": 0.6 } },
+    { "style": "cube-spin", "text": "Reels / Intros / Lower thirds / Lyrics", "duration": 4.4, "transition": { "type": "cube", "duration": 0.5 } },
+    { "style": "neon-sign", "text": "Every / frame", "duration": 2.8, "camera": "orbit", "transition": { "type": "ink", "duration": 0.6 } },
+    { "style": "particle-sphere", "text": "Exact & repeatable", "duration": 4.2, "transition": { "type": "leak", "duration": 0.6 } },
+    { "style": "retro-grid", "text": "Free / & open source", "duration": 3.6 }
+  ]
+}

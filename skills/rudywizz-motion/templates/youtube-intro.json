@@ -1,0 +1,40 @@
+{
+  "description": "16:9 channel intro: decoder title → word stack → host lower third (use it with --alpha as an overlay on your own footage)",
+  "format": "16:9",
+  "lang": "en",
+  "look": {
+    "grade": "teal-orange",
+    "bloom": 0.3,
+    "grain": 0.03,
+    "vignette": 0.3
+  },
+  "scenes": [
+    {
+      "style": "scramble",
+      "text": "Build / anything",
+      "font": "display",
+      "duration": 3,
+      "transition": {
+        "type": "ink",
+        "duration": 0.7
+      }
+    },
+    {
+      "style": "word-stack",
+      "text": "Episode 12 / Motion / from code",
+      "duration": 3.4,
+      "camera": "push-in",
+      "transition": {
+        "type": "iris",
+        "duration": 0.6
+      }
+    },
+    {
+      "style": "lower-third",
+      "text": "Deniz Aydın / Host · Creative coding",
+      "theme": "glass",
+      "duration": 5.5,
+      "camera": "drift"
+    }
+  ]
+}

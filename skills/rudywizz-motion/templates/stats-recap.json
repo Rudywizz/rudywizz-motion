@@ -1,0 +1,13 @@
+{
+  "description": "Year-in-review recap: countdown → rolling big number → bar chart race → follow button",
+  "format": "9:16",
+  "look": { "grade": "kodak", "bloom": 0.3, "grain": 0.04, "vignette": 0.3 },
+  "scenes": [
+    { "style": "countdown", "text": "Year in / review", "from": 3, "duration": 4, "transition": { "type": "flash", "duration": 0.35 } },
+    { "style": "odometer", "text": "1250000 views", "duration": 4.5, "camera": "push-in", "transition": { "type": "wipe", "duration": 0.5 } },
+    { "style": "bar-chart", "text": "Most watched", "note": "Views per series, thousands", "unit": "K",
+      "items": [["Tutorials", 540], ["Behind the scenes", 310], ["Reviews", 220], ["Shorts", 120], ["Live", 60]],
+      "duration": 6.5, "transition": { "type": "zoom", "duration": 0.6 } },
+    { "style": "cta-follow", "text": "@yourhandle / Follow / See you next year", "duration": 4.5 }
+  ]
+}

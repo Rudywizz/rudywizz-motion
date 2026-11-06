@@ -138,7 +138,7 @@ export default {
       const track = api.lerp(28, 6, ease.outExpo(prog(t, 1.6, 3.4))) * S;
       const chars = api.graphemes(title);
       const widthAt = () => chars.reduce((w, c) => w + ctx.measureText(c).width + track, -track);
-      while (widthAt() > W * 0.9 && fs > 20) {
+      while (widthAt() > W * 0.9 && fs > 10 * S) {
         fs *= 0.94;
         ctx.font = api.font(fs, 'Cinzel', 700);
       }

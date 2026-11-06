@@ -32,8 +32,8 @@ export default {
     const lw = Math.round(W / px);
     const lh = Math.round(H / px);
     const low = api.offscreen(lw, lh);
-    const lines = api.splitLines(api.upper(p.text, p.lang)).slice(0, 3);
     const g = low.getContext('2d');
+    const lines = api.breakLongWords(g, api.splitLines(api.upper(p.text, p.lang)), { family: 'Press Start 2P', maxW: lw - 12, minSize: 8 }).slice(0, 4);
     const fit = (fs) => lines.every((l) => (g.font = api.font(fs, 'Press Start 2P'), g.measureText(l).width <= lw - 12));
     const fs = [24, 16, 8].find(fit) || 8;
     return { low, lw, lh, lines, fs, px };

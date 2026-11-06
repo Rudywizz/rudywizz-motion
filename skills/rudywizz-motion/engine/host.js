@@ -13,9 +13,13 @@ async function loadStyle(id) {
   return styles[safe];
 }
 
-function readParams() {
+async function readParams() {
+  // The CLI serves the composition next to the engine (../comp.json); a URL hash still works for hand-made links.
   const raw = decodeURIComponent(location.hash.slice(1) || '');
-  return raw ? JSON.parse(raw) : {};
+  if (raw) return JSON.parse(raw);
+  const res = await fetch(new URL('../comp.json', location.href));
+  if (!res.ok) throw new Error('No composition (comp.json) found');
+  return res.json();
 }
 
 function showError(err) {
@@ -77,7 +81,7 @@ function makeApi(canvas, W, H, p) {
       }
     },
     loadImage,
-    asset: (path) => `/engine/${path}`,
+    asset: (path) => new URL(path, location.href).href, // engine-relative (data/…, fonts/…)
   };
 }
 
@@ -171,7 +175,7 @@ async function sceneRuntime(sc, comp) {
 }
 
 async function main() {
-  const input = readParams();
+  const input = await readParams();
   // preload styles referenced anywhere (needed for default durations + fonts)
   const ids = new Set();
   const scan = (o) => {

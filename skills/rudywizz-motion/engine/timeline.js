@@ -26,7 +26,7 @@ export const LOOKS = ['none', 'engrave', 'sketch', 'oldphoto', 'duotone', 'halft
 
 export const GRADES = ['none', 'teal-orange', 'kodak', 'fuji', 'sepia', 'noir', 'bleach', 'cyber', 'sunset', 'matte'];
 
-const SCENE_KEYS = new Set(['type', 'style', 'image', 'layers', 'clip', 'color', 'duration', 'camera', 'look', 'transition', 'overlay', 'in', 'speed', 'fit', 'params']);
+export const SCENE_KEYS = new Set(['type', 'style', 'image', 'layers', 'clip', 'color', 'duration', 'camera', 'look', 'transition', 'overlay', 'in', 'speed', 'fit', 'params']);
 
 export function sceneType(s) {
   if (s.type) return s.type;

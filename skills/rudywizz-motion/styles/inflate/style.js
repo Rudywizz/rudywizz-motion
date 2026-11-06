@@ -26,6 +26,7 @@ export default {
     const { ctx, W, H, p } = api;
     let lines = api.splitLines(api.upper(p.text, p.lang));
     if (lines.length === 1 && api.words(lines[0]).length > 1) lines = api.words(lines[0]);
+    lines = api.breakLongWords(ctx, lines, { family: 'Unbounded', weight: 900, maxW: W * 0.8, minSize: Math.min(W, H) * 0.09 });
     const size = api.fitSize(ctx, lines, { family: 'Unbounded', weight: 900, maxW: W * 0.8, maxH: H * 0.48, lineHeight: 1.18, max: W * 0.3 });
     ctx.font = api.font(size, 'Unbounded', 900);
     const lh = size * 1.15;

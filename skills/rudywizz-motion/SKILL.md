@@ -1,6 +1,6 @@
 ---
 name: rudywizz-motion
-description: Make cinematic motion-graphics videos from code — kinetic text styles, map route animations (world, globe, Turkey's provinces), sepia history docs that draw images as engravings, and full reels from the user's own clips with camera moves, shader transitions, colour grades and film effects. Use whenever the user asks for an animated video, reel, title card, lyric video, captions, map animation, history/documentary video or a motion graphic.
+description: Make cinematic motion-graphics videos from code — kinetic typography, 3D titles, map route animations (world, globe, Turkey's provinces), social templates (lower thirds, captions, chat stories, countdowns, bar chart races, follow CTAs), sepia history docs that draw images as engravings, and full reels from the user's own clips with camera moves, shader transitions, colour grades and film effects. Use whenever the user asks for an animated video, reel, short, intro, title card, lyric video, captions, lower third, map animation, data animation, history/documentary video or a motion graphic.
 ---
 
 # rudywizz-motion
@@ -18,10 +18,13 @@ assets/demo/ original demo illustrations (CC0)
 ## 1. One-time setup (check before the first render)
 
 ```bash
-cd <this folder>          # the folder that contains this SKILL.md
-npm install               # installs playwright (only dependency)
-node engine/cli.mjs doctor   # ffmpeg ✓, browser ✓, WebGL2 ✓
+RM="${CLAUDE_SKILL_DIR}"                       # the folder that contains this SKILL.md
+[ -f "$RM/engine/cli.mjs" ] || RM=$(ls -dt "${CLAUDE_PLUGIN_ROOT}/skills/rudywizz-motion" ~/.claude/plugins/cache/*/rudywizz-motion/*/skills/rudywizz-motion ~/.claude/skills/rudywizz-motion .claude/skills/rudywizz-motion 2>/dev/null | head -1)
+TMP=$(node -p "require('os').tmpdir()")       # a temp dir bash and Node agree on (also on Windows)
+cd "$RM" && npm install --no-audit --no-fund   # installs playwright (the only dependency)
+node engine/cli.mjs doctor                    # Node ✓ ffmpeg ✓ browser ✓ WebGL2 ✓ — each ✗ prints its fix
 ```
+Run renders from the user's folder with `node "$RM/engine/cli.mjs" …` so relative paths resolve there.
 If the browser check fails: `npx playwright install chromium` (or set `RM_CHROME=/path/to/chrome`).
 If ffmpeg is missing, tell the user how to install it (macOS `brew install ffmpeg`, Windows `winget install ffmpeg`, Linux `apt install ffmpeg`).
 
@@ -33,16 +36,17 @@ If ffmpeg is missing, tell the user how to install it (macOS `brew install ffmpe
 | A map / route animation | `render map-route --set 'route=["İstanbul","Konya"]'` |
 | Their image drawn as an engraving | `render image --image photo.jpg --look engrave --grade sepia --film 0.6` |
 | Camera moves on their clip | `render clip --clip in.mp4 --camera handheld --set speed='"ramp-mid"'` |
-| A multi-scene reel / doc / teaser | write a composition JSON (section 4) or start from a template |
+| A transparent overlay for their editor (lower third, captions, CTA) | `render lower-third --text "Name / Role" --alpha --out name.mov` |
+| A multi-scene reel / doc / teaser / intro | `init reel.json` or start from a template, then edit (section 4) |
 
-Templates: `node engine/cli.mjs templates` → `history-short`, `travel-reel`, `lyric-teaser`, `launch`, `tour`.
-Copy one next to the user's assets, edit texts/paths, render it.
+Templates: `node engine/cli.mjs templates` lists them all with a one-line description.
+Copy one next to the user's assets (`cp "$RM/templates/<name>.json" .`), edit texts/paths, render it.
 
 ## 3. Workflow (always)
 
 1. Decide style(s), text, format (default 9:16 1080×1920), camera, grade.
 2. **Check stills first** — cheap and catches layout problems:
-   `node engine/cli.mjs still <style|comp.json> --at 2.5 --size 540 --out /tmp/check.png` → open the PNG and look at it. Check 2–3 moments (start, middle, end of each scene).
+   `node "$RM/engine/cli.mjs" still <style|comp.json> --at 2.5 --size 540 --out "$TMP/check.png"` → open the PNG and look at it. Check 2–3 moments (start, middle, end of each scene). Read any `warning`/`error` lines: they name typos and suggest the right key.
 3. Render: `node engine/cli.mjs render … --out out.mp4`
 4. Verify: `ffprobe -v error -show_entries format=duration -of csv=p=0 out.mp4` and grab a frame or two.
 5. Deliver the file with one line of context.
@@ -117,6 +121,26 @@ Rules of thumb
 | odometer | Rolling digits count to a number | text `"10000 takipçi"`, `prefix`, `suffix` |
 | pixel-quest | 8-bit title screen | `pixel`, `subtitle` |
 | vhs-memory | Home-video tape look | `date`, `clock` |
+| **Kinetic type** | | |
+| word-stack | Justified poster stack, each line slams in full-width | `accent`, `beat`, `kicker` |
+| typewriter | Types key by key with a blinking cursor | `theme` paper·terminal, `speed`, `prompt` |
+| scramble | Random glyphs decode into the text | `font` mono·display, `resolve`, `hud` |
+| ticker-rows | Giant rows scroll in alternating directions | `rows`, `tilt`, `speed`, `accent` |
+| highlight-quote | Quote fades in, a marker sweeps the key words | `author`, `highlight` (words), `marker` |
+| glitch-title | RGB split + datamosh settle into a clean title | `subtitle`, `colors`, `every` |
+| **3D** | | |
+| extrude-3d | Chunky extruded letters swing in and turn | `face`, `side`, `bg`, `depth` |
+| cube-spin | Cube turns face to face, one line per face | `colors`, `ink`, `floor` |
+| text-tunnel | Fly through rings of text to the title | line 1 = title, `rings`, `ring`, `colors` |
+| retro-grid | Synthwave grid, striped sun, chrome title | line 1 chrome, rest script, `sky`, `sun`, `speed` |
+| particle-sphere | Particle sphere morphs into the words | `count`, `morphAt`, `colors` |
+| card-carousel | 3D ring of cards lands on the last line | `images` (local files), `turns`, `colors` |
+| **Social & broadcast** | | |
+| countdown | 3·2·1 with ring sweeps, then the text | `from`, `tick`, `accent` |
+| lower-third | News/YouTube name strap (use `--alpha`) | line 1 name, line 2 role, `theme` solid·glass·minimal, `position` |
+| chat-story | Messaging chat with typing dots | one message per line, `>` = me, `name`, `theme` |
+| bar-chart | Bar chart race, values count up | `items: [["A",10],…]`, `unit`, `note`, `source` |
+| cta-follow | Cursor clicks Follow, check + confetti | line 1 handle, line 2 button, line 3 subtitle, `done` |
 
 Style options go in `--set key=value` (JSON values: `--set 'route=["A","B"]'`) or as keys of the scene object.
 
@@ -125,3 +149,5 @@ Style options go in `--set key=value` (JSON values: `--set 'route=["A","B"]'`) o
 - Text clipped by a camera move: lower the camera `amount` or use `drift`/`float`.
 - Slow renders: `--size 540` for drafts. Avoid `--motion-blur` above 4 unless the user wants the best quality.
 - Output white/empty: run `still` and read the error; `doctor` checks WebGL2.
+- Windows PowerShell / cmd mangle `--set 'route=["A","B"]'`: write the options to a file and use `--params opts.json`, or use a composition JSON.
+- English text that contains a Turkish name (ı, ş…) gets Turkish casing automatically; pass `--lang en` to stop that.

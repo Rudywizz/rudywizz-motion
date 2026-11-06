@@ -1,0 +1,14 @@
+{
+  "description": "Kinetic type promo: glitch open → justified word stack → decoder reveal → scrolling poster rows",
+  "format": "9:16",
+  "look": { "grade": "cyber", "bloom": 0.25, "aberration": 0.25, "grain": 0.04, "vignette": 0.25 },
+  "scenes": [
+    { "style": "glitch-title", "text": "New / drop", "subtitle": "SEASON 02 — OUT FRIDAY", "duration": 3.2, "camera": "punch-in",
+      "transition": { "type": "glitch", "duration": 0.5 } },
+    { "style": "word-stack", "text": "Bold / ideas / move / fast", "duration": 3.6, "camera": "beat-punch",
+      "transition": { "type": "whip", "duration": 0.45, "dir": "left" } },
+    { "style": "scramble", "text": "Launching / Friday", "duration": 3.4, "transition": { "type": "zoom", "duration": 0.6 } },
+    { "style": "ticker-rows", "text": "Out now / Link in bio", "duration": 4 }
+  ],
+  "bpm": 112
+}
