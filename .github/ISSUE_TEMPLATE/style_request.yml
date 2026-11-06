@@ -1,0 +1,22 @@
+name: ✨ Style or template idea
+description: Suggest a new look, template, camera move or transition
+labels: [style-request]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What should it look like and where would you use it (reel intro, YouTube lower third, lyric video…)?
+    validations:
+      required: true
+  - type: textarea
+    id: reference
+    attributes:
+      label: References
+      description: Links or sketches that show the feeling. Please describe the idea rather than asking to copy a specific brand, film or game.
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Contributing
+      options:
+        - label: I'd like to build it myself (see CONTRIBUTING.md — a style is one file)

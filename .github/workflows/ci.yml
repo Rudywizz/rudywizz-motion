@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: Render every style (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Install ffmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+      - run: node skills/rudywizz-motion/engine/cli.mjs doctor
+      - name: Generated files are up to date
+        if: runner.os == 'Linux'
+        run: |
+          npm run skills
+          git diff --exit-code -- skills/ || (echo "::error::Run 'npm run skills' and commit the result" && exit 1)
+      - name: Smoke tests
+        run: node scripts/smoke.mjs ${{ runner.os != 'Linux' && '--quick' || '' }}
