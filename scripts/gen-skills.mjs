@@ -9,12 +9,16 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SKILLS = path.join(ROOT, 'skills');
 const STYLES = path.join(SKILLS, 'rudywizz-motion', 'styles');
 
-const FIND = `Find the engine (it is the sibling \`rudywizz-motion\` skill folder):
+const FIND = `Find the engine (the sibling \`rudywizz-motion\` skill folder) and a temp folder both bash and Node agree on:
 
 \`\`\`bash
-RM=$(ls -d "\${CLAUDE_PLUGIN_ROOT:-/nonexistent}/skills/rudywizz-motion" ~/.claude/skills/rudywizz-motion .claude/skills/rudywizz-motion ../rudywizz-motion 2>/dev/null | head -1)
+RM="\${CLAUDE_SKILL_DIR}/../rudywizz-motion"
+[ -f "$RM/engine/cli.mjs" ] || RM=$(ls -dt "\${CLAUDE_PLUGIN_ROOT}/skills/rudywizz-motion" ~/.claude/plugins/cache/*/rudywizz-motion/*/skills/rudywizz-motion ~/.claude/skills/rudywizz-motion .claude/skills/rudywizz-motion 2>/dev/null | head -1)
+TMP=$(node -p "require('os').tmpdir()")
+(cd "$RM" && node -e "require.resolve('playwright')" 2>/dev/null) || (cd "$RM" && npm install --no-audit --no-fund)   # first run only
 \`\`\`
-Read \`$RM/SKILL.md\` once for setup, the workflow (check stills → render → verify) and the full catalogue.`;
+Read \`$RM/SKILL.md\` once for setup, the workflow (check stills → render → verify) and the full catalogue.
+Put the user's text in **single quotes** (write \`'\\''\` for an apostrophe inside it) so the shell never interprets it.`;
 
 const ids = fs.readdirSync(STYLES).filter((d) => fs.existsSync(path.join(STYLES, d, 'style.js'))).sort();
 for (const id of ids) {
@@ -23,21 +27,21 @@ for (const id of ids) {
   const defText = typeof s.defaults.text === 'string' ? s.defaults.text.replace(/\n/g, ' / ') : '';
   const md = `---
 name: ${id}
-description: ${s.title} — ${s.tagline}. Renders a video with the rudywizz-motion engine. Use when the user types /${id} or asks for this look.
+description: ${s.title} — ${s.tagline}. Renders a video with the rudywizz-motion engine. Use when the user asks for this look by name.
 argument-hint: "<text>"
 ---
 
-# /${id} — ${s.title}
+# ${s.title}
 
 ${s.tagline}.
 
 ${FIND}
 
-Render (the user's text goes in \`--text\`; default "${defText}"):
+Render (the user's text — \`$ARGUMENTS\` — goes in \`--text\`; default "${defText}"):
 
 \`\`\`bash
-node "$RM/engine/cli.mjs" still ${id} --text "$ARGUMENTS" --at ${Math.max(1, Math.round((s.defaults.duration || 6) * 0.6))} --size 540 --out /tmp/${id}-check.png   # look first
-node "$RM/engine/cli.mjs" render ${id} --text "$ARGUMENTS" --out ${id}.mp4
+node "$RM/engine/cli.mjs" still ${id} --text '<text>' --at ${Math.max(1, Math.round((s.defaults.duration || 6) * 0.6))} --size 540 --out "$TMP/${id}-check.png"   # look at it first
+node "$RM/engine/cli.mjs" render ${id} --text '<text>' --out ${id}.mp4
 \`\`\`
 
 Options (\`--set key=value\`, JSON values allowed):
@@ -61,13 +65,13 @@ ${FIND}
 
 1. Collect inputs: the user's clips/images (paths), places, text lines, music + BPM, target length (default 15 s), format (default 9:16).
 2. Plan an edit on paper first — 4–8 scenes, 1.5–3.5 s each for clips; hook in the first second; one idea per scene.
-3. Write \`reel.json\` next to the assets (schema: section 4 of \`$RM/SKILL.md\`). Good defaults:
+3. Write \`reel.json\` next to the assets (start from \`node "$RM/engine/cli.mjs" init reel.json\`; schema: section 4 of \`$RM/SKILL.md\`). Good defaults:
    - clips: \`camera: "handheld"\` or \`"punch-in"\`, \`speed: "ramp-mid"\` on the hero shot
    - transitions: \`whip\` between energetic shots, \`zoom\` into reveals, \`leak\`/\`burn\` for mood changes, \`glitch\` on beats
    - text: \`captions\` overlay on clips; a style scene (\`neon-sign\`, \`inflate\`, \`beat-cut\`…) as opener or closer
    - places: a \`map-route\` scene as the intro
    - look: \`teal-orange\` (travel), \`kodak\` (warm lifestyle), \`cyber\` (music), \`sepia\` + \`film\` (history)
-4. Check stills at the middle of each scene (\`still reel.json --at <t> --size 540\`), fix, then \`render reel.json --out reel.mp4\` (add \`--audio\`).
+4. Check stills at the middle of each scene (\`still reel.json --at <t> --size 540 --out "$TMP/reel-<t>.png"\`) and look at them; the CLI flags typos with "did you mean". Fix, then \`render reel.json --out reel.mp4\` (add \`--audio\`).
 5. Verify duration with ffprobe and deliver.
 `;
 const history = `---

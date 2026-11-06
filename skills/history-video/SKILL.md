@@ -6,12 +6,16 @@ argument-hint: "<topic, year, places, images…>"
 
 # /history-video — documentary pack
 
-Find the engine (it is the sibling `rudywizz-motion` skill folder):
+Find the engine (the sibling `rudywizz-motion` skill folder) and a temp folder both bash and Node agree on:
 
 ```bash
-RM=$(ls -d "${CLAUDE_PLUGIN_ROOT:-/nonexistent}/skills/rudywizz-motion" ~/.claude/skills/rudywizz-motion .claude/skills/rudywizz-motion ../rudywizz-motion 2>/dev/null | head -1)
+RM="${CLAUDE_SKILL_DIR}/../rudywizz-motion"
+[ -f "$RM/engine/cli.mjs" ] || RM=$(ls -dt "${CLAUDE_PLUGIN_ROOT}/skills/rudywizz-motion" ~/.claude/plugins/cache/*/rudywizz-motion/*/skills/rudywizz-motion ~/.claude/skills/rudywizz-motion .claude/skills/rudywizz-motion 2>/dev/null | head -1)
+TMP=$(node -p "require('os').tmpdir()")
+(cd "$RM" && node -e "require.resolve('playwright')" 2>/dev/null) || (cd "$RM" && npm install --no-audit --no-fund)   # first run only
 ```
 Read `$RM/SKILL.md` once for setup, the workflow (check stills → render → verify) and the full catalogue.
+Put the user's text in **single quotes** (write `'\''` for an apostrophe inside it) so the shell never interprets it.
 
 Start from `$RM/templates/history-short.json` and adapt it:
 
