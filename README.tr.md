@@ -13,6 +13,7 @@ Kinetik tipografi · 3D başlıklar · harita uçuşları · alt yazı bantları
 gerçek kamera hareketleri, 20 shader geçişi, film tadında renk ve motion blur ile.
 
 [![CI](https://github.com/Rudywizz/rudywizz-motion/actions/workflows/ci.yml/badge.svg)](https://github.com/Rudywizz/rudywizz-motion/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/rudywizz-motion?color=FF6B5A&label=npm)](https://www.npmjs.com/package/rudywizz-motion)
 [![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-blue.svg)](LICENSE)
 ![Node 18+](https://img.shields.io/badge/node-18%2B-339933)
 ![Telemetri yok](https://img.shields.io/badge/telemetri-yok-success)
@@ -84,7 +85,14 @@ Her stil kamerayla 3D uzaya da taşınabilir: `--camera orbit`, `tilt-reveal`, `
 
 **Node 18+** ve **ffmpeg** gerekir (macOS `brew install ffmpeg` · Windows `winget install ffmpeg` · Linux `sudo apt install ffmpeg`).
 
-**CLI**
+**npm ile CLI** (klonlamadan)
+```bash
+npm install -g rudywizz-motion
+rudywizz-motion doctor              # kurulu Chrome/Edge kullanılır; yoksa: npx playwright install chromium
+rudywizz-motion render neon-sign --text "Merhaba"
+```
+
+**Kaynaktan CLI**
 ```bash
 git clone https://github.com/Rudywizz/rudywizz-motion && cd rudywizz-motion
 npm install
