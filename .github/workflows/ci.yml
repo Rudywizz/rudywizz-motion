@@ -26,12 +26,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - name: Install ffmpeg
+      - name: Install ffmpeg (Linux / Windows)
+        if: runner.os != 'macOS'
         uses: FedericoCarboni/setup-ffmpeg@v3
+      - name: Install ffmpeg (macOS)
+        if: runner.os == 'macOS'
+        run: brew install ffmpeg
       - run: node skills/rudywizz-motion/engine/cli.mjs doctor
       - name: Generated files are up to date
         if: runner.os == 'Linux'
