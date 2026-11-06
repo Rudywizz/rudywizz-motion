@@ -42,7 +42,7 @@ export default {
   tagline: 'Broadcast name strap: accent bar, wipe-in panels, gloss, wipe-out',
   fonts: [['Bricolage Grotesque', 800], ['Space Grotesk', 700]],
   defaults: {
-    text: 'Deniz Aydın / Motion designer · İstanbul',
+    text: 'Deniz Kaya / Motion designer · Istanbul',
     duration: 6,
     accent: '#ff3b5c',
     theme: 'solid',
