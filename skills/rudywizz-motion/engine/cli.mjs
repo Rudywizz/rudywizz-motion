@@ -310,7 +310,9 @@ function prepareMedia(comp, baseDir, quiet) {
   const media = new Map();
   let n = 0;
   const reg = (file) => {
-    const abs = path.resolve(baseDir, file);
+    if (/^[a-z][a-z0-9+.-]*:\/\//i.test(String(file)) || String(file).startsWith('data:'))
+      die(`"${String(file).slice(0, 80)}" is a URL. rudywizz-motion never downloads anything: save the file locally and pass its path.`);
+    const abs = path.resolve(baseDir, String(file));
     if (!fs.existsSync(abs)) die(`Media file not found: ${abs}`);
     const id = 'm' + n++;
     media.set(id, { file: abs });
@@ -318,7 +320,15 @@ function prepareMedia(comp, baseDir, quiet) {
   };
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rm-frames-'));
   const norm = normalizeComp(comp, (id) => styleCache[id]?.defaults);
+  // style options that take image files (e.g. card-carousel `images`) are served like any other media
+  const regStyleImages = (o) => {
+    if (o && Array.isArray(o.images)) o.images = o.images.map((f) => (f ? reg(f) : f));
+    if (o?.params && Array.isArray(o.params.images)) o.params.images = o.params.images.map((f) => (f ? reg(f) : f));
+  };
+  for (const ov of comp.overlays || []) regStyleImages(ov);
   comp.scenes.forEach((sc, i) => {
+    regStyleImages(sc);
+    regStyleImages(sc.overlay);
     if (sc.image) sc.src = reg(sc.image);
     if (Array.isArray(sc.layers)) sc.layers = sc.layers.map((l) => ({ ...l, src: reg(l.src || l.image) }));
     if (sc.clip) {
