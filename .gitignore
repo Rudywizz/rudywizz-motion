@@ -5,3 +5,4 @@ out/
 *.webm
 !gallery/**
 .DS_Store
+_site/
