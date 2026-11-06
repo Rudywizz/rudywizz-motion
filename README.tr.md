@@ -1,6 +1,11 @@
 <div align="center">
 
-# rudywizz-motion
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/logo/logo-dark.svg">
+    <img src=".github/logo/logo-light.svg" width="520" alt="rudywizz motion">
+  </picture>
+</h1>
 
 **Koddan render edilen sinematik motion graphics.**
 
