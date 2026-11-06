@@ -1,0 +1,18 @@
+{
+  "description": "Editorial quote card for Instagram (4:5): words fade in, a marker sweeps the key line, slow drift",
+  "format": "4:5",
+  "look": {
+    "grade": "matte",
+    "grain": 0.05,
+    "vignette": 0.3,
+    "leak": 0.15
+  },
+  "scenes": [
+    {
+      "style": "highlight-quote",
+      "text": "The details are not the details. / They make the design.",
+      "author": "Charles Eames",
+      "duration": 7
+    }
+  ]
+}
