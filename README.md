@@ -13,6 +13,7 @@ Kinetic typography · 3D titles · map flights · lower thirds, captions & chat 
 with real camera moves, 20 shader transitions, film-grade colour and motion blur.
 
 [![CI](https://github.com/Rudywizz/rudywizz-motion/actions/workflows/ci.yml/badge.svg)](https://github.com/Rudywizz/rudywizz-motion/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/rudywizz-motion?color=FF6B5A&label=npm)](https://www.npmjs.com/package/rudywizz-motion)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Node 18+](https://img.shields.io/badge/node-18%2B-339933)
 ![No telemetry](https://img.shields.io/badge/telemetry-none-success)
@@ -87,7 +88,14 @@ Add `--alpha --out name.mov` and drop the result straight onto your footage in P
 
 Needs **Node 18+** and **ffmpeg** (macOS `brew install ffmpeg` · Windows `winget install ffmpeg` · Linux `sudo apt install ffmpeg`).
 
-**CLI**
+**CLI from npm** (no clone)
+```bash
+npm install -g rudywizz-motion
+rudywizz-motion doctor              # uses your installed Chrome/Edge, or: npx playwright install chromium
+rudywizz-motion render neon-sign --text "Hello"
+```
+
+**CLI from source**
 ```bash
 git clone https://github.com/Rudywizz/rudywizz-motion && cd rudywizz-motion
 npm install
@@ -243,7 +251,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Ideas are welcome in [issues](https://gi
 
 ## Roadmap
 
-- [ ] Publish to npm (`npx rudywizz-motion` without cloning)
+- [x] Publish to npm (`npm install -g rudywizz-motion`)
 - [ ] `.srt` import for `captions` and `lyric-video`
 - [ ] Automatic BPM detection from `--audio`
 - [ ] Parallel frame rendering
