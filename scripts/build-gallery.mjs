@@ -16,6 +16,7 @@ const args = process.argv.slice(2);
 const only = args.includes('--only') ? args[args.indexOf('--only') + 1].split(',') : null;
 const jobs = args.includes('--jobs') ? Number(args[args.indexOf('--jobs') + 1]) : Math.max(1, Math.min(4, os.cpus().length - 1));
 
+const STORY = 'Ada [wave, wide]: Hi! I am made of code. / Rudy [present, medium]: Same script, three finishes. / Ada [happy, close]: Pick one!';
 // small tiles for the README grid
 const tile = ['--size', '270', '--fps', '12', '--bloom', '0.25', '--quiet'];
 const items = [
@@ -66,9 +67,9 @@ const items = [
   ['map-usa', ['map-route', '--duration', '6', '--lang', 'en', '--set', 'route=["Seattle","Denver","Chicago","New York"]', '--text', 'Road Trip']],
   ['map-japan', ['map-route', '--duration', '6', '--lang', 'en', '--set', 'theme="light"', '--set', 'route=["Tokyo","Kyoto","Hiroshima"]', '--text', 'Japan']],
   // stories & hosts
-  ['story-3d', ['story-3d', '--duration', '7']],
-  ['story-3d-clay', ['story-3d', '--duration', '7', '--set', 'finish="clay"']],
-  ['story-3d-bricks', ['story-3d', '--duration', '7', '--set', 'finish="bricks"']],
+  ['story-3d', ['story-3d', '--duration', '7', '--set', 'set="office"', '--text', STORY]],
+  ['story-3d-clay', ['story-3d', '--duration', '7', '--set', 'finish="clay"', '--set', 'set="office"', '--text', STORY]],
+  ['story-3d-bricks', ['story-3d', '--duration', '7', '--set', 'finish="brick"', '--set', 'set="office"', '--text', STORY]],
   ['doodle-story', ['doodle-story', '--duration', '7']],
   ['presenter', [path.join(ROOT, 'scripts/presenter-demo.json')]],
   // engine showcase: every transition in a row

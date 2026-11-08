@@ -3,6 +3,7 @@
 import * as THREE from '../../engine/vendor/three.bundle.min.js';
 
 export const LOOKS = ['vinyl', 'clay', 'brick'];
+export const LOOK_ALIASES = { bricks: 'brick', toy: 'vinyl', plastic: 'vinyl', plasticine: 'clay', 'stop-motion': 'clay', lego: 'brick' };
 
 // value noise in 3D, deterministic
 function hash3(x, y, z) {
@@ -73,8 +74,8 @@ function convert(m, look) {
   if (look === 'clay') {
     const hsl = {};
     color.getHSL(hsl);
-    color.setHSL(hsl.h, Math.min(1, hsl.s * 0.85), hsl.l * 0.96);
-    const out = new THREE.MeshStandardMaterial({ color, roughness: 0.93, metalness: 0, bumpMap: clayTexture(), bumpScale: 0.9, emissive, emissiveIntensity, map: m.map || null, transparent: m.transparent, side: m.side, depthWrite: m.depthWrite, polygonOffset: m.polygonOffset, polygonOffsetFactor: m.polygonOffsetFactor });
+    color.setHSL(hsl.h, Math.min(1, hsl.s * 1.05), hsl.l * 0.9); // plasticine: a touch deeper
+    const out = new THREE.MeshStandardMaterial({ color, roughness: 0.93, metalness: 0, bumpMap: clayTexture(), bumpScale: 2.2, emissive, emissiveIntensity, map: m.map || null, transparent: m.transparent, side: m.side, depthWrite: m.depthWrite, polygonOffset: m.polygonOffset, polygonOffsetFactor: m.polygonOffsetFactor });
     return out;
   }
   if (look === 'brick') {
@@ -153,11 +154,11 @@ export function applyLook(look, { scene, set, chars }) {
     o.material = Array.isArray(o.material) ? next : next[0];
     if (lump && look === 'clay' && !o.material.map) {
       o.geometry = o.geometry.clone();
-      lumpify(o.geometry, lump, 7);
+      lumpify(o.geometry, lump, lump > 0.02 ? 7 : 4.5);
     }
   };
-  set.group.traverse((o) => swap(o, 0.025));
-  for (const c of chars) c.root.traverse((o) => swap(o, 0.008));
+  set.group.traverse((o) => swap(o, 0.04));
+  for (const c of chars) c.root.traverse((o) => swap(o, 0.018));
   if (look === 'brick') studify(set.group, scene);
 }
 
@@ -169,5 +170,5 @@ export function lookTime(look, t) {
 export function jitter(look, t, seed) {
   if (look !== 'clay') return 0;
   const k = Math.floor(t * 12);
-  return (hash3(k, seed, 3.3) - 0.5) * 0.006;
+  return (hash3(k, seed, 3.3) - 0.5) * 0.012;
 }

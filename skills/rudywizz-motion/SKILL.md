@@ -143,7 +143,7 @@ Rules of thumb
 | bar-chart | Bar chart race, values count up | `items: [["A",10],…]`, `unit`, `note`, `source` |
 | cta-follow | Cursor clicks Follow, check + confetti | line 1 handle, line 2 button, line 3 subtitle, `done` |
 | **Stories & hosts** | | |
-| story-3d | Toy-like 3D characters act out a script with a virtual director (shots, gestures, lip sync) | `text` script, `finish` vinyl·clay·bricks, `voices`, `dialogue` |
+| story-3d | Toy-like 3D characters act out a script with a virtual director (shots, gestures, lip sync) | `text` script, `finish` vinyl·clay·brick, `voices`, `dialogue` |
 | doodle-story | The same script as boiling hand-drawn ink, 34 emotions | `text` script, `voices`, `dialogue` |
 | presenter | Your pixel mascot (or Bit the robot) hosts the video, lip-synced to voice lines | `cast`, `lines`, `place`, `captions`, `backdrop` |
 
