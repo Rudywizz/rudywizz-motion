@@ -11,7 +11,7 @@
 import * as THREE from '../../engine/vendor/three.bundle.min.js';
 import { createCharacter, poseAt, blendPose, visemeAt, POSE_NAMES, EMOTIONS } from './character.js';
 import { buildSet, SETS } from './sets.js';
-import { applyLook, lookTime, jitter, LOOKS } from './looks.js';
+import { applyLook, lookTime, jitter, LOOKS, LOOK_ALIASES } from './looks.js';
 import { parseScript, timeBeats, TRANSIENT, attachVoices, voiceOpen } from '../../engine/story.js';
 
 const DEFAULT_CAST = [
@@ -50,6 +50,7 @@ export default {
 
   setup(api) {
     const { W, H, p } = api;
+    if (LOOK_ALIASES[p.finish]) p.finish = LOOK_ALIASES[p.finish];
     const portrait = H > W * 1.1;
 
     const canvas = document.createElement('canvas');

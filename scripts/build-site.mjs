@@ -38,9 +38,9 @@ const EXTRA = {
     ['map-turkey', 'map-route · Türkiye', ''],
   ],
   'story-3d': [
-    ['story-3d', 'story-3d · vinyl', ''],
-    ['story-3d-clay', 'story-3d · clay', `--set finish='"clay"'`],
-    ['story-3d-bricks', 'story-3d · bricks', `--set finish='"bricks"'`],
+    ['story-3d', 'story-3d · vinyl', `--set set='"office"'`],
+    ['story-3d-clay', 'story-3d · clay', `--set finish='"clay"' --set set='"office"'`],
+    ['story-3d-bricks', 'story-3d · bricks', `--set finish='"brick"' --set set='"office"'`],
   ],
 };
 const IMAGE_TILES = [
