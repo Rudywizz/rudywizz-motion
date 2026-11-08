@@ -1,8 +1,9 @@
-// map-route — fly a camera across a globe, a flat world map or Turkey's 81
-// provinces; the route draws itself leg by leg, an icon rides the line, pins
-// drop with ripples and labels type in. Themes: dark (travel), atlas (history),
-// light (minimal). Places: city/province names (Turkish ok), "lat,lon", or
-// { name, lat, lon }.
+// map-route — fly a camera across a globe, a flat world map or any single
+// country with its states/provinces; the route draws itself leg by leg, an icon
+// rides the line, pins drop with ripples and labels type in. Themes: dark
+// (travel), atlas (history), light (minimal). Places: any city, region or
+// country in ~25 languages ("München", "Londres", "Viyana"), "City, Country"
+// to pick one ("Paris, Texas"), "lat,lon", or { name, lat, lon }.
 import * as geo from '../../engine/vendor/geo.min.js';
 
 const ALIASES = {
@@ -21,9 +22,10 @@ const ALIASES = {
   bakü: 'Baku', baku: 'Baku', erivan: 'Yerevan', 'kudus-i serif': 'Jerusalem', beyrut: 'Beirut', amman: 'Amman', dubai: 'Dubai', doha: 'Doha',
   riyad: 'Riyadh', iskenderiye: 'Alexandria', fas: 'Fez', kazablanka: 'Casablanca', kiev: 'Kiev', minsk: 'Minsk', vilnius: 'Vilnius', helsinki: 'Helsinki',
   oslo: 'Oslo', seul: 'Seoul', singapur: 'Singapore', bangkok: 'Bangkok', 'los angeles': 'Los Angeles', 'san francisco': 'San Francisco', 'rio de janeiro': 'Rio de Janeiro', konstantiniyye: 'Istanbul', bizans: 'Istanbul', dimetoka: [41.35, 26.49], sogut: [40.018, 30.181], manzikert: [39.143, 42.539],
-  malazgirt: [39.143, 42.539], 'tokyo': 'Tokyo', 'new york': 'New York', 'buenos aires': 'Buenos Aires', 'kirim': [44.95, 34.1],
+  malazgirt: [39.143, 42.539], kartaca: [36.853, 10.323], carthage: [36.853, 10.323], troy: [39.957, 26.239], babil: [32.536, 44.421], babylon: [32.536, 44.421], persepolis: [29.935, 52.891], 'tokyo': 'Tokyo', 'new york': 'New York', 'buenos aires': 'Buenos Aires', 'kirim': [44.95, 34.1],
 };
-const COUNTRY_ALIASES = { turkiye: 'Turkey', 'türkiye': 'Turkey', yunanistan: 'Greece', iran: 'Iran', misir: 'Egypt', italya: 'Italy', ispanya: 'Spain', almanya: 'Germany', fransa: 'France', ingiltere: 'United Kingdom', rusya: 'Russia', cin: 'China', japonya: 'Japan', abd: 'United States of America' };
+// short forms people type that the country tables don't spell out
+const COUNTRY_ALIASES = { abd: 'US', usa: 'US', us: 'US', uk: 'GB', bae: 'AE', uae: 'AE', kktc: 'CY', drc: 'CD', 'birlesik krallik': 'GB', 'great britain': 'GB', britain: 'GB' };
 
 const THEMES = {
   dark: { bg0: '#04060d', bg1: '#0b1330', ocean: '#081022', land: '#1e2a52', coast: '#4b62a8', border: 'rgba(110,140,230,0.35)', grat: 'rgba(120,150,255,0.07)', route: '#46f5c8', todo: 'rgba(255,255,255,0.18)', pin: '#ff3d7f', label: '#ffffff', labelBg: 'rgba(5,8,20,0.75)', hi: '#3a2f8f', atmo: 'rgba(80,140,255,0.45)', font: ['Syne', 800], title: ['Syne', 800] },
@@ -36,68 +38,162 @@ const fold = (s) => String(s).toLocaleLowerCase('tr').normalize('NFD').replace(/
 export default {
   id: 'map-route',
   title: 'Map Route',
-  tagline: 'Fly a route across a globe, world map or Turkey; pins + labels',
+  tagline: 'Fly a route across a globe, a world map or any country with its states and provinces; pins + labels',
   fonts: [['Syne', 800], ['Cormorant Garamond', 700, 'italic'], ['Cinzel', 900], ['Bricolage Grotesque', 800], ['Space Grotesk', 700]],
   defaults: {
     text: '',
     route: ['İstanbul', 'Kapadokya', 'Antalya'],
     duration: 8,
     mode: 'auto',
+    country: '',
     theme: 'dark',
     icon: 'auto',
     highlight: [],
     labels: true,
   },
   options: {
-    route: 'Array of places: names (Turkish ok), "lat,lon" strings or {name, lat, lon}',
-    mode: 'globe | flat | turkey | auto',
+    route: 'Array of places: any city, region or country in ~25 languages, "City, Country" or "City, State" to disambiguate ("Portland, Maine", "Valencia, Venezuela"), "lat,lon" strings or {name, lat, lon}',
+    mode: 'globe | flat | country (one country with its states/provinces) | auto',
+    country: 'Country for mode "country" (name in any language or ISO code, e.g. "Japan", "Almanya", "BR"); auto-detected when every stop is in one country',
     theme: 'dark | atlas | light',
     icon: 'plane | ship | dot | auto',
-    highlight: 'Countries (e.g. "Türkiye", "Italy") or provinces to tint',
+    highlight: 'Countries (any language, e.g. "Türkiye", "Deutschland") or states/provinces to tint',
     text: 'Optional title at the top',
     labels: 'Show place labels (true/false)',
   },
 
   async setup(api) {
     const { p, W, H } = api;
-    const [w50, w110, trp, places] = await Promise.all(
-      ['data/world-50m.json', 'data/world-110m.json', 'data/tr-provinces.json', 'data/places.json'].map((f) => fetch(api.asset(f)).then((r) => r.json())),
-    );
+    const get = (f) => fetch(api.asset(f)).then((r) => r.json());
+    const [w50, w110, trp, data] = await Promise.all(['data/world-50m.json', 'data/world-110m.json', 'data/tr-provinces.json', 'data/places.json'].map(get));
     const countries50 = geo.feature(w50, w50.objects.countries).features;
     const countries110 = geo.feature(w110, w110.objects.countries).features;
     const provinces = geo.feature(trp, trp.objects.provinces).features;
+    const P = (q) => [q.lon, q.lat];
+
+    // ── place lookup: any city, region or country, in ~25 languages ──
+    const C = data.countries; // iso2 → [name, alt names…]
+    const isoByName = new Map();
+    for (const [iso, names] of Object.entries(C)) for (const n of names) if (!isoByName.has(fold(n))) isoByName.set(fold(n), iso);
+    for (const [k, iso] of Object.entries(COUNTRY_ALIASES)) if (!isoByName.has(k)) isoByName.set(k, iso);
+    for (const iso of Object.keys(C)) if (!isoByName.has(fold(iso))) isoByName.set(fold(iso), iso);
     const index = new Map();
-    for (const [name, lat, lon, rank, iso] of places) {
-      const k = fold(name);
-      const cur = index.get(k);
-      if (!cur || rank < cur.rank || (iso === 'TR' && cur.iso !== 'TR')) index.set(k, { lat, lon, rank, iso });
+    for (const [name, lat, lon, rank, iso, country, region, alt = []] of data.places) {
+      const e = { name, lat, lon, rank, iso, country, region };
+      for (const n of [name, ...alt]) {
+        const k = fold(n);
+        if (!index.has(k)) index.set(k, []);
+        index.get(k).push(e);
+      }
     }
-    const resolve = (q) => {
-      if (q && typeof q === 'object') return { name: q.name || q.label || '', lat: +q.lat, lon: +q.lon };
-      const s = String(q);
-      const m = s.match(/^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/);
-      if (m) return { name: '', lat: +m[1], lon: +m[2] };
+    const preferTR = p.lang === 'tr';
+    const better = (a, b) => a.rank - b.rank || (preferTR ? (b.iso === 'TR') - (a.iso === 'TR') : 0);
+    const qualifies = (e, qual) => {
+      const q = fold(qual);
+      return fold(e.iso) === q || fold(e.region) === q || fold(e.country) === q || isoByName.get(q) === e.iso;
+    };
+    const lookup = (s, qual) => {
       let k = fold(s);
-      let a = ALIASES[k];
-      if (Array.isArray(a)) return { name: s, lat: a[0], lon: a[1] };
+      const a = ALIASES[k];
+      if (Array.isArray(a)) return { lat: a[0], lon: a[1], iso: null };
       if (typeof a === 'string') k = fold(a);
-      const hit = index.get(k);
-      if (!hit) throw new Error(`map-route: unknown place "${s}". Use "lat,lon" or {name, lat, lon}.`);
-      return { name: s, lat: hit.lat, lon: hit.lon };
+      let list = index.get(k) || [];
+      if (qual) list = list.filter((e) => qualifies(e, qual));
+      return list.length ? [...list].sort(better)[0] : null;
+    };
+    const isoAt = (lon, lat) => {
+      const f = countries50.find((c) => geo.geoContains(c, [lon, lat]));
+      return f ? isoByName.get(fold(f.properties.name)) || null : null;
+    };
+    const resolve = (q) => {
+      if (q && typeof q === 'object') return { name: q.name || q.label || '', lat: +q.lat, lon: +q.lon, iso: null };
+      const s = String(q).trim();
+      const m = s.match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/);
+      if (m) return { name: '', lat: +m[1], lon: +m[2], iso: null };
+      let hit = lookup(s);
+      let shown = s;
+      if (!hit && s.includes(',')) {
+        // "Paris, Texas" · "Springfield, US" · "Ankara, Türkiye"
+        const i = s.lastIndexOf(',');
+        shown = s.slice(0, i).trim();
+        hit = lookup(shown, s.slice(i + 1).trim());
+      }
+      if (!hit) throw new Error(`map-route: unknown place "${s}". Try "City, Country", "lat,lon" or {name, lat, lon}.`);
+      return { name: shown, lat: hit.lat, lon: hit.lon, iso: hit.iso || null };
     };
     const pts = (Array.isArray(p.route) ? p.route : String(p.route).split(/\s*(?:→|->|>)\s*/)).map(resolve);
     if (!pts.length) throw new Error('map-route: route is empty');
-    const allTR = pts.every((q) => q.lat > 35.7 && q.lat < 42.2 && q.lon > 25.6 && q.lon < 44.9);
-    const maxD = pts.reduce((m, a) => Math.max(m, ...pts.map((b) => geo.geoDistance([a.lon, a.lat], [b.lon, b.lat]))), 0);
-    // whole-country view only when the route spans a good part of Turkey; tight routes zoom in on a flat map
-    const mode = p.mode === 'auto' ? (allTR && maxD > 0.1 ? 'turkey' : maxD > 0.6 ? 'globe' : 'flat') : p.mode;
+    for (const q of pts) if (!q.iso) q.iso = isoAt(q.lon, q.lat);
+    const isos = [...new Set(pts.map((q) => q.iso).filter(Boolean))];
+    const maxD = pts.reduce((m, a) => Math.max(m, ...pts.map((b) => geo.geoDistance(P(a), P(b)))), 0);
+
+    // ── regions (states, provinces) of the countries on the route ──
+    let admin1 = null;
+    if (p.mode !== 'globe') {
+      const a = await get('data/admin1.json');
+      admin1 = geo.feature(a, a.objects.regions).features;
+    }
+    // simplified rings can come out wound the wrong way, which d3 reads as "the whole globe minus this region"
+    const rewind = (f) => {
+      // per polygon: an inside-out ring contains the point opposite its own first vertex
+      const polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+      for (const poly of polys) {
+        const v = poly[0][0];
+        if (geo.geoContains({ type: 'Polygon', coordinates: poly }, [v[0] > 0 ? v[0] - 180 : v[0] + 180, -v[1]])) for (const ring of poly) ring.reverse();
+      }
+      return f;
+    };
+    const regionCache = new Map();
+    const regionsOf = (iso) => {
+      if (!regionCache.has(iso)) regionCache.set(iso, (iso === 'TR' ? provinces : admin1 ? admin1.filter((f) => f.properties.c === iso) : []).map(rewind));
+      return regionCache.get(iso);
+    };
+    const regionName = (f) => f.properties.name || f.properties.n || '';
+
+    // ── country view: fit the country's main landmass (+ the route) ──
+    const wantIso = p.country ? isoByName.get(fold(p.country)) || String(p.country).toUpperCase() : p.mode === 'country' ? 'TR' : isos.length === 1 && pts.every((q) => q.iso) ? isos[0] : null;
+    let cFit = null;
+    let cExtent = 0;
+    if (wantIso && (p.mode === 'auto' || p.mode === 'country' || p.mode === 'country')) {
+      const regs = regionsOf(wantIso);
+      if (regs.length) {
+        const row = (index.get(fold((C[wantIso] || [''])[0])) || []).find((e) => e.iso === wantIso && e.rank <= 6);
+        const core = row ? [row.lon, row.lat] : geo.geoCentroid({ type: 'FeatureCollection', features: regs });
+        const d = regs.map((f) => geo.geoDistance(geo.geoCentroid(f), core));
+        // far-off territories (Alaska, Hawaii, overseas departments) stay out of the frame: cut where the
+        // distances from the country's centre suddenly jump; long countries (Chile) grow gradually and stay whole
+        const sorted = [...d].sort((x, y) => x - y);
+        const med = sorted[Math.floor(sorted.length / 2)];
+        let cut = Infinity;
+        for (let i = 1; i < sorted.length; i++) if (sorted[i] > med * 1.5 && sorted[i] > sorted[i - 1] * 1.3) { cut = sorted[i]; break; }
+        const keep = regs.filter((f, i) => d[i] < cut);
+        const fc = { type: 'FeatureCollection', features: [...keep, { type: 'Feature', geometry: { type: 'MultiPoint', coordinates: pts.map(P) } }] };
+        cFit = geo.geoMercator().rotate([-core[0], 0]).fitExtent([[W * 0.06, H * 0.3], [W * 0.94, H * 0.62]], fc);
+        cExtent = geo.geoDistance(cFit.invert([W * 0.06, H * 0.3]), cFit.invert([W * 0.94, H * 0.62]));
+      }
+    }
+    // whole-country view only when the route spans a good part of the country; tight routes zoom in on a flat map
+    let mode = p.mode === 'country' ? 'country' : p.mode;
+    if (mode === 'auto') mode = cFit && maxD > cExtent * 0.3 ? 'country' : maxD > 0.6 ? 'globe' : 'flat';
+    if (mode === 'country' && !cFit) mode = 'flat';
     const theme = THEMES[p.theme] || THEMES.dark;
     const icon = p.icon === 'auto' ? (p.theme === 'atlas' ? 'ship' : 'plane') : p.icon;
-    const hiNames = new Set((p.highlight || []).map((h) => fold(COUNTRY_ALIASES[fold(h)] || h)));
-    if (mode === 'turkey' && !(p.highlight || []).length) for (const q of pts) hiNames.add(fold(q.name));
-    const trFit = geo.geoMercator().fitExtent([[W * 0.06, H * 0.3], [W * 0.94, H * 0.62]], { type: 'FeatureCollection', features: provinces });
+
+    // highlights: countries by any of their names; regions by name, plus every region a stop lies in
+    const hiNames = new Set();
+    for (const h of p.highlight || []) {
+      const iso = isoByName.get(fold(h));
+      for (const n of iso ? C[iso] : [h]) hiNames.add(fold(n));
+    }
+    const detail = [...new Set([...isos, ...(wantIso ? [wantIso] : [])])].flatMap(regionsOf);
+    const hiRegions = [];
+    for (const f of detail) {
+      const stop = pts.findIndex((q) => geo.geoContains(f, P(q)));
+      if (stop >= 0 || hiNames.has(fold(regionName(f)))) hiRegions.push({ f, stop });
+    }
+    const labelLang = p.lang || (isos.length && isos.every((i) => i === 'TR') ? 'tr' : 'en');
     return {
-      pts, mode, theme, icon, countries50, countries110, provinces, hiNames, trFit,
+      pts, mode, theme, icon, countries50, countries110, detail, hiRegions, hiNames, cFit, labelLang,
       grain: api.makeGrain(W, H, p.seed + 31, 3),
       graticule: geo.geoGraticule10(),
     };
@@ -116,16 +212,16 @@ export default {
 
     // ---------- camera (lon, lat, scale) ----------
     const P = (q) => [q.lon, q.lat];
-    const baseScale = mode === 'globe' ? W * 0.42 : mode === 'turkey' ? s.trFit.scale() : W * 0.9;
+    const baseScale = mode === 'globe' ? W * 0.42 : mode === 'country' ? s.cFit.scale() : W * 0.9;
     const legScale = (a, b) => {
       const d = Math.max(0.02, geo.geoDistance(P(a), P(b)));
-      if (mode === 'turkey') return Math.min(baseScale * 1.5, Math.max(baseScale * 1.0, (W * 0.45) / d));
+      if (mode === 'country') return Math.min(baseScale * 1.5, Math.max(baseScale * 1.0, (W * 0.45) / d));
       return Math.min(W * 14, Math.max(baseScale, (W * 0.55) / d));
     };
     const centroid = geo.geoCentroid({ type: 'MultiPoint', coordinates: pts.map(P) });
     const spread = Math.max(0.03, ...pts.map((q) => geo.geoDistance(P(q), centroid)));
-    const outroScale = mode === 'turkey' ? baseScale * 1.05 : Math.min(W * 10, Math.max(baseScale, (W * 0.32) / spread));
-    const trCenter = s.trFit.invert([W / 2, cy]);
+    const outroScale = mode === 'country' ? baseScale * 1.05 : Math.min(W * 10, Math.max(baseScale, (W * 0.32) / spread));
+    const trCenter = s.cFit ? s.cFit.invert([W / 2, cy]) : [0, 0];
 
     let center;
     let scale;
@@ -133,8 +229,8 @@ export default {
     let legE = 0;
     if (t < I) {
       const e = ease.inOutCubic(prog(t, 0, I));
-      const start = mode === 'turkey' ? trCenter : [pts[0].lon + 70, pts[0].lat - 15];
-      center = geo.geoInterpolate(start, mode === 'turkey' ? trCenter : P(pts[0]))(e);
+      const start = mode === 'country' ? trCenter : [pts[0].lon + 70, pts[0].lat - 15];
+      center = geo.geoInterpolate(start, mode === 'country' ? trCenter : P(pts[0]))(e);
       const s0 = mode === 'globe' ? W * 0.3 : baseScale * 0.85;
       scale = lerp(s0, n > 1 ? legScale(pts[0], pts[1]) : outroScale, e);
     } else if (t < O && n > 1) {
@@ -145,14 +241,14 @@ export default {
       const b = pts[legI + 1];
       const sA = legScale(a, b);
       const sB = legI + 2 < n ? legScale(b, pts[legI + 2]) : outroScale;
-      if (mode === 'turkey') center = geo.geoInterpolate(trCenter, geo.geoInterpolate(P(a), P(b))(legE))(0.3);
+      if (mode === 'country') center = geo.geoInterpolate(trCenter, geo.geoInterpolate(P(a), P(b))(legE))(0.3);
       else center = geo.geoInterpolate(P(a), P(b))(legE);
       const settle = ease.inOutCubic(prog(lt, legDur * flyFrac, legDur));
       scale = lerp(sA, sB, settle) * (1 - 0.28 * Math.sin(Math.PI * legE));
     } else {
       const e = ease.inOutCubic(prog(t, O, Math.min(D, O + D * 0.1)));
-      const last = mode === 'turkey' ? trCenter : P(pts[n - 1]);
-      center = mode === 'turkey' ? trCenter : geo.geoInterpolate(last, centroid)(e);
+      const last = mode === 'country' ? trCenter : P(pts[n - 1]);
+      center = mode === 'country' ? trCenter : geo.geoInterpolate(last, centroid)(e);
       scale = lerp(n > 1 ? outroScale * 1.1 : legScale(pts[0], pts[0]), outroScale, e);
       legI = n - 1;
       legE = 1;
@@ -230,18 +326,16 @@ export default {
     ctx.strokeStyle = T.coast;
     ctx.lineWidth = 1.4 * S;
     ctx.stroke();
-    if (mode === 'turkey' || scale > W * 3) {
+    if ((mode === 'country' || scale > W * 3) && s.detail.length) {
       ctx.beginPath();
-      for (const f of s.provinces) path(f);
+      for (const f of s.detail) path(f);
       ctx.strokeStyle = T.border;
       ctx.lineWidth = 1.1 * S;
       ctx.stroke();
-      const hiProv = s.provinces.filter((f) => s.hiNames.has(fold(f.properties.name)));
-      hiProv.forEach((f, k) => {
-        const reached = pts.findIndex((q) => fold(q.name) === fold(f.properties.name));
-        const at = reached <= 0 ? I * 0.5 : I + (reached - 1) * legDur + legDur * flyFrac;
+      for (const { f, stop } of s.hiRegions) {
+        const at = stop <= 0 ? I * 0.5 : I + (stop - 1) * legDur + legDur * flyFrac;
         const a = ease.outCubic(prog(t, at, at + 0.6));
-        if (a <= 0) return;
+        if (a <= 0) continue;
         ctx.beginPath();
         path(f);
         ctx.fillStyle = api.rgba(T.route, 0.28 * a);
@@ -249,8 +343,7 @@ export default {
         ctx.strokeStyle = api.rgba(T.route, 0.9 * a);
         ctx.lineWidth = 2.2 * S;
         ctx.stroke();
-        void k;
-      });
+      }
     }
 
     // ---------- route ----------
@@ -355,7 +448,7 @@ export default {
       }
       if (p.labels && q.name) {
         const [fam, wt, st = 'normal'] = T.font;
-        const label = p.theme === 'atlas' ? q.name : api.upper(q.name, p.lang || 'tr');
+        const label = p.theme === 'atlas' ? q.name : api.upper(q.name, s.labelLang);
         const chars = api.graphemes(label);
         const shown = chars.slice(0, Math.floor(prog(u, 0.15, 0.7) * chars.length + 0.999)).join('');
         if (!shown) return;
@@ -393,7 +486,7 @@ export default {
     if (p.text) {
       const [fam, wt] = T.title;
       const a = ease.outCubic(prog(t, 0.2, 1.0));
-      const title = p.theme === 'atlas' ? api.upper(p.text, p.lang || 'tr') : p.text;
+      const title = p.theme === 'atlas' ? api.upper(p.text, s.labelLang) : p.text;
       ctx.font = api.font(84 * S, fam, wt);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';

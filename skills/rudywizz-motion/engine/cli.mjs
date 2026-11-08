@@ -12,6 +12,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { normalizeComp, clipTime, TRANSITIONS, LOOKS, GRADES } from './timeline.js';
 import { CAMERA_PRESETS } from './camera.js';
 import { validateComp, suggest } from './validate.js';
+import { synthMusic, writeWav, MOODS } from './music.mjs';
 
 const ENGINE_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(ENGINE_DIR, '..');
@@ -30,6 +31,7 @@ Usage
   rudywizz-motion render <comp.json|template>   A whole composition (scenes, clips, maps…)
   rudywizz-motion still <style|comp> --at <s>   One frame → PNG
   rudywizz-motion preview <style|comp>          Live looping preview in your browser
+  rudywizz-motion music [mood] --duration <s>   Code-made, royalty-free music → .wav
   rudywizz-motion doctor                        Check ffmpeg / browser / WebGL
   rudywizz-motion init [reel.json]              Write a starter composition to edit
   rudywizz-motion --version
@@ -56,6 +58,7 @@ Output
   --duration <s>  --fps <n>  --seed <n>  --lang <tr|en…>
   --alpha                Transparent background (.mov / .webm)
   --audio <file>         Mux an audio track
+  --music <mood>         Add code-made music: upbeat | chill | retro | cinematic (ducks under voices)
   --crf <n>              H.264 quality (default 18)
   --clean                No animated grain/film (automatic for .gif / .webp)
   --quiet  --json  --strict (treat warnings as errors)
@@ -67,7 +70,7 @@ Docs: https://github.com/Rudywizz/rudywizz-motion
 const FLAGS = new Set(['alpha', 'quiet', 'help', 'no-open', 'json', 'keep-frames', 'clean', 'version', 'strict', 'force']);
 const OPTIONS = new Set([
   'text', 'image', 'clip', 'set', 'params', 'camera', 'look', 'grade', 'bloom', 'grain', 'leak', 'film', 'aberration', 'vignette',
-  'distortion', 'weave', 'motion-blur', 'bpm', 'out', 'format', 'size', 'duration', 'fps', 'seed', 'lang', 'audio', 'crf', 'at',
+  'distortion', 'weave', 'motion-blur', 'bpm', 'out', 'format', 'size', 'duration', 'fps', 'seed', 'lang', 'audio', 'crf', 'at', 'music', 'key',
 ]);
 function parseArgs(argv) {
   const args = { _: [], set: {} };
@@ -289,6 +292,7 @@ async function buildComp(args) {
   }
   if (args.audio) comp.audio = path.resolve(args.audio);
   else if (comp.audio) comp.audio = path.resolve(baseDir, comp.audio);
+  if (args.music) comp.music = args.music;
 
   // validate everything (typos fail loudly instead of rendering a black scene)
   const mods = {};
@@ -325,8 +329,56 @@ function prepareMedia(comp, baseDir, quiet) {
     if (o && Array.isArray(o.images)) o.images = o.images.map((f) => (f ? reg(f) : f));
     if (o?.params && Array.isArray(o.params.images)) o.params.images = o.params.images.map((f) => (f ? reg(f) : f));
   };
+  // pixel character rigs (presenter `cast[].rig`): rig.json + the layer PNGs it lists, served as media
+  const regRigs = (o) => {
+    for (const host of [o, o?.params]) {
+      if (!host || !Array.isArray(host.cast)) continue;
+      host.cast = host.cast.map((c) => {
+        if (!c || typeof c.rig !== 'string' || c.rig === 'bit') return c;
+        const abs = path.resolve(baseDir, c.rig);
+        if (!fs.existsSync(abs)) die(`Rig not found: ${abs}`);
+        let rig;
+        try { rig = JSON.parse(fs.readFileSync(abs, 'utf8')); } catch (e) { die(`Rig ${abs} is not valid JSON: ${e.message}`); }
+        const dir = path.dirname(abs);
+        const r = (f) => (f ? reg(path.resolve(dir, f)) : f);
+        rig.layers = (rig.layers || []).map((l) => ({ ...l, src: r(l.src) }));
+        rig.eyes = (rig.eyes || []).map((e) => ({ ...e, src: r(e.src) }));
+        rig.brows = (rig.brows || []).map((b) => ({ ...b, src: r(b.src) }));
+        rig.mouths = (rig.mouths || []).map((m) => r(m));
+        rig.poses = Object.fromEntries(Object.entries(rig.poses || {}).map(([k, v]) => [k, { ...v, src: r(v.src) }]));
+        return { ...c, rig };
+      });
+    }
+  };
   for (const ov of comp.overlays || []) regStyleImages(ov);
+  // dialogue audio (`voices`): served as a loudness envelope per frame; the files are mixed in after rendering
+  const regLineVoices = (o) => {
+    for (const host of [o, o?.params]) {
+      if (!host || !Array.isArray(host.lines)) continue;
+      host.lines = host.lines.map((l) => (l && typeof l.voice === 'string' ? (checkFfmpeg(), { ...l, voice: analyzeVoice(path.resolve(baseDir, l.voice), norm.fps) }) : l));
+    }
+  };
+  for (const ov of comp.overlays || []) {
+    regRigs(ov);
+    regLineVoices(ov);
+    if (Array.isArray(ov.voices)) ov.voices = ov.voices.map((f) => (f ? (checkFfmpeg(), analyzeVoice(path.resolve(baseDir, String(f)), norm.fps)) : null));
+  }
+  const regVoices = (o) => {
+    regRigs(o);
+    regLineVoices(o);
+    if (!o || !Array.isArray(o.voices)) return;
+    checkFfmpeg();
+    o.voices = o.voices.map((f) => (f ? analyzeVoice(path.resolve(baseDir, String(f)), norm.fps) : null));
+    if (o.duration == null && !(o.params && o.params.duration != null)) {
+      // fit the scene to its dialogue: voiced lines + a beat for the rest
+      const lines = String(o.text || o.params?.text || '').split(/\n|\s\/\s/).filter((l) => l.trim()).length;
+      const voiced = o.voices.filter(Boolean);
+      o.duration = Math.round((voiced.reduce((n, v) => n + v.dur + 0.45, 0) + Math.max(0, lines - voiced.length) * 1.4 + 0.9) * 100) / 100;
+    }
+  };
   comp.scenes.forEach((sc, i) => {
+    regVoices(sc);
+    regVoices(sc.params);
     regStyleImages(sc);
     regStyleImages(sc.overlay);
     if (sc.image) sc.src = reg(sc.image);
@@ -351,6 +403,77 @@ function prepareMedia(comp, baseDir, quiet) {
     }
   });
   return { media, tmp, norm };
+}
+
+const VOICES = new Map(); // id → absolute audio file
+function analyzeVoice(abs, fps) {
+  if (/^[a-z][a-z0-9+.-]*:\/\//i.test(abs)) die('rudywizz-motion never downloads anything: save the voice file locally.');
+  if (!fs.existsSync(abs)) die(`Voice file not found: ${abs}`);
+  const SR = 8000;
+  const r = spawnSync('ffmpeg', ['-v', 'error', '-i', abs, '-ac', '1', '-ar', String(SR), '-f', 's16le', '-'], { maxBuffer: 1 << 28 });
+  if (r.status !== 0) die(`ffmpeg could not read ${abs}:\n${r.stderr}`);
+  const pcm = new Int16Array(r.stdout.buffer, r.stdout.byteOffset, Math.floor(r.stdout.length / 2));
+  const per = SR / fps;
+  const n = Math.ceil(pcm.length / per);
+  const env = new Array(n);
+  for (let f = 0; f < n; f++) {
+    let sum = 0;
+    const a = Math.floor(f * per), b = Math.min(pcm.length, Math.floor((f + 1) * per));
+    for (let i = a; i < b; i++) sum += pcm[i] * pcm[i];
+    env[f] = Math.sqrt(sum / Math.max(1, b - a)) / 32768;
+  }
+  // normalise to the loud part of the line (95th percentile), gate the noise floor
+  const sorted = [...env].sort((x, y) => x - y);
+  const ref = sorted[Math.floor(sorted.length * 0.95)] || 1;
+  const gate = ref * 0.12;
+  const id = 'v' + VOICES.size;
+  VOICES.set(id, abs);
+  return { id, dur: Math.round((pcm.length / SR) * 1000) / 1000, env: env.map((v) => Math.round(Math.min(1, Math.max(0, (v - gate) / (ref - gate))) * 100) / 100) };
+}
+
+/** Mix voice cues (+ the music bed, ducked under the voices) into one track exactly `duration` long. */
+function mixAudio(cues, music, duration, tmp, volume = 0.5) {
+  const inputs = [];
+  const voices = [];
+  for (const c of cues) {
+    const file = VOICES.get(c.id);
+    if (!file) continue;
+    inputs.push('-i', file);
+    const ms = Math.max(0, Math.round(c.at * 1000));
+    voices.push(`[${voices.length}:a]aresample=48000,aformat=channel_layouts=stereo,adelay=${ms}|${ms}[v${voices.length}]`);
+  }
+  if (!voices.length) return music || null;
+  const k = voices.length;
+  const chains = [...voices, `${Array.from({ length: k }, (_, i) => `[v${i}]`).join('')}amix=inputs=${k}:normalize=0:dropout_transition=0[vox]`];
+  let last = '[vox]';
+  if (music) {
+    inputs.push('-i', music);
+    // the music dips while someone speaks and comes back up in the gaps
+    chains.push(`[${k}:a]aresample=48000,aformat=channel_layouts=stereo,volume=${volume}[mus]`, '[vox]asplit[va][vb]', '[mus][va]sidechaincompress=threshold=0.015:ratio=6:attack=25:release=450[duck]', '[duck][vb]amix=inputs=2:normalize=0:dropout_transition=0[all]');
+    last = '[all]';
+  }
+  const out = path.join(tmp, 'mix.wav');
+  const graph = `${chains.join(';')};${last}apad,atrim=0:${duration.toFixed(3)},loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,alimiter=limit=0.89[out]`; // social-media loudness (-14 LUFS)
+  const r = spawnSync('ffmpeg', ['-v', 'error', '-y', ...inputs, '-filter_complex', graph, '-map', '[out]', '-ac', '2', out]);
+  if (r.status !== 0) die(`ffmpeg could not mix the voices:\n${r.stderr}`);
+  return out;
+}
+
+/** comp.music → a generated WAV as long as the video (null when there is none or a file was given). */
+function musicFor(comp, duration, tmp, quiet) {
+  if (!comp.music || comp.audio) return null;
+  const m = typeof comp.music === 'string' ? { mood: comp.music } : comp.music;
+  const t0 = Date.now();
+  let track;
+  try {
+    track = synthMusic({ mood: m.mood, duration, bpm: m.bpm ?? comp.bpm, key: m.key, seed: m.seed ?? comp.seed });
+  } catch (e) {
+    die(e.message);
+  }
+  const file = path.join(tmp, 'music.wav');
+  writeWav(file, track);
+  say(quiet, `  music: ${track.mood}, ${track.bpm} bpm, ${duration.toFixed(1)}s (${((Date.now() - t0) / 1000).toFixed(1)}s)`);
+  return file;
 }
 
 async function openPage(browser, server, comp, extra = {}) {
@@ -399,7 +522,7 @@ async function withPage(args, fn, extra) {
   const browser = await launchBrowser();
   try {
     const { page, info } = await openPage(browser, server, comp, extra);
-    return await fn(page, info, comp);
+    return await fn(page, info, comp, tmp);
   } finally {
     await browser.close();
     server.close();
@@ -414,9 +537,14 @@ async function render(args) {
   ffmpegArgs(out, { fps: 30, alpha: !!args.alpha, crf: 18, width: 1080 }); // fail fast on a bad extension / alpha combo
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const t0 = Date.now();
-  await withPage(args, async (page, info, comp) => {
+  await withPage(args, async (page, info, comp, tmp) => {
     const total = Math.round(info.duration * info.fps);
-    const ff = spawn('ffmpeg', ffmpegArgs(out, { fps: info.fps, alpha: !!comp.alpha, audio: comp.audio, crf: Number(args.crf ?? 18), width: info.width }), { stdio: ['pipe', 'inherit', 'pipe'] });
+    const cues = await page.evaluate(() => window.RM.cues || []);
+    const bed = comp.audio || musicFor(comp, info.duration, tmp, args.quiet);
+    const vol = typeof comp.music === 'object' && comp.music.volume != null ? Number(comp.music.volume) : 0.5;
+    const audio = cues.length ? mixAudio(cues, bed, info.duration, tmp, vol) : bed;
+    if (cues.length && !args.quiet) say(args.quiet, `  mixed ${cues.length} voice line${cues.length > 1 ? 's' : ''}${bed ? ' over the music' : ''}`);
+    const ff = spawn('ffmpeg', ffmpegArgs(out, { fps: info.fps, alpha: !!comp.alpha, audio, crf: Number(args.crf ?? 18), width: info.width }), { stdio: ['pipe', 'inherit', 'pipe'] });
     let ffErr = '';
     let ffDead = false;
     ff.stderr.on('data', (d) => (ffErr += d));
@@ -436,6 +564,29 @@ async function render(args) {
     say(args.quiet, `  \x1b[32m✓\x1b[0m ${out}  (${info.width}x${info.height}, ${info.duration.toFixed(2)}s @ ${info.fps}fps, ${((Date.now() - t0) / 1000).toFixed(1)}s)`);
     if (args.json) process.stdout.write(JSON.stringify({ out, ...info, frames: total }) + '\n');
   });
+}
+
+function music(args) {
+  const mood = args._[1];
+  if (!mood) {
+    process.stdout.write('Moods (code-made, royalty-free; same seed = same track):\n');
+    for (const [k, v] of Object.entries(MOODS)) process.stdout.write(`  ${k.padEnd(10)} ${v.bpm} bpm  ${v.desc}\n`);
+    process.stdout.write('\nrudywizz-motion music upbeat --duration 30 --out music.wav [--bpm n] [--key F#] [--seed n]\n');
+    return;
+  }
+  const out = path.resolve(args.out || `${mood}.wav`);
+  if (path.extname(out).toLowerCase() !== '.wav') die('music writes a .wav file (e.g. --out music.wav).');
+  const t0 = Date.now();
+  let track;
+  try {
+    track = synthMusic({ mood, duration: Number(args.duration ?? 30), bpm: args.bpm && Number(args.bpm), key: args.key, seed: args.seed && Number(args.seed) });
+  } catch (e) {
+    die(e.message);
+  }
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  writeWav(out, track);
+  say(args.quiet, `  \x1b[32m✓\x1b[0m ${out}  (${track.mood}, ${track.bpm} bpm, ${track.duration.toFixed(1)}s, ${((Date.now() - t0) / 1000).toFixed(1)}s)`);
+  if (args.json) process.stdout.write(JSON.stringify({ out, mood: track.mood, bpm: track.bpm, duration: track.duration }) + '\n');
 }
 
 async function still(args) {
@@ -535,6 +686,7 @@ else if (cmd === 'list') {
 else if (cmd === 'still') await still(args);
 else if (cmd === 'preview') await preview(args);
 else if (cmd === 'doctor') await doctor();
+else if (cmd === 'music') music(args);
 else {
   const s = suggest(cmd, ['list', 'templates', 'render', 'still', 'preview', 'doctor', 'init', 'help', 'version']);
   die(`Unknown command "${cmd}".${s ? ` Did you mean "${s}"?` : ''} Run \`rudywizz-motion help\`.`);

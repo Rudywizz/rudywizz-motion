@@ -1,0 +1,161 @@
+{
+  "$schema": "../skills/rudywizz-motion/schema/composition.schema.json",
+  "description": "Instagram Reel / YouTube Short (9:16, ~35 s, English): hook → one command → fast style montage → star CTA",
+  "format": "9:16",
+  "lang": "en",
+  "look": {
+    "grade": "kodak",
+    "bloom": 0.3,
+    "grain": 0.04,
+    "aberration": 0.12,
+    "vignette": 0.25
+  },
+  "scenes": [
+    {
+      "style": "glitch-title",
+      "text": "Nobody / edited / this",
+      "subtitle": "NO AFTER EFFECTS · NO AI",
+      "duration": 2.6,
+      "camera": "crash-zoom",
+      "transition": {
+        "type": "glitch",
+        "duration": 0.35
+      }
+    },
+    {
+      "style": "chat-story",
+      "name": "Client",
+      "text": "how long did this take? / >2 minutes / wait how / >one command",
+      "duration": 4.8,
+      "transition": {
+        "type": "zoom",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "scramble",
+      "font": "mono",
+      "text": "npx rudywizz-motion / render neon-sign / --text Hello",
+      "hud": false,
+      "delay": 0.2,
+      "resolve": 1.6,
+      "duration": 3.2,
+      "transition": {
+        "type": "flash",
+        "duration": 0.25
+      }
+    },
+    {
+      "style": "neon-sign",
+      "text": "Hello",
+      "duration": 2.4,
+      "camera": "punch-in",
+      "transition": {
+        "type": "whip",
+        "duration": 0.35
+      }
+    },
+    {
+      "style": "extrude-3d",
+      "text": "3D / text",
+      "duration": 2.2,
+      "transition": {
+        "type": "cube",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "map-route",
+      "route": [
+        "London",
+        "Paris",
+        "Rome"
+      ],
+      "text": "Map animations",
+      "mode": "globe",
+      "duration": 4,
+      "transition": {
+        "type": "burn",
+        "duration": 0.45
+      }
+    },
+    {
+      "style": "inflate",
+      "text": "Chrome / balloon",
+      "duration": 2,
+      "transition": {
+        "type": "liquid",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "split-flap",
+      "title": "DEPARTURES",
+      "text": "Reels / Shorts / Intro",
+      "duration": 3.4,
+      "transition": {
+        "type": "pixelate",
+        "duration": 0.35
+      }
+    },
+    {
+      "style": "particle-sphere",
+      "text": "Particles",
+      "duration": 2.2,
+      "transition": {
+        "type": "ink",
+        "duration": 0.45
+      }
+    },
+    {
+      "style": "bar-chart",
+      "text": "Hours saved?",
+      "note": "Per video, illustrative",
+      "unit": " h",
+      "items": [
+        [
+          "Keyframing",
+          3.5
+        ],
+        [
+          "Text layout",
+          2
+        ],
+        [
+          "Exporting",
+          1
+        ]
+      ],
+      "duration": 3.2,
+      "transition": {
+        "type": "zoom",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "odometer",
+      "text": "36 styles",
+      "from": 0,
+      "duration": 2.4,
+      "transition": {
+        "type": "whip",
+        "duration": 0.35
+      }
+    },
+    {
+      "style": "retro-grid",
+      "text": "Free / forever",
+      "duration": 2.6,
+      "transition": {
+        "type": "flash",
+        "duration": 0.3
+      }
+    },
+    {
+      "style": "cta-follow",
+      "text": "Rudywizz/rudywizz-motion / Star it on GitHub / Link in bio",
+      "done": "Starred",
+      "duration": 4.2
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 ---
 name: rudywizz-motion
-description: Make cinematic motion-graphics videos from code — kinetic typography, 3D titles, map route animations (world, globe, Turkey's provinces), social templates (lower thirds, captions, chat stories, countdowns, bar chart races, follow CTAs), sepia history docs that draw images as engravings, and full reels from the user's own clips with camera moves, shader transitions, colour grades and film effects. Use whenever the user asks for an animated video, reel, short, intro, title card, lyric video, captions, lower third, map animation, data animation, history/documentary video or a motion graphic.
+description: Make cinematic motion-graphics videos from code — kinetic typography, 3D titles, map route animations (globe, world map, any country with its states/provinces; place names in ~25 languages), social templates (lower thirds, captions, chat stories, countdowns, bar chart races, follow CTAs), sepia history docs that draw images as engravings, and full reels from the user's own clips with camera moves, shader transitions, colour grades and film effects. Use whenever the user asks for an animated video, reel, short, intro, title card, lyric video, captions, lower third, map animation, data animation, history/documentary video or a motion graphic.
 ---
 
 # rudywizz-motion
@@ -33,7 +33,7 @@ If ffmpeg is missing, tell the user how to install it (macOS `brew install ffmpe
 | User wants | Do this |
 |---|---|
 | One animated text/title | `render <style> --text "…"` |
-| A map / route animation | `render map-route --set 'route=["İstanbul","Konya"]'` |
+| A map / route animation | `render map-route --set 'route=["New York","Chicago","Los Angeles"]'` |
 | Their image drawn as an engraving | `render image --image photo.jpg --look engrave --grade sepia --film 0.6` |
 | Camera moves on their clip | `render clip --clip in.mp4 --camera handheld --set speed='"ramp-mid"'` |
 | A transparent overlay for their editor (lower third, captions, CTA) | `render lower-third --text "Name / Role" --alpha --out name.mov` |
@@ -58,6 +58,7 @@ Rules of thumb
 - Never download images/clips from the web without the user's say-so; use their files.
 - Transparent overlays: `--alpha --out file.mov` (ProRes 4444) or `.webm`.
 - Music: `--audio song.mp3` and `--bpm N` so `beat-cut`, `lyric-video` and the `beat-punch` camera hit the beat.
+- No song? `"music": "upbeat"` (or `chill` · `retro` · `cinematic`, or `{ "mood": "chill", "seed": 3, "volume": 0.5 }`) synthesises an original, royalty-free track as long as the video, on the composition `bpm`, ducked under voice lines. Another `seed` = another melody. `rudywizz-motion music <mood> --duration 30 --out m.wav` writes it alone.
 
 ## 4. Composition JSON
 
@@ -102,7 +103,7 @@ Rules of thumb
 
 | Style | What it does | Key options |
 |---|---|---|
-| map-route | Route flight on globe / flat map / Turkey provinces, pins + labels | `route`, `mode` globe·flat·turkey·auto, `theme` dark·atlas·light, `icon`, `highlight` |
+| map-route | Route flight on globe / flat map / any country with its states or provinces, pins + labels | `route`, `mode` globe·flat·country·auto, `country`, `theme` dark·atlas·light, `icon`, `highlight` |
 | history-title | Gilded year counter + chapter title | text `"1453 / Title / Subtitle"`, `from` |
 | parchment-letter | Burnt parchment, handwriting + quill + wax seal | `place`, `signature`, `seal` |
 | murmuration | Starling flock folds into the words | `birds`, sky colours |
@@ -141,11 +142,37 @@ Rules of thumb
 | chat-story | Messaging chat with typing dots | one message per line, `>` = me, `name`, `theme` |
 | bar-chart | Bar chart race, values count up | `items: [["A",10],…]`, `unit`, `note`, `source` |
 | cta-follow | Cursor clicks Follow, check + confetti | line 1 handle, line 2 button, line 3 subtitle, `done` |
+| **Stories & hosts** | | |
+| story-3d | Toy-like 3D characters act out a script with a virtual director (shots, gestures, lip sync) | `text` script, `finish` vinyl·clay·bricks, `voices`, `dialogue` |
+| doodle-story | The same script as boiling hand-drawn ink, 34 emotions | `text` script, `voices`, `dialogue` |
+| presenter | Your pixel mascot (or Bit the robot) hosts the video, lip-synced to voice lines | `cast`, `lines`, `place`, `captions`, `backdrop` |
 
 Style options go in `--set key=value` (JSON values: `--set 'route=["A","B"]'`) or as keys of the scene object.
 
+### Your own presenter (rig.json)
+`presenter` draws pixel characters from a folder of same-sized transparent PNGs, all `grid` px (they are scaled up with sharp pixels):
+```json
+{
+  "name": "Rudy",
+  "grid": [115, 258],
+  "layers": [{ "src": "legs.png" }, { "src": "body.png", "move": "breath" }, { "src": "head.png", "move": "head" }],
+  "eyes": [{ "src": "eye-l.png", "x": 52, "y": 41, "w": 13, "h": 3 }, { "src": "eye-r.png", "x": 77, "y": 41, "w": 11, "h": 3 }],
+  "lid": "#bb7650", "lash": "#2b1610",
+  "brows": [{ "src": "brow-l-in.png", "part": "inner" }, { "src": "brow-l-out.png", "part": "outer" }],
+  "mouths": [null, "mouth-1.png", "mouth-2.png", "mouth-3.png", "mouth-4.png", "mouth-5.png"],
+  "poses": { "point": { "src": "poses/point.png", "cell": [204, 258], "frames": 6, "anchor": 57, "intro": [0, 1, 2], "loop": [3, 4], "outro": [5] } }
+}
+```
+- `layers` back to front; `move: "breath"` bobs 1 px slowly, `"head"` also dips on syllables. Eyes, brows and mouths ride with the head.
+- `eyes`: the eye layer is clipped to the `x,y,w,h` box (so the pupil can glance sideways); blinking paints `lid` then a `lash` line.
+- `brows`: `inner`/`outer` pieces move separately per mood (surprised, angry, sad, happy, curious).
+- `mouths`: index 0 = closed (drawn in the head layer, so `null`), 1–5 from small to wide; the voice loudness picks one.
+- `poses`: optional sprite sheets of `frames` cells (`cell` = cell size, `anchor` = x of the feet centre in a cell); `intro` plays once, `loop` holds while the line lasts, `outro` plays at the end. Use them in a script as `Rudy [point]: …`.
+- Paths are relative to rig.json. `rig: "bit"` is the built-in robot (moods: happy, surprised, question, deadpan, love, loading, off).
+- Voice lines: `lines: [{ "who": "Rudy", "at": 1.2, "text": "Hi *there*", "voice": "voice/01.mp3", "pose": "point", "place": "stage" }]`. Each line lasts as long as its audio; the render mixes the audio in.
+
 ## 6. Troubleshooting
-- `unknown place "X"` (map-route): use `"lat,lon"` or `{ "name": "X", "lat": 0, "lon": 0 }`.
+- `unknown place "X"` (map-route): add the country or state (`"Portland, Maine"`), or use `"lat,lon"` / `{ "name": "X", "lat": 0, "lon": 0 }`. Small towns may be missing from the bundled list.
 - Text clipped by a camera move: lower the camera `amount` or use `drift`/`float`.
 - Slow renders: `--size 540` for drafts. Avoid `--motion-blur` above 4 unless the user wants the best quality.
 - Output white/empty: run `still` and read the error; `doctor` checks WebGL2.

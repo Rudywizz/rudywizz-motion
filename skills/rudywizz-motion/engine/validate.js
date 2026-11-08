@@ -2,11 +2,12 @@
 // "wooosh") before a render silently falls back to a black scene or a fade.
 import { TRANSITIONS, LOOKS, GRADES, SCENE_KEYS } from './timeline.js';
 import { CAMERA_PRESETS } from './camera.js';
+import { MOODS, ALIASES } from './music.mjs';
 
 const RAMPS = ['ramp-in', 'ramp-out', 'ramp-mid'];
 const COMP_KEYS = new Set([
   '$schema', 'name', 'title', 'description', 'format', 'width', 'height', 'fps', 'seed', 'look', 'cameraBlur', 'motionBlur',
-  'shutter', 'audio', 'alpha', 'lang', 'bpm', 'scenes', 'overlays', 'clean', 'preview',
+  'shutter', 'audio', 'music', 'alpha', 'lang', 'bpm', 'scenes', 'overlays', 'clean', 'preview',
 ]);
 const LOOK_KEYS = new Set(['grade', 'gradeAmount', 'bloom', 'grain', 'leak', 'film', 'aberration', 'vignette', 'distortion', 'weave', 'bpm']);
 // keys every style understands (filled in by the engine)
@@ -57,6 +58,11 @@ export function validateComp(comp, styles) {
   if (!comp || typeof comp !== 'object') return { errors: ['Composition must be a JSON object.'], warnings };
   if (!Array.isArray(comp.scenes) || !comp.scenes.length) errors.push('Composition needs a non-empty "scenes" array.');
   for (const k of Object.keys(comp)) if (!COMP_KEYS.has(k)) warnings.push(`Unknown composition key "${k}".${hint(k, [...COMP_KEYS])}`);
+  if (comp.music != null) {
+    const mood = typeof comp.music === 'string' ? comp.music : comp.music && comp.music.mood;
+    if (!MOODS[mood] && !ALIASES[mood]) errors.push(`Unknown music mood "${mood}".${hint(String(mood), Object.keys(MOODS))} Moods: ${Object.keys(MOODS).join(', ')}.`);
+    if (comp.audio) warnings.push('Both "audio" and "music" are set: the audio file is used and "music" is ignored.');
+  }
   for (const k of Object.keys(comp.look || {})) if (!LOOK_KEYS.has(k)) warnings.push(`Unknown look key "${k}".${hint(k, [...LOOK_KEYS])}`);
   if (comp.look?.grade && !GRADES.includes(comp.look.grade)) errors.push(`Unknown grade "${comp.look.grade}".${hint(comp.look.grade, GRADES)}`);
 

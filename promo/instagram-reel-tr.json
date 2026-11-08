@@ -1,0 +1,162 @@
+{
+  "$schema": "../skills/rudywizz-motion/schema/composition.schema.json",
+  "description": "Instagram Reel (9:16, ~35 s, Turkish): hook → one command → fast style montage → star CTA",
+  "format": "9:16",
+  "lang": "tr",
+  "look": {
+    "grade": "kodak",
+    "bloom": 0.3,
+    "grain": 0.04,
+    "aberration": 0.12,
+    "vignette": 0.25
+  },
+  "scenes": [
+    {
+      "style": "glitch-title",
+      "text": "Bu videoyu / editör / yapmadı",
+      "subtitle": "AFTER EFFECTS YOK · YAPAY ZEKA YOK",
+      "duration": 2.6,
+      "camera": "crash-zoom",
+      "transition": {
+        "type": "glitch",
+        "duration": 0.35
+      }
+    },
+    {
+      "style": "chat-story",
+      "name": "Müşteri",
+      "text": "bunu kaç günde yaptın? / >2 dakikada / nasıl yani / >tek komutla",
+      "duration": 4.8,
+      "transition": {
+        "type": "zoom",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "scramble",
+      "font": "mono",
+      "text": "npx rudywizz-motion / render neon-sign / --text Merhaba",
+      "hud": false,
+      "delay": 0.2,
+      "resolve": 1.6,
+      "duration": 3.2,
+      "transition": {
+        "type": "flash",
+        "duration": 0.25
+      },
+      "lang": "en"
+    },
+    {
+      "style": "neon-sign",
+      "text": "Merhaba",
+      "duration": 2.4,
+      "camera": "punch-in",
+      "transition": {
+        "type": "whip",
+        "duration": 0.35
+      }
+    },
+    {
+      "style": "extrude-3d",
+      "text": "3D / yazı",
+      "duration": 2.2,
+      "transition": {
+        "type": "cube",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "map-route",
+      "route": [
+        "İstanbul",
+        "Kapadokya",
+        "Antalya"
+      ],
+      "text": "Harita animasyonu",
+      "mode": "turkey",
+      "duration": 4,
+      "transition": {
+        "type": "burn",
+        "duration": 0.45
+      }
+    },
+    {
+      "style": "inflate",
+      "text": "Krom / balon",
+      "duration": 2,
+      "transition": {
+        "type": "liquid",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "split-flap",
+      "title": "KALKIŞ · DEPARTURES",
+      "text": "Reels / Shorts / Intro",
+      "duration": 3.4,
+      "transition": {
+        "type": "pixelate",
+        "duration": 0.35
+      }
+    },
+    {
+      "style": "particle-sphere",
+      "text": "Parçacık",
+      "duration": 2.2,
+      "transition": {
+        "type": "ink",
+        "duration": 0.45
+      }
+    },
+    {
+      "style": "bar-chart",
+      "text": "Kaç saat kazandırır?",
+      "note": "Video başına, temsili",
+      "unit": " sa",
+      "items": [
+        [
+          "Keyframe",
+          3.5
+        ],
+        [
+          "Yazı düzeni",
+          2
+        ],
+        [
+          "Export",
+          1
+        ]
+      ],
+      "duration": 3.2,
+      "transition": {
+        "type": "zoom",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "odometer",
+      "text": "36 stil",
+      "from": 0,
+      "duration": 2.4,
+      "transition": {
+        "type": "whip",
+        "duration": 0.35
+      }
+    },
+    {
+      "style": "retro-grid",
+      "text": "Ücretsiz / açık kaynak",
+      "duration": 2.6,
+      "transition": {
+        "type": "flash",
+        "duration": 0.3
+      }
+    },
+    {
+      "style": "cta-follow",
+      "text": "Rudywizz/rudywizz-motion / GitHub'da yıldızla / Link profilde",
+      "done": "Yıldızlandı",
+      "duration": 4.2
+    }
+  ]
+}

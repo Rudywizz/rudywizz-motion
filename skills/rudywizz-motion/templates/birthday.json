@@ -1,0 +1,12 @@
+{
+  "description": "Birthday wish: chat surprise → chrome balloon name → confetti number → handwritten-feel card",
+  "format": "9:16",
+  "look": { "grade": "fuji", "bloom": 0.3, "leak": 0.35, "grain": 0.03 },
+  "scenes": [
+    { "style": "chat-story", "name": "Group chat", "text": "is everyone here? / >yes / ok 3… 2… 1… / >!!!", "duration": 5,
+      "transition": { "type": "flash", "duration": 0.3 } },
+    { "style": "inflate", "text": "Happy / birthday", "duration": 3.5, "camera": "crash-zoom", "transition": { "type": "liquid", "duration": 0.6 } },
+    { "style": "odometer", "text": "30 years of you", "from": 0, "duration": 4, "transition": { "type": "iris", "duration": 0.5 } },
+    { "style": "highlight-quote", "text": "Here's to you, / Deniz.", "author": "from all of us", "highlight": ["Deniz."], "duration": 5 }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "description": "Podcast / interview clip: decoder title → quote card → captions + guest lower third. Swap the colour scene for your own clip and pass --audio",
+  "format": "9:16",
+  "look": { "grade": "matte", "bloom": 0.2, "grain": 0.03, "vignette": 0.25 },
+  "scenes": [
+    { "style": "scramble", "text": "Episode 42 / The big idea", "font": "display", "duration": 3, "transition": { "type": "zoom", "duration": 0.45 } },
+    { "style": "highlight-quote", "text": "The best time to start / was yesterday. / The next best is now.", "author": "Guest name, Episode 42",
+      "highlight": ["now."], "duration": 6, "transition": { "type": "wipe", "duration": 0.45 } },
+    { "color": "#14161c", "duration": 7,
+      "overlay": { "style": "captions", "text": "Replace this colour scene with your clip and your transcript goes here word by word", "maxWords": 3, "position": 0.5 } }
+  ],
+  "overlays": [ { "style": "lower-third", "text": "Guest Name / Founder · Company", "theme": "glass", "from": 9.5, "to": 15 } ]
+}

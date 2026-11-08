@@ -9,7 +9,7 @@
 
 **Cinematic motion graphics, rendered from code.**
 
-Kinetic typography · 3D titles · map flights · lower thirds, captions & chat stories · sepia history docs · reels from your own clips — <br>
+Kinetic typography · 3D titles · world map flights · 3D & hand-drawn character stories · your own mascot as host · lower thirds, captions & chat stories · sepia history docs · code-made music — <br>
 with real camera moves, 20 shader transitions, film-grade colour and motion blur.
 
 [![CI](https://github.com/Rudywizz/rudywizz-motion/actions/workflows/ci.yml/badge.svg)](https://github.com/Rudywizz/rudywizz-motion/actions/workflows/ci.yml)
@@ -31,7 +31,7 @@ No After Effects, no templates to buy, no AI video model: every frame is drawn b
 
 ## Gallery
 
-36 styles. Every preview below is a real render from `npm run gallery`.
+39 styles. Every preview below is a real render from `npm run gallery`.
 
 ### Kinetic typography
 
@@ -63,13 +63,23 @@ Any style can also be put in 3D space with a camera: `--camera orbit`, `tilt-rev
 
 Add `--alpha --out name.mov` and drop the result straight onto your footage in Premiere, Final Cut, DaVinci Resolve or CapCut.
 
+### Stories & hosts
+
+| | | |
+|:-:|:-:|:-:|
+| <img src="gallery/story-3d.webp" width="240"><br>**story-3d** · vinyl | <img src="gallery/story-3d-clay.webp" width="240"><br>**story-3d** · clay | <img src="gallery/story-3d-bricks.webp" width="240"><br>**story-3d** · bricks |
+| <img src="gallery/doodle-story.webp" width="240"><br>**doodle-story** | <img src="gallery/presenter.webp" width="240"><br>**presenter** · your mascot + Bit |  |
+
+Write a script (`Ece [think]: …`) and characters act it out: camera shots, gestures, lip sync to your voice files. Draw your own pixel mascot and it hosts your videos.
+
 ### Maps, history & your images
 
 | | | |
 |:-:|:-:|:-:|
-| <img src="gallery/map-globe.webp" width="240"><br>**map-route** · globe | <img src="gallery/map-atlas.webp" width="240"><br>**map-route** · atlas | <img src="gallery/map-turkey.webp" width="240"><br>**map-route** · Turkey |
+| <img src="gallery/map-globe.webp" width="240"><br>**map-route** · globe | <img src="gallery/map-usa.webp" width="240"><br>**map-route** · any country (US states) | <img src="gallery/map-japan.webp" width="240"><br>**map-route** · Japan |
+| <img src="gallery/map-atlas.webp" width="240"><br>**map-route** · atlas | <img src="gallery/map-turkey.webp" width="240"><br>**map-route** · Türkiye | <img src="gallery/transitions.webp" width="240"><br>**20 transitions** |
 | <img src="gallery/look-engrave.webp" width="240"><br>**image** · `--look engrave` | <img src="gallery/history-title.webp" width="240"><br>**history-title** | <img src="gallery/parchment-letter.webp" width="240"><br>**parchment-letter** |
-| <img src="gallery/look-sketch.webp" width="240"><br>**image** · `--look sketch` | <img src="gallery/transitions.webp" width="240"><br>**20 transitions** | |
+| <img src="gallery/look-sketch.webp" width="240"><br>**image** · `--look sketch` |  |  |
 
 ## Why it looks better than "text animation" repos
 
@@ -80,7 +90,8 @@ Add `--alpha --out name.mov` and drop the result straight onto your footage in P
 | **Camera with motion blur** | 19 camera moves (punch-in, whip, orbit, tilt-reveal, vertigo, beat-punch…). Fast moves blur like a real shutter. |
 | **20 shader transitions** | whip, zoom-through, film burn, ink, liquid, glitch, cube, iris, light leak… |
 | **Every format** | 9:16, 1:1, 4:5, 16:9 at any size. Text is fitted, wrapped and hyphenated so it never leaves the frame. |
-| **Offline maps** | Globe, world and Turkey's 81 provinces from Natural Earth. Type place names, get a flight. |
+| **Offline maps** | Globe, world map and a close-up of any country with its states or provinces (Natural Earth). Type place names in ~25 languages — `"München"`, `"Londres"`, `"Portland, Maine"` — get a flight. |
+| **Code-made music** | `--music upbeat` (or `chill`, `retro`, `cinematic`) writes an original backing track for the exact length of your video, from code: no samples, no licences, no copyright claims. It ducks under voice lines. `rudywizz-motion music chill --duration 30` saves it as a .wav. |
 | **Your footage** | Clips and photos get speed ramps, handheld camera, captions, parallax layers and grades. |
 | **Unicode first** | All 17 bundled fonts cover Latin Extended (ğ ş ı İ ç ö ü, ä ø ß é ł…); casing is locale-aware (`i → İ`). |
 
@@ -150,6 +161,19 @@ Draft fast with `--size 540`, then render the final at the default 1080.
 | `lyric-teaser` | On-beat stamped words → lyric lines → VHS outro (bring your track) | 9:16 |
 | `launch` | TV tune-in → orbiting feature rings → chrome reveal → risograph sign-off | 9:16 |
 | `tour` | 30 s tour of the original styles | 9:16 |
+| `black-friday` | Sale ad: glitch open → LED price boards → rolling discount → receipt → deadline countdown | 9:16 |
+| `new-year` | New Year countdown: departures board → 3·2·1 → particle year → neon greeting | 9:16 |
+| `youtube-outro` | End screen: thanks → subscribe click with confetti → 12 s clean space for YouTube's end-screen cards | 16:9 |
+| `birthday` | Birthday wish: group-chat surprise → chrome balloon letters → age counter → personal note | 9:16 |
+| `save-the-date` | Wedding invitation: letter writes itself → date & place board → map to the venue | 9:16 |
+| `podcast-clip` | Podcast / interview clip: episode title → pull quote → word-by-word captions + guest lower third | 9:16 |
+
+### Made with itself
+
+The launch videos in [`promo/`](promo/) are plain compositions: a 16:9 YouTube video, a Turkish Instagram reel and an English Short.
+```bash
+npx rudywizz-motion render promo/youtube-promo.json --out promo.mp4
+```
 
 ## Reels from your footage
 
@@ -170,7 +194,8 @@ Draft fast with `--size 540`, then render the final at the default 1080.
 }
 ```
 ```bash
-npx rudywizz-motion render reel.json --audio song.mp3 --out reel.mp4
+npx rudywizz-motion render reel.json --audio song.mp3 --out reel.mp4   # your song
+npx rudywizz-motion render reel.json --music upbeat --out reel.mp4     # or music made by code
 ```
 The `$schema` line gives you autocomplete and inline docs for every style option in VS Code and other editors.
 Typos are caught before rendering: `unknown camera "orbt". Did you mean "orbit"?`
@@ -207,6 +232,7 @@ rudywizz-motion preview <…>
 | `--motion-blur n` | Sub-frames per frame (4–8 = filmic) |
 | `--format` · `--size` | `9:16` (default) `1:1` `4:5` `16:9` · short side in px |
 | `--out` | `.mp4` · `.mov` (ProRes 4444 + alpha) · `.webm` (VP9 + alpha) · `.gif` · `.webp` |
+| `--music` | Code-made music: `upbeat` `chill` `retro` `cinematic` |
 | `--alpha` · `--audio` · `--bpm` · `--lang` · `--seed` · `--fps` · `--duration` · `--strict` | |
 
 Transitions: `fade flash dip whip zoom spin glitch ink burn liquid iris wipe blinds pixelate leak cube ripple doors stretch luma`.

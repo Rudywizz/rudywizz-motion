@@ -1,0 +1,61 @@
+RUDYWIZZ MOTION · TANITIM FİLMİ METNİ
+=====================================
+
+## 1 · KANCA
+EKRAN: titreşen dijital başlık "Anlatacak bir şeyin var"
+RUDY [curious]: Aklında anlatmak istediğin bir hikâye var. Belki paylaşmak istediğin bir bilgi, belki de “Bundan güzel video olur” dediğin bir fikir.
+RUDY [sighs]: Ama kurgu programı bilmiyorsun. Kameran yok, stüdyon yok. Bir de bütün bunlarla uğraşacak *vaktin* yok.
+BIT [deadpan]: Fikir hazır. Video beklemede.
+
+## 2 · ESKİDEN
+EKRAN: uzayan bir fiş: "İHTİYAÇ LİSTESİ · kamera, ışık, mikrofon, kurgu programı, 3 gün"
+RUDY [casual]: Video hazırlamak deyince aklına hemen ekipman, çekim, saatlerce kurgu ve öğrenilecek bir sürü program geliyor, değil mi?
+BIT [cheerful]: Bu kez listeyi bir kenara bırak. Anlatmak istediğin şeyle başlayalım.
+
+## 3 · NASIL ÇALIŞIYOR
+EKRAN: terminalde tek satır komut yazılıyor → neon tabela yanıyor
+RUDY [confident]: İşte *Rudywizz Motion*. Yazdıklarını hareketli başlıklara, grafiklere ve sahnelere dönüştüren bir araç.
+BIT [confident]: Ne anlatacağını yaz, stilini seç. Ben her kareyi kodla çizeyim. Sonunda elinde paylaşmaya hazır bir *MP4* olsun.
+RUDY [casual]: Çekim yapman, kurgu ekranında tek tek uğraşman gerekmiyor. Görüntüyü bir yapay zekâ video modeli de üretmiyor. Her şey *kodla* çiziliyor; aynı ayarlarla aynı sonucu alıyorsun.
+
+## 4 · AÇILIŞLAR VE BAŞLIKLAR
+EKRAN: hızlı montaj: 3B harfler, şişme harfler, mürekkep, havalimanı panosu, risograf baskı, LED tabela, kelime yığını, tünel, dönen küp, ritim kurgusu, kayan şeritler
+RUDY [excited]: Mesela videona dikkat çeken bir açılış lazım. Neon bir tabela mı olsun? Üç boyutlu harfler mi? Kâğıda yayılan mürekkep, belki de bir havalimanı panosu?
+BIT [cheerful]: Hepsi aynı komutla. Sadece *stilin adını* değiştiriyorsun. Aynı cümle, bambaşka bir giriş.
+
+## 5 · BİLGİ ANLATMAK
+EKRAN: kendini çizen grafik, dönen sayaç, dünya küresinde uçuş, bir ülkenin eyaletleriyle yakın haritası, geri sayım
+RUDY [confident]: Bir bilgiyi anlaşılır kılmak mı istiyorsun? Verilerin grafiğe dönüşsün, sayılar adım adım yükselsin, anlattığın yolculuk haritada canlansın.
+BIT [proud]: Bütün dünya hazır: ülkeler, şehirler, eyaletler… Haritalar içeride; videoyu oluşturmak için *internet bile* gerekmiyor.
+
+## 6 · SOSYAL MEDYA
+EKRAN: mesajlaşma ekranı, kelime kelime altyazı, şarkı sözü videosu, isim bandı, alıntı, kart karuseli
+BIT [cheerful]: Reels için kelime kelime akan altyazılar, mesajlaşarak ilerleyen hikâyeler, şarkı sözü videoları… Dikey, kare ya da yatay; paylaşacağın yere göre.
+RUDY [casual]: Kendi çektiğin bir video da olabilir. Yazıları şeffaf arka planla dışa aktar, *CapCut'ta* görüntünün üstüne yerleştir. Hazırladığın animasyon, videonun bir parçası olsun.
+
+## 7 · HİKÂYENİN HAVASI
+EKRAN: tarih belgeseli başlığı, eski mektup, VHS kaseti, retro gece sürüşü, eski televizyon, piksel oyun, sürü hâlinde kuşlar, parçacık küre, yörünge, şifre çözme
+RUDY [curious]: Peki, hikâyen nasıl hissettirsin? Eski bir mektup kadar kişisel, bir tarih belgeseli kadar etkileyici, VHS kaydı kadar nostaljik… Ya da bir piksel oyunu kadar eğlenceli.
+BIT [deadpan]: *Otuz dokuz stil.* Hikâyene uyanı seç. Ben saydım. İki kere.
+
+## 8 · HİKÂYENİ OYNAYAN KARAKTERLER
+EKRAN: aynı kısa sahne dört kez: 3B oyuncak, kil (stop motion), tuğla oyuncak, elle çizim
+RUDY [excited]: Bir de işin şu tarafı var: hikâyeni sadece yazılarla anlatmak zorunda değilsin. Onu *oynayan karakterler* de var.
+BIT [cheerful]: Senaryoyu yazıyorsun; kamera açıları, mimikler, el kol hareketleri ve konuşmayla uyumlu dudak hareketleri sahneyi tamamlıyor.
+RUDY [confident]: Üç boyutlu oyuncak, kil, tuğla oyuncak ya da elle çizim. Aynı hikâyeyi *dört ayrı film havasında* anlatabiliyorsun.
+
+## 9 · SUNUCULAR
+EKRAN: Rudy ile Bit sahnenin ortasında, arkada retro ufuk
+BIT [whispers]: Bu arada… biz de buraya çekimden gelmedik. Şu an izlediğin sunucular da bu programla sahnede.
+RUDY [warm]: Sen de kendi karakterini çiz, sesini kaydet. Videonu *o* sunsun; anlattığın şeyin kendine ait bir yüzü, bir sesi olsun.
+
+## 10 · CLAUDE İLE
+EKRAN: Claude'a yazılan istek → hazır video açılıyor
+RUDY [playfully]: “Güzel de ben komutlarla uğraşmasam?” diyorsan, Claude'a ne istediğini anlat. “Bana bir tanıtım videosu hazırla” diye başla; içeriğini, tarzını söyle. *Gerisini ona bırak.*
+BIT [cheerful]: Rudywizz Motion ücretsiz ve açık kaynak. Müzik de dahil; onu da kod üretiyor. Hazır parça aramakla uğraşmıyorsun.
+
+## 11 · KAPANIŞ
+EKRAN: "rudywizz-motion · GitHub'da yıldızla" kartı
+RUDY [warm]: Aklındaki hikâye orada kalmasın. Bir cümleyle başla, gerisini birlikte hareketlendirelim. *Rudywizz Motion.* Link profilde.
+RUDY [playfully]: GitHub'da bir yıldız bırakırsan Bit çok sevinir.
+BIT [robotic]: Yıldız… yükleniyor.

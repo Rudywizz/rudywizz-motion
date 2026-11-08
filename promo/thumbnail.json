@@ -1,0 +1,6 @@
+{
+  "description": "YouTube thumbnail (render a still: --at 3 --size 720 → 1280×720)",
+  "format": "16:9",
+  "look": { "grade": "teal-orange", "bloom": 0.35, "vignette": 0.3 },
+  "scenes": [ { "style": "extrude-3d", "text": "No editor. / Just code.", "duration": 4 } ]
+}

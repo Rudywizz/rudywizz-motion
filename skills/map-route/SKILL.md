@@ -1,12 +1,12 @@
 ---
 name: map-route
-description: Map Route — Fly a route across a globe, world map or Turkey; pins + labels. Renders a video with the rudywizz-motion engine. Use when the user asks for this look by name.
+description: Map Route — Fly a route across a globe, a world map or any country with its states and provinces; pins + labels. Renders a video with the rudywizz-motion engine. Use when the user asks for this look by name.
 argument-hint: "<text>"
 ---
 
 # Map Route
 
-Fly a route across a globe, world map or Turkey; pins + labels.
+Fly a route across a globe, a world map or any country with its states and provinces; pins + labels.
 
 Find the engine (the sibling `rudywizz-motion` skill folder) and a temp folder both bash and Node agree on:
 
@@ -27,11 +27,12 @@ node "$RM/engine/cli.mjs" render map-route --text '<text>' --out map-route.mp4
 ```
 
 Options (`--set key=value`, JSON values allowed):
-- `route` — Array of places: names (Turkish ok), "lat,lon" strings or {name, lat, lon}
-- `mode` — globe | flat | turkey | auto
+- `route` — Array of places: any city, region or country in ~25 languages, "City, Country" or "City, State" to disambiguate ("Portland, Maine", "Valencia, Venezuela"), "lat,lon" strings or {name, lat, lon}
+- `mode` — globe | flat | country (one country with its states/provinces) | auto
+- `country` — Country for mode "country" (name in any language or ISO code, e.g. "Japan", "Almanya", "BR"); auto-detected when every stop is in one country
 - `theme` — dark | atlas | light
 - `icon` — plane | ship | dot | auto
-- `highlight` — Countries (e.g. "Türkiye", "Italy") or provinces to tint
+- `highlight` — Countries (any language, e.g. "Türkiye", "Deutschland") or states/provinces to tint
 - `text` — Optional title at the top
 - `labels` — Show place labels (true/false)
 
