@@ -47,7 +47,7 @@ function clayTexture() {
 }
 
 /** Push vertices in/out along the direction from the mesh centre: hand-made lumps. */
-function lumpify(geo, amp, freq) {
+function lumpify(geo, amp, freq, inward = false) {
   if (geo.userData.lumped) return;
   geo.computeBoundingSphere();
   const c = geo.boundingSphere.center;
@@ -55,7 +55,8 @@ function lumpify(geo, amp, freq) {
   const d = new THREE.Vector3();
   for (let i = 0; i < p.count; i++) {
     d.set(p.getX(i), p.getY(i), p.getZ(i));
-    const n = vnoise(d.x * freq + 11, d.y * freq + 3, d.z * freq + 7) - 0.5;
+    let n = vnoise(d.x * freq + 11, d.y * freq + 3, d.z * freq + 7) - 0.5;
+    if (inward) n = Math.min(0, n) * 1.4;
     const dir = d.clone().sub(c);
     if (dir.lengthSq() < 1e-8) continue;
     dir.normalize().multiplyScalar(n * amp);
@@ -75,14 +76,14 @@ function convert(m, look) {
     const hsl = {};
     color.getHSL(hsl);
     color.setHSL(hsl.h, Math.min(1, hsl.s * 1.05), hsl.l * 0.9); // plasticine: a touch deeper
-    const out = new THREE.MeshStandardMaterial({ color, roughness: 0.93, metalness: 0, bumpMap: clayTexture(), bumpScale: 2.2, emissive, emissiveIntensity, map: m.map || null, transparent: m.transparent, side: m.side, depthWrite: m.depthWrite, polygonOffset: m.polygonOffset, polygonOffsetFactor: m.polygonOffsetFactor });
+    const out = new THREE.MeshStandardMaterial({ color, roughness: 0.93, metalness: 0, bumpMap: clayTexture(), bumpScale: 2.2, emissive, emissiveIntensity, map: m.map || null, transparent: m.transparent, opacity: m.opacity ?? 1, side: m.side, depthWrite: m.depthWrite, polygonOffset: m.polygonOffset, polygonOffsetFactor: m.polygonOffsetFactor });
     return out;
   }
   if (look === 'brick') {
     const hsl = {};
     color.getHSL(hsl);
     color.setHSL(hsl.h, Math.min(1, hsl.s * 1.15 + 0.05), hsl.l);
-    return new THREE.MeshPhysicalMaterial({ color, roughness: 0.16, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.08, emissive, emissiveIntensity, map: m.map || null, transparent: m.transparent, side: m.side, depthWrite: m.depthWrite, polygonOffset: m.polygonOffset, polygonOffsetFactor: m.polygonOffsetFactor });
+    return new THREE.MeshPhysicalMaterial({ color, roughness: 0.16, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.08, emissive, emissiveIntensity, map: m.map || null, transparent: m.transparent, opacity: m.opacity ?? 1, side: m.side, depthWrite: m.depthWrite, polygonOffset: m.polygonOffset, polygonOffsetFactor: m.polygonOffsetFactor });
   }
   return m;
 }
@@ -154,7 +155,7 @@ export function applyLook(look, { scene, set, chars }) {
     o.material = Array.isArray(o.material) ? next : next[0];
     if (lump && look === 'clay' && !o.material.map) {
       o.geometry = o.geometry.clone();
-      lumpify(o.geometry, lump, lump > 0.02 ? 7 : 4.5);
+      lumpify(o.geometry, lump, lump > 0.02 ? 7 : 4.5, !!o.userData.inwardLumps);
     }
   };
   set.group.traverse((o) => swap(o, 0.04));

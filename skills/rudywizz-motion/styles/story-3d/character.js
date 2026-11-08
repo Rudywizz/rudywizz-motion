@@ -515,6 +515,7 @@ export function createCharacter(lookIn = {}) {
   head.position.y = 0.3;
   neck.add(head);
   const skull = ball(HEAD_R, skin, 1, 0.95, 0.93);
+  skull.userData.inwardLumps = true; // the painted face sits just above the skull: clay may only dent it
   head.add(skull);
   for (const sx of [-1, 1]) {
     const ear = ball(HEAD_R * 0.2, skin, 0.6, 1, 0.8);
