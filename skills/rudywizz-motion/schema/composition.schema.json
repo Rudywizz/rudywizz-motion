@@ -197,6 +197,7 @@
               "cta-follow",
               "cube-spin",
               "doodle-story",
+              "editorial",
               "extrude-3d",
               "glitch-title",
               "halftone-press",
@@ -218,6 +219,7 @@
               "presenter",
               "receipt",
               "retro-grid",
+              "room",
               "scramble",
               "signal-tune",
               "split-flap",
@@ -576,6 +578,7 @@
                   "cta-follow",
                   "cube-spin",
                   "doodle-story",
+                  "editorial",
                   "extrude-3d",
                   "glitch-title",
                   "halftone-press",
@@ -597,6 +600,7 @@
                   "presenter",
                   "receipt",
                   "retro-grid",
+                  "room",
                   "scramble",
                   "signal-tune",
                   "split-flap",
@@ -1071,6 +1075,65 @@
                       "description": "auto | wide",
                       "default": "auto",
                       "type": "string"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "style": {
+                      "const": "editorial"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "text": {
+                      "description": "Without lines: phrases separated by \" / \" shown one after another",
+                      "default": "Every word *lands* on time. / Captions that read like a *magazine.*",
+                      "type": "string"
+                    },
+                    "lines": {
+                      "description": "Timed lines: [{ who, at, text, voice }]. *word* = hero word (otherwise the longest word is). The voice file times the words and is played (see mixVoices)",
+                      "default": []
+                    },
+                    "masthead": {
+                      "description": "Masthead text (top left); \"\" hides the masthead",
+                      "default": "RUDYWIZZ — MOTION",
+                      "type": "string"
+                    },
+                    "sections": {
+                      "description": "Section counter: [{ at, title }] → \"03 / 11  TITLE\" top right",
+                      "default": []
+                    },
+                    "tags": {
+                      "description": "Labels: [{ from, to, text, label }] e.g. { label: \"STYLE\", text: \"neon-sign\" }",
+                      "default": []
+                    },
+                    "zones": {
+                      "description": "Caption position over time: [{ at, pos: top | middle | bottom }]",
+                      "default": []
+                    },
+                    "pos": {
+                      "description": "Default caption position",
+                      "default": "bottom",
+                      "type": "string"
+                    },
+                    "accent": {
+                      "description": "Hero word colour",
+                      "default": "#ff6b5a",
+                      "type": "string"
+                    },
+                    "mixVoices": {
+                      "description": "false when the scene already plays the voices",
+                      "default": true,
+                      "type": "boolean"
+                    },
+                    "speakers": {
+                      "description": "Show the speaker tag above each phrase",
+                      "default": true,
+                      "type": "boolean"
                     }
                   }
                 }
@@ -2034,6 +2097,107 @@
                       "description": "Grid scroll speed multiplier",
                       "default": 1,
                       "type": "number"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "style": {
+                      "const": "room"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "text": {
+                      "description": "Text (\" / \" or \\n for line breaks)",
+                      "default": "rudywizz",
+                      "type": "string"
+                    },
+                    "cast": {
+                      "description": "Hosts: [{ name, rig: \"path/to/rig.json\" | \"bit\" }] (see presenter)",
+                      "default": [
+                        {
+                          "name": "Bit",
+                          "rig": "bit"
+                        }
+                      ]
+                    },
+                    "lines": {
+                      "description": "Voice lines: [{ who, at, text, voice, pose, mood, spot }] — a host appears for its lines at `spot` (desk sofa tv center gallery window front). The mouth follows the voice",
+                      "default": []
+                    },
+                    "show": {
+                      "description": "Extra appearances without a line: [{ who, from, to, spot, pose }]",
+                      "default": []
+                    },
+                    "shots": {
+                      "description": "Camera: [{ at, cam, move, blend }]. cam: establish wide top desk monitor sofa neon tv gallery map window table shelf host. move: drift push pull orbit crane truck dive (into the monitor / tv / map, so the next scene comes out of the screen). blend: seconds to travel from the previous shot (0 = cut)",
+                      "default": [
+                        {
+                          "at": 0,
+                          "cam": "establish",
+                          "move": "push"
+                        },
+                        {
+                          "at": 3,
+                          "cam": "sofa",
+                          "move": "orbit"
+                        },
+                        {
+                          "at": 5.5,
+                          "cam": "tv",
+                          "move": "dive"
+                        }
+                      ]
+                    },
+                    "images": {
+                      "description": "Local image files for the screens (index into this list from monitor / tv / gallery / poster)",
+                      "default": []
+                    },
+                    "monitor": {
+                      "description": "Desk monitor: [{ at, text }] types the text in a terminal, or [{ at, image }]",
+                      "default": []
+                    },
+                    "tv": {
+                      "description": "TV: [{ at, image }] or [{ at, text }]",
+                      "default": []
+                    },
+                    "gallery": {
+                      "description": "Image indexes framed on the right wall",
+                      "default": []
+                    },
+                    "poster": {
+                      "description": "Image index for the map poster on the back wall",
+                      "default": null,
+                      "type": "null"
+                    },
+                    "neon": {
+                      "description": "Neon sign text above the sofa",
+                      "default": "rudywizz",
+                      "type": "string"
+                    },
+                    "models": {
+                      "description": "Folder of glTF furniture (optional; procedural furniture otherwise)",
+                      "default": null,
+                      "type": "null"
+                    },
+                    "bpm": {
+                      "description": "Speaker cones and the LED strip pulse on this tempo",
+                      "default": 112,
+                      "type": "number"
+                    },
+                    "mixVoices": {
+                      "description": "false when an overlay already plays the same voice lines (avoids playing them twice)",
+                      "default": true,
+                      "type": "boolean"
+                    },
+                    "accent": {
+                      "description": "Accent colour (neon, highlights)",
+                      "default": "#ff6b5a",
+                      "type": "string"
                     }
                   }
                 }
@@ -3008,6 +3172,68 @@
             "if": {
               "properties": {
                 "style": {
+                  "const": "editorial"
+                }
+              },
+              "required": [
+                "style"
+              ]
+            },
+            "then": {
+              "properties": {
+                "text": {
+                  "description": "Without lines: phrases separated by \" / \" shown one after another",
+                  "default": "Every word *lands* on time. / Captions that read like a *magazine.*",
+                  "type": "string"
+                },
+                "lines": {
+                  "description": "Timed lines: [{ who, at, text, voice }]. *word* = hero word (otherwise the longest word is). The voice file times the words and is played (see mixVoices)",
+                  "default": []
+                },
+                "masthead": {
+                  "description": "Masthead text (top left); \"\" hides the masthead",
+                  "default": "RUDYWIZZ — MOTION",
+                  "type": "string"
+                },
+                "sections": {
+                  "description": "Section counter: [{ at, title }] → \"03 / 11  TITLE\" top right",
+                  "default": []
+                },
+                "tags": {
+                  "description": "Labels: [{ from, to, text, label }] e.g. { label: \"STYLE\", text: \"neon-sign\" }",
+                  "default": []
+                },
+                "zones": {
+                  "description": "Caption position over time: [{ at, pos: top | middle | bottom }]",
+                  "default": []
+                },
+                "pos": {
+                  "description": "Default caption position",
+                  "default": "bottom",
+                  "type": "string"
+                },
+                "accent": {
+                  "description": "Hero word colour",
+                  "default": "#ff6b5a",
+                  "type": "string"
+                },
+                "mixVoices": {
+                  "description": "false when the scene already plays the voices",
+                  "default": true,
+                  "type": "boolean"
+                },
+                "speakers": {
+                  "description": "Show the speaker tag above each phrase",
+                  "default": true,
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "style": {
                   "const": "extrude-3d"
                 }
               },
@@ -4026,6 +4252,110 @@
                   "description": "Grid scroll speed multiplier",
                   "default": 1,
                   "type": "number"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "style": {
+                  "const": "room"
+                }
+              },
+              "required": [
+                "style"
+              ]
+            },
+            "then": {
+              "properties": {
+                "text": {
+                  "description": "Text (\" / \" or \\n for line breaks)",
+                  "default": "rudywizz",
+                  "type": "string"
+                },
+                "cast": {
+                  "description": "Hosts: [{ name, rig: \"path/to/rig.json\" | \"bit\" }] (see presenter)",
+                  "default": [
+                    {
+                      "name": "Bit",
+                      "rig": "bit"
+                    }
+                  ]
+                },
+                "lines": {
+                  "description": "Voice lines: [{ who, at, text, voice, pose, mood, spot }] — a host appears for its lines at `spot` (desk sofa tv center gallery window front). The mouth follows the voice",
+                  "default": []
+                },
+                "show": {
+                  "description": "Extra appearances without a line: [{ who, from, to, spot, pose }]",
+                  "default": []
+                },
+                "shots": {
+                  "description": "Camera: [{ at, cam, move, blend }]. cam: establish wide top desk monitor sofa neon tv gallery map window table shelf host. move: drift push pull orbit crane truck dive (into the monitor / tv / map, so the next scene comes out of the screen). blend: seconds to travel from the previous shot (0 = cut)",
+                  "default": [
+                    {
+                      "at": 0,
+                      "cam": "establish",
+                      "move": "push"
+                    },
+                    {
+                      "at": 3,
+                      "cam": "sofa",
+                      "move": "orbit"
+                    },
+                    {
+                      "at": 5.5,
+                      "cam": "tv",
+                      "move": "dive"
+                    }
+                  ]
+                },
+                "images": {
+                  "description": "Local image files for the screens (index into this list from monitor / tv / gallery / poster)",
+                  "default": []
+                },
+                "monitor": {
+                  "description": "Desk monitor: [{ at, text }] types the text in a terminal, or [{ at, image }]",
+                  "default": []
+                },
+                "tv": {
+                  "description": "TV: [{ at, image }] or [{ at, text }]",
+                  "default": []
+                },
+                "gallery": {
+                  "description": "Image indexes framed on the right wall",
+                  "default": []
+                },
+                "poster": {
+                  "description": "Image index for the map poster on the back wall",
+                  "default": null,
+                  "type": "null"
+                },
+                "neon": {
+                  "description": "Neon sign text above the sofa",
+                  "default": "rudywizz",
+                  "type": "string"
+                },
+                "models": {
+                  "description": "Folder of glTF furniture (optional; procedural furniture otherwise)",
+                  "default": null,
+                  "type": "null"
+                },
+                "bpm": {
+                  "description": "Speaker cones and the LED strip pulse on this tempo",
+                  "default": 112,
+                  "type": "number"
+                },
+                "mixVoices": {
+                  "description": "false when an overlay already plays the same voice lines (avoids playing them twice)",
+                  "default": true,
+                  "type": "boolean"
+                },
+                "accent": {
+                  "description": "Accent colour (neon, highlights)",
+                  "default": "#ff6b5a",
+                  "type": "string"
                 }
               }
             }
@@ -4525,6 +4855,7 @@
               "cta-follow",
               "cube-spin",
               "doodle-story",
+              "editorial",
               "extrude-3d",
               "glitch-title",
               "halftone-press",
@@ -4546,6 +4877,7 @@
               "presenter",
               "receipt",
               "retro-grid",
+              "room",
               "scramble",
               "signal-tune",
               "split-flap",
@@ -5022,6 +5354,65 @@
                   "description": "auto | wide",
                   "default": "auto",
                   "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "style": {
+                  "const": "editorial"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "text": {
+                  "description": "Without lines: phrases separated by \" / \" shown one after another",
+                  "default": "Every word *lands* on time. / Captions that read like a *magazine.*",
+                  "type": "string"
+                },
+                "lines": {
+                  "description": "Timed lines: [{ who, at, text, voice }]. *word* = hero word (otherwise the longest word is). The voice file times the words and is played (see mixVoices)",
+                  "default": []
+                },
+                "masthead": {
+                  "description": "Masthead text (top left); \"\" hides the masthead",
+                  "default": "RUDYWIZZ — MOTION",
+                  "type": "string"
+                },
+                "sections": {
+                  "description": "Section counter: [{ at, title }] → \"03 / 11  TITLE\" top right",
+                  "default": []
+                },
+                "tags": {
+                  "description": "Labels: [{ from, to, text, label }] e.g. { label: \"STYLE\", text: \"neon-sign\" }",
+                  "default": []
+                },
+                "zones": {
+                  "description": "Caption position over time: [{ at, pos: top | middle | bottom }]",
+                  "default": []
+                },
+                "pos": {
+                  "description": "Default caption position",
+                  "default": "bottom",
+                  "type": "string"
+                },
+                "accent": {
+                  "description": "Hero word colour",
+                  "default": "#ff6b5a",
+                  "type": "string"
+                },
+                "mixVoices": {
+                  "description": "false when the scene already plays the voices",
+                  "default": true,
+                  "type": "boolean"
+                },
+                "speakers": {
+                  "description": "Show the speaker tag above each phrase",
+                  "default": true,
+                  "type": "boolean"
                 }
               }
             }
@@ -5985,6 +6376,107 @@
                   "description": "Grid scroll speed multiplier",
                   "default": 1,
                   "type": "number"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "style": {
+                  "const": "room"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "text": {
+                  "description": "Text (\" / \" or \\n for line breaks)",
+                  "default": "rudywizz",
+                  "type": "string"
+                },
+                "cast": {
+                  "description": "Hosts: [{ name, rig: \"path/to/rig.json\" | \"bit\" }] (see presenter)",
+                  "default": [
+                    {
+                      "name": "Bit",
+                      "rig": "bit"
+                    }
+                  ]
+                },
+                "lines": {
+                  "description": "Voice lines: [{ who, at, text, voice, pose, mood, spot }] — a host appears for its lines at `spot` (desk sofa tv center gallery window front). The mouth follows the voice",
+                  "default": []
+                },
+                "show": {
+                  "description": "Extra appearances without a line: [{ who, from, to, spot, pose }]",
+                  "default": []
+                },
+                "shots": {
+                  "description": "Camera: [{ at, cam, move, blend }]. cam: establish wide top desk monitor sofa neon tv gallery map window table shelf host. move: drift push pull orbit crane truck dive (into the monitor / tv / map, so the next scene comes out of the screen). blend: seconds to travel from the previous shot (0 = cut)",
+                  "default": [
+                    {
+                      "at": 0,
+                      "cam": "establish",
+                      "move": "push"
+                    },
+                    {
+                      "at": 3,
+                      "cam": "sofa",
+                      "move": "orbit"
+                    },
+                    {
+                      "at": 5.5,
+                      "cam": "tv",
+                      "move": "dive"
+                    }
+                  ]
+                },
+                "images": {
+                  "description": "Local image files for the screens (index into this list from monitor / tv / gallery / poster)",
+                  "default": []
+                },
+                "monitor": {
+                  "description": "Desk monitor: [{ at, text }] types the text in a terminal, or [{ at, image }]",
+                  "default": []
+                },
+                "tv": {
+                  "description": "TV: [{ at, image }] or [{ at, text }]",
+                  "default": []
+                },
+                "gallery": {
+                  "description": "Image indexes framed on the right wall",
+                  "default": []
+                },
+                "poster": {
+                  "description": "Image index for the map poster on the back wall",
+                  "default": null,
+                  "type": "null"
+                },
+                "neon": {
+                  "description": "Neon sign text above the sofa",
+                  "default": "rudywizz",
+                  "type": "string"
+                },
+                "models": {
+                  "description": "Folder of glTF furniture (optional; procedural furniture otherwise)",
+                  "default": null,
+                  "type": "null"
+                },
+                "bpm": {
+                  "description": "Speaker cones and the LED strip pulse on this tempo",
+                  "default": 112,
+                  "type": "number"
+                },
+                "mixVoices": {
+                  "description": "false when an overlay already plays the same voice lines (avoids playing them twice)",
+                  "default": true,
+                  "type": "boolean"
+                },
+                "accent": {
+                  "description": "Accent colour (neon, highlights)",
+                  "default": "#ff6b5a",
+                  "type": "string"
                 }
               }
             }

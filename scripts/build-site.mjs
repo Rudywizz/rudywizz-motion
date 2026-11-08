@@ -4,6 +4,7 @@
 //   node scripts/build-site.mjs [outDir]
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -25,7 +26,7 @@ const GROUPS = [
   ['kinetic', 'Kinetic type', ['word-stack', 'glitch-title', 'scramble', 'ticker-rows', 'typewriter', 'highlight-quote', 'beat-cut', 'lyric-video', 'murmuration', 'neon-sign', 'inflate', 'ink-bleed', 'halftone-press', 'led-marquee', 'split-flap', 'vhs-memory', 'pixel-quest', 'signal-tune']],
   ['3d', '3D', ['extrude-3d', 'cube-spin', 'particle-sphere', 'text-tunnel', 'retro-grid', 'card-carousel']],
   ['social', 'Social & broadcast', ['lower-third', 'chat-story', 'bar-chart', 'countdown', 'cta-follow', 'captions', 'odometer', 'receipt', 'orbit-ring']],
-  ['stories', 'Stories & hosts', ['story-3d', 'doodle-story', 'presenter']],
+  ['stories', 'Stories & hosts', ['story-3d', 'doodle-story', 'presenter', 'room', 'editorial']],
   ['maps', 'Maps & history', ['map-route', 'history-title', 'parchment-letter']],
 ];
 // extra gallery tiles that are not a style id of their own
@@ -65,6 +66,8 @@ for (const [key, , ids] of GROUPS) {
 const listed = new Set(GROUPS.flatMap((g) => g[2]));
 const missing = Object.keys(styles).filter((id) => !listed.has(id));
 if (missing.length) throw new Error(`build-site: add these styles to GROUPS: ${missing.join(', ')}`);
+// content hash in the URL: browsers and the CDN fetch a preview again as soon as it is re-rendered
+const ver = (img) => crypto.createHash('sha1').update(fs.readFileSync(path.join(ROOT, 'gallery', `${img}.webp`))).digest('hex').slice(0, 8);
 for (const t of tiles) if (!fs.existsSync(path.join(ROOT, 'gallery', `${t.img}.webp`))) throw new Error(`build-site: missing gallery/${t.img}.webp`);
 
 const templates = fs.readdirSync(path.join(ENGINE, 'templates')).filter((f) => f.endsWith('.json')).sort().map((f) => {
@@ -76,7 +79,7 @@ const templates = fs.readdirSync(path.join(ENGINE, 'templates')).filter((f) => f
 // --- page ---------------------------------------------------------------------
 const tileHtml = tiles.map((t) => `
       <figure class="tile" data-k="${t.key}">
-        <img src="gallery/${t.img}.webp" width="270" height="480" loading="lazy" alt="${esc(t.name)}: ${esc(t.tagline)}">
+        <img src="gallery/${t.img}.webp?v=${ver(t.img)}" width="270" height="480" loading="lazy" alt="${esc(t.name)}: ${esc(t.tagline)}">
         <figcaption>
           <b>${esc(t.name)}</b>
           <span>${esc(t.tagline)}</span>
@@ -192,7 +195,7 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
     <a class="btn primary" href="${REPO}">★ Star on GitHub</a>
     <a class="btn" href="#install">Get started</a>
   </div>
-  <div class="reel"><img src="gallery/hero.webp" width="640" height="360" alt="Showreel: kinetic type, 3D titles, maps and transitions"></div>
+  <div class="reel"><img src="gallery/hero.webp?v=${ver('hero')}" width="640" height="360" alt="Showreel: kinetic type, 3D titles, maps and transitions"></div>
   <div class="facts">
     <div><b>${Object.keys(styles).length}</b>styles</div>
     <div><b>${templates.length}</b>templates</div>

@@ -150,7 +150,7 @@ async function styleMod(id) {
 const TOKEN = crypto.randomBytes(16).toString('hex');
 const BASE = `/${TOKEN}`;
 function startServer(media, comp) {
-  const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css', '.json': 'application/json', '.woff2': 'font/woff2', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.gif': 'image/gif' };
+  const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css', '.json': 'application/json', '.woff2': 'font/woff2', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.gif': 'image/gif', '.gltf': 'model/gltf+json', '.glb': 'model/gltf-binary', '.bin': 'application/octet-stream', '.hdr': 'image/vnd.radiance' };
   const compJson = JSON.stringify(comp);
   return new Promise((resolve) => {
     const server = http.createServer((req, res) => {
@@ -167,10 +167,14 @@ function startServer(media, comp) {
         return res.end(compJson);
       }
       let file = null;
-      const m = rel.match(/^\/media\/([a-z0-9]+)(?:\/([\w.-]+))?$/);
+      const m = rel.match(/^\/media\/([a-z0-9]+)(?:\/([\w./ -]+))?$/);
       if (m && media.has(m[1])) {
         const ent = media.get(m[1]);
-        file = ent.dir ? (m[2] ? path.join(ent.dir, path.basename(m[2])) : null) : ent.file;
+        if (ent.dir && m[2]) {
+          // folders (clip frames, 3D model sets) may have sub-folders; never step outside the folder
+          const f = path.resolve(ent.dir, m[2]);
+          if (f.startsWith(path.resolve(ent.dir) + path.sep)) file = f;
+        } else if (!ent.dir) file = ent.file;
       } else {
         const f = path.resolve(ROOT, '.' + rel);
         if (f.startsWith(ROOT + path.sep)) file = f;
@@ -325,6 +329,17 @@ function prepareMedia(comp, baseDir, quiet) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rm-frames-'));
   const norm = normalizeComp(comp, (id) => styleCache[id]?.defaults);
   // style options that take image files (e.g. card-carousel `images`) are served like any other media
+  // a folder of 3D models (room `models`): served whole, so .gltf files find their .bin and textures
+  const regModels = (o) => {
+    for (const host of [o, o?.params]) {
+      if (!host || typeof host.models !== 'string') continue;
+      const abs = path.resolve(baseDir, host.models);
+      if (!fs.existsSync(abs) || !fs.statSync(abs).isDirectory()) die(`Models folder not found: ${abs}`);
+      const id = 'm' + n++;
+      media.set(id, { dir: abs });
+      host.models = `${BASE}/media/${id}/`;
+    }
+  };
   const regStyleImages = (o) => {
     if (o && Array.isArray(o.images)) o.images = o.images.map((f) => (f ? reg(f) : f));
     if (o?.params && Array.isArray(o.params.images)) o.params.images = o.params.images.map((f) => (f ? reg(f) : f));
@@ -381,6 +396,7 @@ function prepareMedia(comp, baseDir, quiet) {
     regVoices(sc.params);
     regStyleImages(sc);
     regStyleImages(sc.overlay);
+    regModels(sc);
     if (sc.image) sc.src = reg(sc.image);
     if (Array.isArray(sc.layers)) sc.layers = sc.layers.map((l) => ({ ...l, src: reg(l.src || l.image) }));
     if (sc.clip) {

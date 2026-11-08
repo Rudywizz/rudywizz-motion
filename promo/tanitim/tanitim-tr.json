@@ -2,38 +2,147 @@
   "format": "9:16",
   "lang": "tr",
   "look": {
-    "bloom": 0.18,
+    "bloom": 0.2,
     "grain": 0.025,
-    "vignette": 0.22
+    "vignette": 0.2
   },
   "music": {
     "mood": "upbeat",
     "seed": 7,
-    "volume": 0.45
+    "volume": 0.42
   },
   "scenes": [
+    {
+      "style": "room",
+      "models": "../oda",
+      "cast": [
+        {
+          "name": "Rudy",
+          "rig": "../characters/rudy/rig.json"
+        },
+        {
+          "name": "Bit",
+          "rig": "bit"
+        }
+      ],
+      "mixVoices": false,
+      "bpm": 116,
+      "neon": "rudywizz",
+      "duration": 22.01,
+      "camera": "static",
+      "transition": {
+        "type": "whip",
+        "duration": 0.4
+      },
+      "images": [
+        "kareler/464dfd1ad0.png",
+        "kareler/6e8ffbc51a.png",
+        "kareler/244deacb75.png",
+        "kareler/47fd9305e9.png",
+        "kareler/36c95f24a4.png",
+        "kareler/daf708fad6.png",
+        "kareler/27f6f0a735.png",
+        "kareler/0461737221.png",
+        "kareler/3af7ec75db.png",
+        "kareler/3387b9aec0.png",
+        "kareler/c1ed0ee401.png",
+        "kareler/5ac06081c4.png",
+        "kareler/464dfd1ad0.png"
+      ],
+      "gallery": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tv": [],
+      "monitor": [
+        {
+          "at": 1.6,
+          "text": "# video.mp4 / durum: beklemede… / ▍",
+          "speed": 26
+        },
+        {
+          "at": 20.114591,
+          "image": 12
+        }
+      ],
+      "lines": [
+        {
+          "who": "Rudy",
+          "at": 2.2,
+          "text": "Aklında anlatmak istediğin bir hikâye var. Belki paylaşmak istediğin bir bilgi, belki de “Bundan güzel video olur” dediğin bir fikir.",
+          "voice": "ses/01-rudy.mp3",
+          "spot": "sofa",
+          "mood": "curious"
+        },
+        {
+          "who": "Rudy",
+          "at": 10.21,
+          "text": "Ama kurgu programı bilmiyorsun. Kameran yok, stüdyon yok. Bir de bütün bunlarla uğraşacak vaktin yok.",
+          "voice": "ses/02-rudy.mp3",
+          "spot": "desk",
+          "mood": "sad"
+        },
+        {
+          "who": "Bit",
+          "at": 17.74,
+          "text": "Fikir hazır. Video beklemede.",
+          "voice": "ses/03-bit.mp3",
+          "spot": "desk",
+          "mood": "blank"
+        }
+      ],
+      "shots": [
+        {
+          "at": 0,
+          "cam": "establish",
+          "move": "push",
+          "blend": 0
+        },
+        {
+          "at": 1.95,
+          "cam": "host",
+          "move": "push",
+          "blend": 0.85
+        },
+        {
+          "at": 9.96,
+          "cam": "desk",
+          "move": "orbit",
+          "blend": 0.85
+        },
+        {
+          "at": 17.49,
+          "cam": "monitor",
+          "move": "push",
+          "blend": 0.85
+        },
+        {
+          "at": 20.21,
+          "cam": "monitor",
+          "move": "dive",
+          "blend": 0.7
+        }
+      ]
+    },
     {
       "style": "glitch-title",
       "text": "Anlatacak / bir şeyin var",
       "subtitle": "HİKÂYE · BİLGİ · FİKİR",
       "camera": "handheld",
-      "duration": 19.31,
+      "duration": 3,
       "transition": {
-        "type": "whip",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "presenter",
-      "backdrop": "studio",
-      "label": "RUDYWIZZ MOTION · 02 · ESKİDEN",
-      "cast": [],
-      "text": "",
-      "camera": "float",
-      "duration": 8.51,
-      "transition": {
-        "type": "zoom",
-        "duration": 0.4
+        "type": "flash",
+        "duration": 0.25
       }
     },
     {
@@ -66,88 +175,238 @@
       "date": "09.11.2026  03:12",
       "footer": "ARTIK GEREK YOK",
       "camera": "push-in",
-      "duration": 5,
+      "duration": 8.36,
+      "transition": {
+        "type": "zoom",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "room",
+      "models": "../oda",
+      "cast": [
+        {
+          "name": "Rudy",
+          "rig": "../characters/rudy/rig.json"
+        },
+        {
+          "name": "Bit",
+          "rig": "bit"
+        }
+      ],
+      "mixVoices": false,
+      "bpm": 116,
+      "neon": "rudywizz",
+      "duration": 21.53,
+      "camera": "static",
       "transition": {
         "type": "glitch",
         "duration": 0.4
-      }
-    },
-    {
-      "style": "presenter",
-      "backdrop": "studio",
-      "label": "RUDYWIZZ MOTION · 03 · NASIL ÇALIŞIYOR",
-      "cast": [],
-      "text": "",
-      "camera": "float",
-      "duration": 7.63,
-      "transition": {
-        "type": "flash",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "typewriter",
-      "text": "npx rudywizz-motion / render neon-sign / --text \"Hikâyem\"",
-      "theme": "terminal",
-      "title": "zsh",
-      "speed": 22,
-      "camera": "drift",
-      "duration": 9.93,
-      "transition": {
-        "type": "ink",
-        "duration": 0.4
-      }
+      },
+      "images": [
+        "kareler/464dfd1ad0.png",
+        "kareler/6e8ffbc51a.png",
+        "kareler/244deacb75.png",
+        "kareler/47fd9305e9.png",
+        "kareler/36c95f24a4.png",
+        "kareler/daf708fad6.png",
+        "kareler/27f6f0a735.png",
+        "kareler/0461737221.png",
+        "kareler/3af7ec75db.png",
+        "kareler/3387b9aec0.png",
+        "kareler/c1ed0ee401.png",
+        "kareler/5ac06081c4.png",
+        "kareler/244deacb75.png"
+      ],
+      "gallery": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tv": [],
+      "monitor": [
+        {
+          "at": 11.225042999999994,
+          "text": "npx rudywizz-motion / render neon-sign / --text \"Hikâyem\" / ✓ hikayem.mp4  (1080×1920)",
+          "speed": 26
+        },
+        {
+          "at": 19.631164999999992,
+          "image": 12
+        }
+      ],
+      "lines": [
+        {
+          "who": "Bit",
+          "at": 0.25,
+          "text": "Bu kez listeyi bir kenara bırak. Anlatmak istediğin şeyle başlayalım.",
+          "voice": "ses/05-bit.mp3",
+          "spot": "center",
+          "mood": "happy"
+        },
+        {
+          "who": "Rudy",
+          "at": 4.85,
+          "text": "İşte Rudywizz Motion. Yazdıklarını hareketli başlıklara, grafiklere ve sahnelere dönüştüren bir araç.",
+          "voice": "ses/06-rudy.mp3",
+          "spot": "sofa",
+          "mood": "happy"
+        },
+        {
+          "who": "Bit",
+          "at": 11.83,
+          "text": "Ne anlatacağını yaz, stilini seç. Ben her kareyi kodla çizeyim. Sonunda elinde paylaşmaya hazır bir MP4 olsun.",
+          "voice": "ses/07-bit.mp3",
+          "spot": "desk",
+          "mood": "happy"
+        }
+      ],
+      "shots": [
+        {
+          "at": 0,
+          "cam": "wide",
+          "move": "truck",
+          "blend": 0
+        },
+        {
+          "at": 4.6,
+          "cam": "neon",
+          "move": "pull",
+          "blend": 0.85
+        },
+        {
+          "at": 11.58,
+          "cam": "monitor",
+          "move": "push",
+          "blend": 0.85
+        },
+        {
+          "at": 19.73,
+          "cam": "monitor",
+          "move": "dive",
+          "blend": 0.7
+        }
+      ]
     },
     {
       "style": "neon-sign",
       "text": "Hikâyem",
       "camera": "push-in",
-      "duration": 9.93,
+      "duration": 2.8,
       "transition": {
-        "type": "pixelate",
-        "duration": 0.4
+        "type": "flash",
+        "duration": 0.25
       }
     },
     {
-      "style": "presenter",
-      "backdrop": "studio",
-      "label": "RUDYWIZZ MOTION · 04 · AÇILIŞLAR VE BAŞLIKLAR",
-      "cast": [],
-      "text": "",
-      "camera": "float",
-      "duration": 10.11,
+      "style": "room",
+      "models": "../oda",
+      "cast": [
+        {
+          "name": "Rudy",
+          "rig": "../characters/rudy/rig.json"
+        },
+        {
+          "name": "Bit",
+          "rig": "bit"
+        }
+      ],
+      "mixVoices": false,
+      "bpm": 116,
+      "neon": "rudywizz",
+      "duration": 12.7,
+      "camera": "static",
       "transition": {
-        "type": "spin",
+        "type": "ink",
         "duration": 0.4
-      }
+      },
+      "images": [
+        "kareler/464dfd1ad0.png",
+        "kareler/6e8ffbc51a.png",
+        "kareler/244deacb75.png",
+        "kareler/47fd9305e9.png",
+        "kareler/36c95f24a4.png",
+        "kareler/daf708fad6.png",
+        "kareler/27f6f0a735.png",
+        "kareler/0461737221.png",
+        "kareler/3af7ec75db.png",
+        "kareler/3387b9aec0.png",
+        "kareler/c1ed0ee401.png",
+        "kareler/5ac06081c4.png",
+        "kareler/47fd9305e9.png"
+      ],
+      "gallery": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tv": [
+        {
+          "at": 0,
+          "image": 12
+        }
+      ],
+      "monitor": [],
+      "lines": [
+        {
+          "who": "Rudy",
+          "at": 0.25,
+          "text": "Çekim yapman, kurgu ekranında tek tek uğraşman gerekmiyor. Görüntüyü bir yapay zekâ video modeli de üretmiyor. Her şey kodla çiziliyor; aynı ayarlarla aynı sonucu alıyorsun.",
+          "voice": "ses/08-rudy.mp3",
+          "spot": "tv",
+          "mood": "happy"
+        }
+      ],
+      "shots": [
+        {
+          "at": 0,
+          "cam": "tv",
+          "move": "orbit",
+          "blend": 0
+        },
+        {
+          "at": 10.9,
+          "cam": "tv",
+          "move": "dive",
+          "blend": 0.7
+        }
+      ]
     },
     {
       "style": "extrude-3d",
       "text": "Bölüm / bir",
       "camera": "orbit",
-      "duration": 2.2,
+      "duration": 2.1,
       "transition": {
-        "type": "liquid",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "inflate",
-      "text": "Tatlı / fikir",
-      "duration": 2.2,
-      "camera": "drift",
-      "transition": {
-        "type": "blinds",
-        "duration": 0.4
+        "type": "flash",
+        "duration": 0.25
       }
     },
     {
       "style": "ink-bleed",
       "text": "Yavaş / ve / zarif",
-      "duration": 2.2,
-      "camera": "punch-in",
+      "duration": 2.1,
+      "camera": "tilt-reveal",
       "transition": {
-        "type": "leak",
+        "type": "pixelate",
         "duration": 0.4
       }
     },
@@ -155,10 +414,20 @@
       "style": "split-flap",
       "text": "Yeni bölüm / yarın / 20:00",
       "title": "YAYIN · KALKIŞ",
-      "duration": 2.2,
+      "duration": 2.1,
       "camera": "drift",
       "transition": {
-        "type": "cube",
+        "type": "spin",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "inflate",
+      "text": "Tatlı / fikir",
+      "duration": 2.1,
+      "camera": "punch-in",
+      "transition": {
+        "type": "liquid",
         "duration": 0.4
       }
     },
@@ -166,83 +435,70 @@
       "style": "halftone-press",
       "text": "Baskı / hâlâ / yaşıyor",
       "caption": "RISO · 2 RENK · 1 BASKI",
-      "duration": 2.2,
-      "camera": "push-in",
+      "duration": 2.1,
+      "camera": "drift",
       "transition": {
-        "type": "ripple",
+        "type": "blinds",
         "duration": 0.4
       }
     },
     {
       "style": "led-marquee",
-      "text": "Hoş geldin / Bölüm 1 / Hikâye başlıyor",
-      "duration": 2.2,
-      "camera": "pull-out",
+      "text": "Hoş geldin / Bölüm 1",
+      "duration": 2.1,
+      "camera": "push-in",
       "transition": {
-        "type": "wipe",
+        "type": "leak",
         "duration": 0.4
       }
     },
     {
       "style": "word-stack",
       "text": "Her / kare / sayılır",
-      "duration": 2.2,
-      "camera": "rise",
+      "duration": 2.1,
+      "camera": "pull-out",
       "transition": {
-        "type": "stretch",
+        "type": "cube",
         "duration": 0.4
       }
     },
     {
       "style": "text-tunnel",
       "text": "Daha / derine",
-      "duration": 2.2,
-      "camera": "float",
+      "duration": 2.1,
+      "camera": "rise",
       "transition": {
-        "type": "whip",
+        "type": "ripple",
         "duration": 0.4
       }
     },
     {
       "style": "cube-spin",
       "text": "Yaz / Üret / Paylaş / Tekrarla",
-      "duration": 2.2,
-      "camera": "tilt-reveal",
+      "duration": 2.1,
+      "camera": "float",
       "transition": {
-        "type": "zoom",
+        "type": "wipe",
         "duration": 0.4
       }
     },
     {
       "style": "beat-cut",
       "text": "Yaz / kes / bas / paylaş",
-      "duration": 2.2,
-      "camera": "drift",
+      "duration": 2.1,
+      "camera": "tilt-reveal",
       "transition": {
-        "type": "glitch",
+        "type": "stretch",
         "duration": 0.4
       }
     },
     {
       "style": "ticker-rows",
       "text": "Yeni / bölüm",
-      "duration": 2.2,
-      "camera": "punch-in",
+      "duration": 2.1,
+      "camera": "drift",
       "transition": {
-        "type": "flash",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "presenter",
-      "backdrop": "studio",
-      "label": "RUDYWIZZ MOTION · 05 · BİLGİ ANLATMAK",
-      "cast": [],
-      "text": "",
-      "camera": "float",
-      "duration": 9.56,
-      "transition": {
-        "type": "ink",
+        "type": "whip",
         "duration": 0.4
       }
     },
@@ -250,10 +506,10 @@
       "style": "bar-chart",
       "text": "Türkiye’nin en kalabalık şehirleri",
       "note": "Nüfus, milyon (2024)",
-      "duration": 2.2,
-      "camera": "push-in",
+      "duration": 3.4,
+      "camera": "punch-in",
       "transition": {
-        "type": "pixelate",
+        "type": "zoom",
         "duration": 0.4
       }
     },
@@ -261,9 +517,9 @@
       "style": "odometer",
       "text": "4683 bölge",
       "camera": "punch-in",
-      "duration": 2.2,
+      "duration": 3.4,
       "transition": {
-        "type": "spin",
+        "type": "glitch",
         "duration": 0.4
       }
     },
@@ -276,12 +532,92 @@
         "Tokyo"
       ],
       "theme": "dark",
-      "duration": 2.2,
-      "camera": "rise",
+      "duration": 3.4,
+      "camera": "push-in",
       "transition": {
-        "type": "liquid",
+        "type": "ink",
         "duration": 0.4
       }
+    },
+    {
+      "style": "room",
+      "models": "../oda",
+      "cast": [
+        {
+          "name": "Rudy",
+          "rig": "../characters/rudy/rig.json"
+        },
+        {
+          "name": "Bit",
+          "rig": "bit"
+        }
+      ],
+      "mixVoices": false,
+      "bpm": 116,
+      "neon": "rudywizz",
+      "duration": 10.37,
+      "camera": "static",
+      "transition": {
+        "type": "pixelate",
+        "duration": 0.4
+      },
+      "images": [
+        "kareler/464dfd1ad0.png",
+        "kareler/6e8ffbc51a.png",
+        "kareler/244deacb75.png",
+        "kareler/47fd9305e9.png",
+        "kareler/36c95f24a4.png",
+        "kareler/daf708fad6.png",
+        "kareler/27f6f0a735.png",
+        "kareler/0461737221.png",
+        "kareler/3af7ec75db.png",
+        "kareler/3387b9aec0.png",
+        "kareler/c1ed0ee401.png",
+        "kareler/5ac06081c4.png",
+        "kareler/e7b1f9abd9.png",
+        "kareler/e7b1f9abd9.png"
+      ],
+      "gallery": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "poster": 13,
+      "tv": [],
+      "monitor": [],
+      "lines": [
+        {
+          "who": "Bit",
+          "at": 0.25,
+          "text": "Bütün dünya hazır: ülkeler, şehirler, eyaletler… Haritalar içeride; videoyu oluşturmak için internet bile gerekmiyor.",
+          "voice": "ses/12-bit.mp3",
+          "spot": "window",
+          "mood": "happy"
+        }
+      ],
+      "shots": [
+        {
+          "at": 0,
+          "cam": "map",
+          "move": "push",
+          "blend": 0
+        },
+        {
+          "at": 8.57,
+          "cam": "map",
+          "move": "dive",
+          "blend": 0.7
+        }
+      ]
     },
     {
       "style": "map-route",
@@ -292,11 +628,11 @@
         "Sapporo"
       ],
       "theme": "light",
-      "duration": 2.2,
-      "camera": "float",
+      "duration": 2.1,
+      "camera": "rise",
       "transition": {
-        "type": "blinds",
-        "duration": 0.4
+        "type": "flash",
+        "duration": 0.25
       }
     },
     {
@@ -307,33 +643,10 @@
         "Atina"
       ],
       "theme": "atlas",
-      "duration": 2.2,
-      "camera": "tilt-reveal",
-      "transition": {
-        "type": "leak",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "countdown",
-      "text": "Anlatım / başlıyor",
-      "duration": 2.2,
-      "camera": "drift",
-      "transition": {
-        "type": "cube",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "presenter",
-      "backdrop": "studio",
-      "label": "RUDYWIZZ MOTION · 06 · SOSYAL MEDYA",
-      "cast": [],
-      "text": "",
+      "duration": 2.1,
       "camera": "float",
-      "duration": 11.23,
       "transition": {
-        "type": "ripple",
+        "type": "spin",
         "duration": 0.4
       }
     },
@@ -343,103 +656,236 @@
       "name": "Ece",
       "time": "Bugün 21:14",
       "seen": "Görüldü",
-      "duration": 2.2,
-      "camera": "drift",
+      "duration": 3.96,
+      "camera": "tilt-reveal",
       "transition": {
-        "type": "wipe",
+        "type": "liquid",
         "duration": 0.4
       }
     },
     {
       "style": "captions",
       "text": "Altyazılar kelime kelime geliyor, arka plan şeffaf",
-      "duration": 2.2,
-      "camera": "push-in",
+      "duration": 3.96,
+      "camera": "drift",
       "transition": {
-        "type": "stretch",
+        "type": "blinds",
         "duration": 0.4
       }
     },
     {
       "style": "lyric-video",
       "credit": "RUDYWIZZ — GECE",
-      "duration": 2.2,
-      "camera": "pull-out",
+      "duration": 3.96,
+      "camera": "punch-in",
       "transition": {
-        "type": "whip",
+        "type": "leak",
         "duration": 0.4
       }
     },
     {
+      "style": "room",
+      "models": "../oda",
+      "cast": [
+        {
+          "name": "Rudy",
+          "rig": "../characters/rudy/rig.json"
+        },
+        {
+          "name": "Bit",
+          "rig": "bit"
+        }
+      ],
+      "mixVoices": false,
+      "bpm": 116,
+      "neon": "rudywizz",
+      "duration": 11.73,
+      "camera": "static",
+      "transition": {
+        "type": "cube",
+        "duration": 0.4
+      },
+      "images": [
+        "kareler/464dfd1ad0.png",
+        "kareler/6e8ffbc51a.png",
+        "kareler/244deacb75.png",
+        "kareler/47fd9305e9.png",
+        "kareler/36c95f24a4.png",
+        "kareler/daf708fad6.png",
+        "kareler/27f6f0a735.png",
+        "kareler/0461737221.png",
+        "kareler/3af7ec75db.png",
+        "kareler/3387b9aec0.png",
+        "kareler/c1ed0ee401.png",
+        "kareler/5ac06081c4.png",
+        "kareler/da5225e249.png"
+      ],
+      "gallery": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tv": [
+        {
+          "at": 0,
+          "image": 12
+        }
+      ],
+      "monitor": [],
+      "lines": [
+        {
+          "who": "Rudy",
+          "at": 0.25,
+          "text": "Kendi çektiğin bir video da olabilir. Yazıları şeffaf arka planla dışa aktar, CapCut'ta görüntünün üstüne yerleştir. Hazırladığın animasyon, videonun bir parçası olsun.",
+          "voice": "ses/14-rudy.mp3",
+          "spot": "sofa",
+          "mood": "happy"
+        }
+      ],
+      "shots": [
+        {
+          "at": 0,
+          "cam": "sofa",
+          "move": "orbit",
+          "blend": 0
+        },
+        {
+          "at": 9.93,
+          "cam": "tv",
+          "move": "dive",
+          "blend": 0.7
+        }
+      ]
+    },
+    {
       "style": "lower-third",
       "text": "Kendi adın / anlatıcı · İstanbul",
-      "duration": 2.2,
-      "camera": "rise",
+      "duration": 2.1,
+      "camera": "push-in",
       "transition": {
-        "type": "zoom",
-        "duration": 0.4
+        "type": "flash",
+        "duration": 0.25
       }
     },
     {
       "style": "highlight-quote",
       "text": "Önce sadeleştir, / sonra hareket ettir.",
       "author": "rudywizz-motion",
-      "duration": 2.2,
-      "camera": "float",
+      "duration": 2.1,
+      "camera": "pull-out",
       "transition": {
-        "type": "glitch",
+        "type": "ripple",
         "duration": 0.4
       }
     },
     {
-      "style": "card-carousel",
-      "text": "Hikâye / Bilgi / Ders / Tarif / Gezi / Fikir",
-      "duration": 2.2,
-      "camera": "tilt-reveal",
+      "style": "room",
+      "models": "../oda",
+      "cast": [
+        {
+          "name": "Rudy",
+          "rig": "../characters/rudy/rig.json"
+        },
+        {
+          "name": "Bit",
+          "rig": "bit"
+        }
+      ],
+      "mixVoices": false,
+      "bpm": 116,
+      "neon": "rudywizz",
+      "duration": 14.14,
+      "camera": "static",
+      "transition": {
+        "type": "wipe",
+        "duration": 0.4
+      },
+      "images": [
+        "kareler/464dfd1ad0.png",
+        "kareler/6e8ffbc51a.png",
+        "kareler/244deacb75.png",
+        "kareler/47fd9305e9.png",
+        "kareler/36c95f24a4.png",
+        "kareler/daf708fad6.png",
+        "kareler/27f6f0a735.png",
+        "kareler/0461737221.png",
+        "kareler/3af7ec75db.png",
+        "kareler/3387b9aec0.png",
+        "kareler/c1ed0ee401.png",
+        "kareler/5ac06081c4.png",
+        "kareler/9fd8e66401.png"
+      ],
+      "gallery": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tv": [
+        {
+          "at": 0,
+          "image": 12
+        }
+      ],
+      "monitor": [],
+      "lines": [
+        {
+          "who": "Rudy",
+          "at": 0.25,
+          "text": "Peki, hikâyen nasıl hissettirsin? Eski bir mektup kadar kişisel, bir tarih belgeseli kadar etkileyici, VHS kaydı kadar nostaljik… Ya da bir piksel oyunu kadar eğlenceli.",
+          "voice": "ses/15-rudy.mp3",
+          "spot": "gallery",
+          "mood": "curious"
+        }
+      ],
+      "shots": [
+        {
+          "at": 0,
+          "cam": "gallery",
+          "move": "truck",
+          "blend": 0
+        },
+        {
+          "at": 12.34,
+          "cam": "tv",
+          "move": "dive",
+          "blend": 0.7
+        }
+      ]
+    },
+    {
+      "style": "parchment-letter",
+      "duration": 2.1,
+      "camera": "float",
       "transition": {
         "type": "flash",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "presenter",
-      "backdrop": "studio",
-      "label": "RUDYWIZZ MOTION · 07 · HİKÂYENİN HAVASI",
-      "cast": [],
-      "text": "",
-      "camera": "float",
-      "duration": 13.09,
-      "transition": {
-        "type": "ink",
-        "duration": 0.4
+        "duration": 0.25
       }
     },
     {
       "style": "history-title",
       "text": "1453 / Bir Çağ Kapanıyor / İstanbul",
-      "duration": 2.2,
-      "camera": "punch-in",
+      "duration": 2.1,
+      "camera": "tilt-reveal",
       "transition": {
-        "type": "pixelate",
-        "duration": 0.4
-      }
-    },
-    {
-      "image": "../../skills/rudywizz-motion/assets/demo/seyyah.svg",
-      "look": "engrave",
-      "camera": "push-in",
-      "duration": 2.2,
-      "transition": {
-        "type": "spin",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "parchment-letter",
-      "duration": 2.2,
-      "camera": "push-in",
-      "transition": {
-        "type": "liquid",
+        "type": "stretch",
         "duration": 0.4
       }
     },
@@ -447,69 +893,7 @@
       "style": "vhs-memory",
       "text": "Yaz / kasetleri",
       "date": "TEM. 14 1998",
-      "duration": 2.2,
-      "camera": "pull-out",
-      "transition": {
-        "type": "blinds",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "retro-grid",
-      "text": "Gece / sürüşü",
-      "duration": 2.2,
-      "camera": "rise",
-      "transition": {
-        "type": "leak",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "signal-tune",
-      "text": "Şimdi / yayında",
-      "station": "RUDYWIZZ TV",
-      "duration": 2.2,
-      "camera": "float",
-      "transition": {
-        "type": "cube",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "pixel-quest",
-      "text": "Seviye atla",
-      "subtitle": "BAŞLAMAK İÇİN TIKLA",
-      "duration": 2.2,
-      "camera": "tilt-reveal",
-      "transition": {
-        "type": "ripple",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "murmuration",
-      "text": "Birlikte",
-      "duration": 2.2,
-      "camera": "drift",
-      "transition": {
-        "type": "wipe",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "particle-sphere",
-      "text": "Fikirler / şekil alır",
-      "duration": 2.2,
-      "camera": "punch-in",
-      "transition": {
-        "type": "stretch",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "orbit-ring",
-      "text": "Merak et / anlat / paylaş",
-      "duration": 2.2,
+      "duration": 2.1,
       "camera": "drift",
       "transition": {
         "type": "whip",
@@ -517,27 +901,185 @@
       }
     },
     {
-      "style": "scramble",
-      "text": "Şifre / çözüldü",
-      "duration": 2.2,
-      "camera": "push-in",
+      "style": "pixel-quest",
+      "text": "Seviye atla",
+      "subtitle": "BAŞLAMAK İÇİN TIKLA",
+      "duration": 2.1,
+      "camera": "punch-in",
       "transition": {
         "type": "zoom",
         "duration": 0.4
       }
     },
     {
-      "style": "presenter",
-      "backdrop": "studio",
-      "label": "RUDYWIZZ MOTION · 08 · HİKÂYENİ OYNAYAN KARAKTERLER",
-      "cast": [],
-      "text": "",
-      "camera": "float",
-      "duration": 7.55,
+      "image": "../../skills/rudywizz-motion/assets/demo/seyyah.svg",
+      "look": "engrave",
+      "camera": "push-in",
+      "duration": 2.1,
       "transition": {
         "type": "glitch",
         "duration": 0.4
       }
+    },
+    {
+      "style": "retro-grid",
+      "text": "Gece / sürüşü",
+      "duration": 2.1,
+      "camera": "push-in",
+      "transition": {
+        "type": "ink",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "signal-tune",
+      "text": "Şimdi / yayında",
+      "station": "RUDYWIZZ TV",
+      "duration": 2.1,
+      "camera": "pull-out",
+      "transition": {
+        "type": "pixelate",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "murmuration",
+      "text": "Birlikte",
+      "duration": 2.1,
+      "camera": "rise",
+      "transition": {
+        "type": "spin",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "particle-sphere",
+      "text": "Fikirler / şekil alır",
+      "duration": 2.1,
+      "camera": "float",
+      "transition": {
+        "type": "liquid",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "orbit-ring",
+      "text": "Merak et / anlat / paylaş",
+      "duration": 2.1,
+      "camera": "tilt-reveal",
+      "transition": {
+        "type": "blinds",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "scramble",
+      "text": "Şifre / çözüldü",
+      "duration": 2.1,
+      "camera": "drift",
+      "transition": {
+        "type": "leak",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "card-carousel",
+      "text": "Hikâye / Bilgi / Ders / Tarif / Gezi / Fikir",
+      "duration": 2.1,
+      "camera": "punch-in",
+      "transition": {
+        "type": "cube",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "room",
+      "models": "../oda",
+      "cast": [
+        {
+          "name": "Rudy",
+          "rig": "../characters/rudy/rig.json"
+        },
+        {
+          "name": "Bit",
+          "rig": "bit"
+        }
+      ],
+      "mixVoices": false,
+      "bpm": 116,
+      "neon": "rudywizz",
+      "duration": 9.95,
+      "camera": "static",
+      "transition": {
+        "type": "ripple",
+        "duration": 0.4
+      },
+      "images": [
+        "kareler/464dfd1ad0.png",
+        "kareler/6e8ffbc51a.png",
+        "kareler/244deacb75.png",
+        "kareler/47fd9305e9.png",
+        "kareler/36c95f24a4.png",
+        "kareler/daf708fad6.png",
+        "kareler/27f6f0a735.png",
+        "kareler/0461737221.png",
+        "kareler/3af7ec75db.png",
+        "kareler/3387b9aec0.png",
+        "kareler/c1ed0ee401.png",
+        "kareler/5ac06081c4.png",
+        "kareler/f95563dc99.png"
+      ],
+      "gallery": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tv": [
+        {
+          "at": 0,
+          "image": 12
+        }
+      ],
+      "monitor": [],
+      "lines": [
+        {
+          "who": "Rudy",
+          "at": 1.6,
+          "text": "Bir de işin şu tarafı var: hikâyeni sadece yazılarla anlatmak zorunda değilsin. Onu oynayan karakterler de var.",
+          "voice": "ses/17-rudy.mp3",
+          "spot": "center",
+          "mood": "surprised"
+        }
+      ],
+      "shots": [
+        {
+          "at": 0,
+          "cam": "table",
+          "move": "crane",
+          "blend": 0
+        },
+        {
+          "at": 1.35,
+          "cam": "host",
+          "move": "push",
+          "blend": 0.85
+        },
+        {
+          "at": 8.15,
+          "cam": "tv",
+          "move": "dive",
+          "blend": 0.7
+        }
+      ]
     },
     {
       "style": "story-3d",
@@ -565,11 +1107,11 @@
         }
       ],
       "dialogue": "none",
-      "duration": 4.54,
-      "camera": "rise",
+      "duration": 4.56,
+      "camera": "push-in",
       "transition": {
         "type": "flash",
-        "duration": 0.4
+        "duration": 0.25
       }
     },
     {
@@ -598,10 +1140,10 @@
         }
       ],
       "dialogue": "none",
-      "duration": 4.54,
-      "camera": "float",
+      "duration": 4.56,
+      "camera": "pull-out",
       "transition": {
-        "type": "ink",
+        "type": "wipe",
         "duration": 0.4
       }
     },
@@ -631,10 +1173,10 @@
         }
       ],
       "dialogue": "none",
-      "duration": 4.54,
-      "camera": "tilt-reveal",
+      "duration": 4.56,
+      "camera": "rise",
       "transition": {
-        "type": "pixelate",
+        "type": "stretch",
         "duration": 0.4
       }
     },
@@ -642,78 +1184,16 @@
       "style": "doodle-story",
       "text": "Ece [think, thinking]: Bunu nasıl anlatsam? / Kaan [present, excited]: Yaz, biz oynayalım.",
       "dialogue": "none",
-      "duration": 4.54,
-      "camera": "drift",
-      "transition": {
-        "type": "spin",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "presenter",
-      "backdrop": "studio",
-      "label": "RUDYWIZZ MOTION · 09 · SUNUCULAR",
-      "cast": [],
-      "text": "",
+      "duration": 4.56,
       "camera": "float",
-      "duration": 15.21,
       "transition": {
-        "type": "liquid",
+        "type": "whip",
         "duration": 0.4
       }
     },
     {
-      "style": "presenter",
-      "backdrop": "studio",
-      "label": "RUDYWIZZ MOTION · 10 · CLAUDE İLE",
-      "cast": [],
-      "text": "",
-      "camera": "float",
-      "duration": 12.43,
-      "transition": {
-        "type": "blinds",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "typewriter",
-      "text": "Claude, bana bir / tanıtım videosu / hazırla",
-      "theme": "terminal",
-      "title": "claude",
-      "speed": 20,
-      "duration": 4.18,
-      "camera": "push-in",
-      "transition": {
-        "type": "leak",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "extrude-3d",
-      "text": "Video / hazır",
-      "camera": "punch-in",
-      "duration": 4.18,
-      "transition": {
-        "type": "cube",
-        "duration": 0.4
-      }
-    },
-    {
-      "style": "cta-follow",
-      "text": "rudywizz-motion / Yıldızla / GitHub · link profilde",
-      "done": "Yıldızlandı",
-      "accent": "#ff6b5a",
-      "duration": 15.99,
-      "camera": "rise",
-      "transition": {
-        "type": "ripple",
-        "duration": 0.4
-      }
-    }
-  ],
-  "overlays": [
-    {
-      "style": "presenter",
+      "style": "room",
+      "models": "../oda",
       "cast": [
         {
           "name": "Rudy",
@@ -724,213 +1204,902 @@
           "rig": "bit"
         }
       ],
-      "place": "corner",
+      "mixVoices": false,
+      "bpm": 116,
+      "neon": "rudywizz",
+      "duration": 28.54,
+      "camera": "static",
+      "transition": {
+        "type": "zoom",
+        "duration": 0.4
+      },
+      "images": [
+        "kareler/464dfd1ad0.png",
+        "kareler/6e8ffbc51a.png",
+        "kareler/244deacb75.png",
+        "kareler/47fd9305e9.png",
+        "kareler/36c95f24a4.png",
+        "kareler/daf708fad6.png",
+        "kareler/27f6f0a735.png",
+        "kareler/0461737221.png",
+        "kareler/3af7ec75db.png",
+        "kareler/3387b9aec0.png",
+        "kareler/c1ed0ee401.png",
+        "kareler/5ac06081c4.png",
+        "kareler/9ba7376c1e.png"
+      ],
+      "gallery": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tv": [],
+      "monitor": [
+        {
+          "at": 14.712013000000008,
+          "text": "# claude / Bana bir tanıtım videosu hazırla. / Konusu: rudywizz-motion, dikey, eğlenceli. / ✓ tanitim.mp4 hazır",
+          "speed": 26
+        },
+        {
+          "at": 26.644638000000004,
+          "image": 12
+        }
+      ],
       "lines": [
         {
-          "who": "Rudy",
-          "at": 0.35,
-          "text": "Aklında anlatmak istediğin bir hikâye var. Belki paylaşmak istediğin bir bilgi, belki de “Bundan güzel video olur” dediğin bir fikir.",
-          "mood": "curious",
-          "voice": "ses/01-rudy.mp3",
-          "place": "corner"
+          "who": "Bit",
+          "at": 0.8,
+          "text": "Bu arada… biz de buraya çekimden gelmedik. Şu an izlediğin sunucular da bu programla sahnede.",
+          "voice": "ses/20-bit.mp3",
+          "spot": "center",
+          "mood": "love"
         },
         {
           "who": "Rudy",
-          "at": 8.41,
+          "at": 7.37,
+          "text": "Sen de kendi karakterini çiz, sesini kaydet. Videonu o sunsun; anlattığın şeyin kendine ait bir yüzü, bir sesi olsun.",
+          "voice": "ses/21-rudy.mp3",
+          "spot": "center",
+          "mood": "happy"
+        },
+        {
+          "who": "Rudy",
+          "at": 15.31,
+          "text": "“Güzel de ben komutlarla uğraşmasam?” diyorsan, Claude'a ne istediğini anlat. “Bana bir tanıtım videosu hazırla” diye başla; içeriğini, tarzını söyle. Gerisini ona bırak.",
+          "voice": "ses/22-rudy.mp3",
+          "spot": "desk",
+          "mood": "happy"
+        }
+      ],
+      "shots": [
+        {
+          "at": 0,
+          "cam": "wide",
+          "move": "drift",
+          "blend": 0
+        },
+        {
+          "at": 0.55,
+          "cam": "top",
+          "move": "crane",
+          "blend": 0.85
+        },
+        {
+          "at": 7.12,
+          "cam": "host",
+          "move": "push",
+          "blend": 0.85
+        },
+        {
+          "at": 15.06,
+          "cam": "monitor",
+          "move": "push",
+          "blend": 0.85
+        },
+        {
+          "at": 26.74,
+          "cam": "monitor",
+          "move": "dive",
+          "blend": 0.7
+        }
+      ]
+    },
+    {
+      "style": "extrude-3d",
+      "text": "Video / hazır",
+      "camera": "punch-in",
+      "duration": 4.23,
+      "transition": {
+        "type": "flash",
+        "duration": 0.25
+      }
+    },
+    {
+      "style": "odometer",
+      "text": "0 TL",
+      "camera": "punch-in",
+      "duration": 4.23,
+      "transition": {
+        "type": "glitch",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "room",
+      "models": "../oda",
+      "cast": [
+        {
+          "name": "Rudy",
+          "rig": "../characters/rudy/rig.json"
+        },
+        {
+          "name": "Bit",
+          "rig": "bit"
+        }
+      ],
+      "mixVoices": false,
+      "bpm": 116,
+      "neon": "rudywizz",
+      "duration": 8.57,
+      "camera": "static",
+      "transition": {
+        "type": "ink",
+        "duration": 0.4
+      },
+      "images": [
+        "kareler/464dfd1ad0.png",
+        "kareler/6e8ffbc51a.png",
+        "kareler/244deacb75.png",
+        "kareler/47fd9305e9.png",
+        "kareler/36c95f24a4.png",
+        "kareler/daf708fad6.png",
+        "kareler/27f6f0a735.png",
+        "kareler/0461737221.png",
+        "kareler/3af7ec75db.png",
+        "kareler/3387b9aec0.png",
+        "kareler/c1ed0ee401.png",
+        "kareler/5ac06081c4.png"
+      ],
+      "gallery": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tv": [],
+      "monitor": [],
+      "lines": [
+        {
+          "who": "Rudy",
+          "at": 0.4,
+          "text": "Aklındaki hikâye orada kalmasın. Bir cümleyle başla, gerisini birlikte hareketlendirelim. Rudywizz Motion. Link profilde.",
+          "voice": "ses/24-rudy.mp3",
+          "spot": "sofa",
+          "mood": "happy"
+        }
+      ],
+      "shots": [
+        {
+          "at": 0,
+          "cam": "establish",
+          "move": "push",
+          "blend": 0
+        },
+        {
+          "at": 0.15,
+          "cam": "neon",
+          "move": "pull",
+          "blend": 0.85
+        }
+      ]
+    },
+    {
+      "style": "cta-follow",
+      "text": "rudywizz-motion / Yıldızla / GitHub · link profilde",
+      "done": "Yıldızlandı",
+      "accent": "#ff6b5a",
+      "duration": 7.87,
+      "camera": "push-in",
+      "transition": {
+        "type": "pixelate",
+        "duration": 0.4
+      }
+    }
+  ],
+  "overlays": [
+    {
+      "style": "editorial",
+      "from": 0,
+      "to": 246.25,
+      "masthead": "RUDYWIZZ — MOTION",
+      "sections": [
+        {
+          "at": 0,
+          "title": "KANCA"
+        },
+        {
+          "at": 24.21,
+          "title": "ESKİDEN"
+        },
+        {
+          "at": 36.78,
+          "title": "NASIL ÇALIŞIYOR"
+        },
+        {
+          "at": 68.01,
+          "title": "AÇILIŞLAR VE BAŞLIKLAR"
+        },
+        {
+          "at": 86.71,
+          "title": "BİLGİ ANLATMAK"
+        },
+        {
+          "at": 109.09,
+          "title": "SOSYAL MEDYA"
+        },
+        {
+          "at": 134.51,
+          "title": "HİKÂYENİN HAVASI"
+        },
+        {
+          "at": 168.64,
+          "title": "HİKÂYENİ OYNAYAN KARAKTERLER"
+        },
+        {
+          "at": 194.81,
+          "title": "SUNUCULAR"
+        },
+        {
+          "at": 209.87,
+          "title": "CLAUDE İLE"
+        },
+        {
+          "at": 230.61,
+          "title": "KAPANIŞ"
+        }
+      ],
+      "tags": [
+        {
+          "from": 21.81,
+          "to": 24.06,
+          "label": "STİL",
+          "text": "glitch-title"
+        },
+        {
+          "from": 24.41,
+          "to": 32.03,
+          "label": "STİL",
+          "text": "receipt"
+        },
+        {
+          "from": 53.51,
+          "to": 55.56,
+          "label": "STİL",
+          "text": "neon-sign"
+        },
+        {
+          "from": 68.21,
+          "to": 69.56,
+          "label": "STİL",
+          "text": "extrude-3d"
+        },
+        {
+          "from": 69.91,
+          "to": 71.26,
+          "label": "STİL",
+          "text": "ink-bleed"
+        },
+        {
+          "from": 71.61,
+          "to": 72.96,
+          "label": "STİL",
+          "text": "split-flap"
+        },
+        {
+          "from": 73.31,
+          "to": 74.66,
+          "label": "STİL",
+          "text": "inflate"
+        },
+        {
+          "from": 75.01,
+          "to": 76.36,
+          "label": "STİL",
+          "text": "halftone-press"
+        },
+        {
+          "from": 76.71,
+          "to": 78.06,
+          "label": "STİL",
+          "text": "led-marquee"
+        },
+        {
+          "from": 78.41,
+          "to": 79.76,
+          "label": "STİL",
+          "text": "word-stack"
+        },
+        {
+          "from": 80.11,
+          "to": 81.46,
+          "label": "STİL",
+          "text": "text-tunnel"
+        },
+        {
+          "from": 81.81,
+          "to": 83.16,
+          "label": "STİL",
+          "text": "cube-spin"
+        },
+        {
+          "from": 83.51,
+          "to": 84.86,
+          "label": "STİL",
+          "text": "beat-cut"
+        },
+        {
+          "from": 85.21,
+          "to": 86.56,
+          "label": "STİL",
+          "text": "ticker-rows"
+        },
+        {
+          "from": 86.91,
+          "to": 89.56,
+          "label": "STİL",
+          "text": "bar-chart"
+        },
+        {
+          "from": 89.91,
+          "to": 92.57,
+          "label": "STİL",
+          "text": "odometer"
+        },
+        {
+          "from": 92.92,
+          "to": 95.57,
+          "label": "STİL",
+          "text": "map-route"
+        },
+        {
+          "from": 105.89,
+          "to": 107.24,
+          "label": "STİL",
+          "text": "map-route"
+        },
+        {
+          "from": 107.59,
+          "to": 108.94,
+          "label": "STİL",
+          "text": "map-route"
+        },
+        {
+          "from": 109.29,
+          "to": 112.5,
+          "label": "STİL",
+          "text": "chat-story"
+        },
+        {
+          "from": 112.85,
+          "to": 116.06,
+          "label": "STİL",
+          "text": "captions"
+        },
+        {
+          "from": 116.41,
+          "to": 119.62,
+          "label": "STİL",
+          "text": "lyric-video"
+        },
+        {
+          "from": 131.31,
+          "to": 132.66,
+          "label": "STİL",
+          "text": "lower-third"
+        },
+        {
+          "from": 133.01,
+          "to": 134.36,
+          "label": "STİL",
+          "text": "highlight-quote"
+        },
+        {
+          "from": 148.44,
+          "to": 149.79,
+          "label": "STİL",
+          "text": "parchment-letter"
+        },
+        {
+          "from": 150.14,
+          "to": 151.49,
+          "label": "STİL",
+          "text": "history-title"
+        },
+        {
+          "from": 151.84,
+          "to": 153.19,
+          "label": "STİL",
+          "text": "vhs-memory"
+        },
+        {
+          "from": 153.54,
+          "to": 154.89,
+          "label": "STİL",
+          "text": "pixel-quest"
+        },
+        {
+          "from": 155.24,
+          "to": 156.59,
+          "label": "STİL",
+          "text": "--look engrave"
+        },
+        {
+          "from": 156.94,
+          "to": 158.29,
+          "label": "STİL",
+          "text": "retro-grid"
+        },
+        {
+          "from": 158.64,
+          "to": 159.99,
+          "label": "STİL",
+          "text": "signal-tune"
+        },
+        {
+          "from": 160.34,
+          "to": 161.69,
+          "label": "STİL",
+          "text": "murmuration"
+        },
+        {
+          "from": 162.04,
+          "to": 163.39,
+          "label": "STİL",
+          "text": "particle-sphere"
+        },
+        {
+          "from": 163.74,
+          "to": 165.09,
+          "label": "STİL",
+          "text": "orbit-ring"
+        },
+        {
+          "from": 165.44,
+          "to": 166.79,
+          "label": "STİL",
+          "text": "scramble"
+        },
+        {
+          "from": 167.14,
+          "to": 168.49,
+          "label": "STİL",
+          "text": "card-carousel"
+        },
+        {
+          "from": 178.39,
+          "to": 182.19,
+          "label": "STİL",
+          "text": "story-3d · vinyl"
+        },
+        {
+          "from": 182.54,
+          "to": 186.35,
+          "label": "STİL",
+          "text": "story-3d · clay"
+        },
+        {
+          "from": 186.7,
+          "to": 190.51,
+          "label": "STİL",
+          "text": "story-3d · brick"
+        },
+        {
+          "from": 190.86,
+          "to": 194.66,
+          "label": "STİL",
+          "text": "doodle-story"
+        },
+        {
+          "from": 223.16,
+          "to": 226.63,
+          "label": "STİL",
+          "text": "extrude-3d"
+        },
+        {
+          "from": 226.98,
+          "to": 230.46,
+          "label": "STİL",
+          "text": "odometer"
+        },
+        {
+          "from": 238.98,
+          "to": 246.1,
+          "label": "STİL",
+          "text": "cta-follow"
+        }
+      ],
+      "zones": [
+        {
+          "at": 0,
+          "pos": "top"
+        },
+        {
+          "at": 21.61,
+          "pos": "bottom"
+        },
+        {
+          "at": 24.21,
+          "pos": "top"
+        },
+        {
+          "at": 32.18,
+          "pos": "top"
+        },
+        {
+          "at": 53.31,
+          "pos": "bottom"
+        },
+        {
+          "at": 55.71,
+          "pos": "top"
+        },
+        {
+          "at": 68.01,
+          "pos": "bottom"
+        },
+        {
+          "at": 69.71,
+          "pos": "bottom"
+        },
+        {
+          "at": 71.41,
+          "pos": "bottom"
+        },
+        {
+          "at": 73.11,
+          "pos": "bottom"
+        },
+        {
+          "at": 74.81,
+          "pos": "bottom"
+        },
+        {
+          "at": 76.51,
+          "pos": "bottom"
+        },
+        {
+          "at": 78.21,
+          "pos": "bottom"
+        },
+        {
+          "at": 79.91,
+          "pos": "bottom"
+        },
+        {
+          "at": 81.61,
+          "pos": "bottom"
+        },
+        {
+          "at": 83.31,
+          "pos": "bottom"
+        },
+        {
+          "at": 85.01,
+          "pos": "bottom"
+        },
+        {
+          "at": 86.71,
+          "pos": "bottom"
+        },
+        {
+          "at": 89.71,
+          "pos": "bottom"
+        },
+        {
+          "at": 92.72,
+          "pos": "bottom"
+        },
+        {
+          "at": 95.72,
+          "pos": "top"
+        },
+        {
+          "at": 105.69,
+          "pos": "bottom"
+        },
+        {
+          "at": 107.39,
+          "pos": "bottom"
+        },
+        {
+          "at": 109.09,
+          "pos": "top"
+        },
+        {
+          "at": 112.65,
+          "pos": "top"
+        },
+        {
+          "at": 116.21,
+          "pos": "bottom"
+        },
+        {
+          "at": 119.77,
+          "pos": "top"
+        },
+        {
+          "at": 131.11,
+          "pos": "top"
+        },
+        {
+          "at": 132.81,
+          "pos": "bottom"
+        },
+        {
+          "at": 134.51,
+          "pos": "top"
+        },
+        {
+          "at": 148.24,
+          "pos": "bottom"
+        },
+        {
+          "at": 149.94,
+          "pos": "bottom"
+        },
+        {
+          "at": 151.64,
+          "pos": "bottom"
+        },
+        {
+          "at": 153.34,
+          "pos": "bottom"
+        },
+        {
+          "at": 155.04,
+          "pos": "bottom"
+        },
+        {
+          "at": 156.74,
+          "pos": "bottom"
+        },
+        {
+          "at": 158.44,
+          "pos": "bottom"
+        },
+        {
+          "at": 160.14,
+          "pos": "bottom"
+        },
+        {
+          "at": 161.84,
+          "pos": "bottom"
+        },
+        {
+          "at": 163.54,
+          "pos": "bottom"
+        },
+        {
+          "at": 165.24,
+          "pos": "bottom"
+        },
+        {
+          "at": 166.94,
+          "pos": "bottom"
+        },
+        {
+          "at": 168.64,
+          "pos": "top"
+        },
+        {
+          "at": 178.19,
+          "pos": "bottom"
+        },
+        {
+          "at": 182.34,
+          "pos": "bottom"
+        },
+        {
+          "at": 186.5,
+          "pos": "bottom"
+        },
+        {
+          "at": 190.66,
+          "pos": "bottom"
+        },
+        {
+          "at": 194.81,
+          "pos": "top"
+        },
+        {
+          "at": 222.96,
+          "pos": "bottom"
+        },
+        {
+          "at": 226.78,
+          "pos": "bottom"
+        },
+        {
+          "at": 230.61,
+          "pos": "top"
+        },
+        {
+          "at": 238.78,
+          "pos": "bottom"
+        }
+      ],
+      "lines": [
+        {
+          "who": "Rudy",
+          "at": 2.2,
+          "text": "Aklında anlatmak istediğin bir hikâye var. Belki paylaşmak istediğin bir bilgi, belki de “Bundan güzel video olur” dediğin bir fikir.",
+          "voice": "ses/01-rudy.mp3"
+        },
+        {
+          "who": "Rudy",
+          "at": 10.21,
           "text": "Ama kurgu programı bilmiyorsun. Kameran yok, stüdyon yok. Bir de bütün bunlarla uğraşacak *vaktin* yok.",
-          "mood": "sad",
           "voice": "ses/02-rudy.mp3"
         },
         {
           "who": "Bit",
-          "at": 15.99,
+          "at": 17.74,
           "text": "Fikir hazır. Video beklemede.",
-          "mood": "blank",
           "voice": "ses/03-bit.mp3"
         },
         {
           "who": "Rudy",
-          "at": 19.26,
+          "at": 24.36,
           "text": "Video hazırlamak deyince aklına hemen ekipman, çekim, saatlerce kurgu ve öğrenilecek bir sürü program geliyor, değil mi?",
-          "pose": "think",
-          "mood": "curious",
-          "voice": "ses/04-rudy.mp3",
-          "place": "stage"
+          "voice": "ses/04-rudy.mp3"
         },
         {
           "who": "Bit",
-          "at": 26.93,
+          "at": 32.43,
           "text": "Bu kez listeyi bir kenara bırak. Anlatmak istediğin şeyle başlayalım.",
-          "mood": "happy",
-          "voice": "ses/05-bit.mp3",
-          "place": "hidden"
+          "voice": "ses/05-bit.mp3"
         },
         {
           "who": "Rudy",
-          "at": 31.98,
+          "at": 37.03,
           "text": "İşte *Rudywizz Motion*. Yazdıklarını hareketli başlıklara, grafiklere ve sahnelere dönüştüren bir araç.",
-          "pose": "point",
-          "mood": "happy",
-          "voice": "ses/06-rudy.mp3",
-          "place": "stage"
+          "voice": "ses/06-rudy.mp3"
         },
         {
           "who": "Bit",
-          "at": 38.75,
+          "at": 44,
           "text": "Ne anlatacağını yaz, stilini seç. Ben her kareyi kodla çizeyim. Sonunda elinde paylaşmaya hazır bir *MP4* olsun.",
-          "mood": "happy",
-          "voice": "ses/07-bit.mp3",
-          "place": "hidden"
+          "voice": "ses/07-bit.mp3"
         },
         {
           "who": "Rudy",
-          "at": 46.81,
+          "at": 55.96,
           "text": "Çekim yapman, kurgu ekranında tek tek uğraşman gerekmiyor. Görüntüyü bir yapay zekâ video modeli de üretmiyor. Her şey *kodla* çiziliyor; aynı ayarlarla aynı sonucu alıyorsun.",
-          "mood": "happy",
           "voice": "ses/08-rudy.mp3"
         },
         {
           "who": "Rudy",
-          "at": 58.26,
+          "at": 68.16,
           "text": "Mesela videona dikkat çeken bir açılış lazım. Neon bir tabela mı olsun? Üç boyutlu harfler mi? Kâğıda yayılan mürekkep, belki de bir havalimanı panosu?",
-          "mood": "happy",
-          "voice": "ses/09-rudy.mp3",
-          "place": "stage"
+          "voice": "ses/09-rudy.mp3"
         },
         {
           "who": "Bit",
-          "at": 67.52,
+          "at": 77.37,
           "text": "Hepsi aynı komutla. Sadece *stilin adını* değiştiriyorsun. Aynı cümle, bambaşka bir giriş.",
-          "mood": "blank",
-          "voice": "ses/10-bit.mp3",
-          "place": "hidden"
+          "voice": "ses/10-bit.mp3"
         },
         {
           "who": "Rudy",
-          "at": 87.77,
+          "at": 86.86,
           "text": "Bir bilgiyi anlaşılır kılmak mı istiyorsun? Verilerin grafiğe dönüşsün, sayılar adım adım yükselsin, anlattığın yolculuk haritada canlansın.",
-          "pose": "point",
-          "mood": "happy",
-          "voice": "ses/11-rudy.mp3",
-          "place": "stage"
+          "voice": "ses/11-rudy.mp3"
         },
         {
           "who": "Bit",
-          "at": 96.48,
+          "at": 95.97,
           "text": "Bütün dünya hazır: ülkeler, şehirler, eyaletler… Haritalar içeride; videoyu oluşturmak için *internet bile* gerekmiyor.",
-          "mood": "happy",
-          "voice": "ses/12-bit.mp3",
-          "place": "hidden"
+          "voice": "ses/12-bit.mp3"
         },
         {
           "who": "Bit",
-          "at": 107.73,
+          "at": 109.24,
           "text": "Reels için kelime kelime akan altyazılar, mesajlaşarak ilerleyen hikâyeler, şarkı sözü videoları… Dikey, kare ya da yatay; paylaşacağın yere göre.",
-          "mood": "happy",
-          "voice": "ses/13-bit.mp3",
-          "place": "stage"
+          "voice": "ses/13-bit.mp3"
         },
         {
           "who": "Rudy",
-          "at": 118.11,
+          "at": 120.02,
           "text": "Kendi çektiğin bir video da olabilir. Yazıları şeffaf arka planla dışa aktar, *CapCut'ta* görüntünün üstüne yerleştir. Hazırladığın animasyon, videonun bir parçası olsun.",
-          "mood": "happy",
-          "voice": "ses/14-rudy.mp3",
-          "place": "hidden"
+          "voice": "ses/14-rudy.mp3"
         },
         {
           "who": "Rudy",
-          "at": 129.36,
+          "at": 134.76,
           "text": "Peki, hikâyen nasıl hissettirsin? Eski bir mektup kadar kişisel, bir tarih belgeseli kadar etkileyici, VHS kaydı kadar nostaljik… Ya da bir piksel oyunu kadar eğlenceli.",
-          "pose": "think",
-          "mood": "curious",
-          "voice": "ses/15-rudy.mp3",
-          "place": "stage"
+          "voice": "ses/15-rudy.mp3"
         },
         {
           "who": "Bit",
-          "at": 141.59,
-          "text": "*Otuz dokuz stil.* Hikâyene uyanı seç. Ben saydım. İki kere.",
-          "mood": "blank",
-          "voice": "ses/16-bit.mp3",
-          "place": "hidden"
+          "at": 148.39,
+          "text": "*Kırk bir stil.* Hikâyene uyanı seç. Ben saydım. İki kere.",
+          "voice": "ses/16-bit.mp3"
         },
         {
           "who": "Rudy",
-          "at": 161.84,
+          "at": 170.24,
           "text": "Bir de işin şu tarafı var: hikâyeni sadece yazılarla anlatmak zorunda değilsin. Onu *oynayan karakterler* de var.",
-          "mood": "surprised",
-          "voice": "ses/17-rudy.mp3",
-          "place": "stage"
+          "voice": "ses/17-rudy.mp3"
         },
         {
           "who": "Bit",
-          "at": 168.54,
+          "at": 178.34,
           "text": "Senaryoyu yazıyorsun; kamera açıları, mimikler, el kol hareketleri ve konuşmayla uyumlu dudak hareketleri sahneyi tamamlıyor.",
-          "mood": "happy",
-          "voice": "ses/18-bit.mp3",
-          "place": "hidden"
+          "voice": "ses/18-bit.mp3"
         },
         {
           "who": "Rudy",
-          "at": 177.25,
+          "at": 187,
           "text": "Üç boyutlu oyuncak, kil, tuğla oyuncak ya da elle çizim. Aynı hikâyeyi *dört ayrı film havasında* anlatabiliyorsun.",
-          "mood": "happy",
           "voice": "ses/19-rudy.mp3"
         },
         {
           "who": "Bit",
-          "at": 185.56,
+          "at": 195.61,
           "text": "Bu arada… biz de buraya çekimden gelmedik. Şu an izlediğin sunucular da bu programla sahnede.",
-          "mood": "love",
-          "voice": "ses/20-bit.mp3",
-          "place": "stage"
+          "voice": "ses/20-bit.mp3"
         },
         {
           "who": "Rudy",
-          "at": 192.18,
+          "at": 202.18,
           "text": "Sen de kendi karakterini çiz, sesini kaydet. Videonu *o* sunsun; anlattığın şeyin kendine ait bir yüzü, bir sesi olsun.",
-          "pose": "celebrate",
-          "mood": "happy",
           "voice": "ses/21-rudy.mp3"
         },
         {
           "who": "Rudy",
-          "at": 200.38,
+          "at": 210.12,
           "text": "“Güzel de ben komutlarla uğraşmasam?” diyorsan, Claude'a ne istediğini anlat. “Bana bir tanıtım videosu hazırla” diye başla; içeriğini, tarzını söyle. *Gerisini ona bırak.*",
-          "mood": "happy",
-          "voice": "ses/22-rudy.mp3",
-          "place": "stage"
+          "voice": "ses/22-rudy.mp3"
         },
         {
           "who": "Bit",
-          "at": 211.96,
+          "at": 223.11,
           "text": "Rudywizz Motion ücretsiz ve açık kaynak. Müzik de dahil; onu da kod üretiyor. Hazır parça aramakla uğraşmıyorsun.",
-          "mood": "happy",
-          "voice": "ses/23-bit.mp3",
-          "place": "hidden"
+          "voice": "ses/23-bit.mp3"
         },
         {
           "who": "Rudy",
-          "at": 219.96,
+          "at": 231.01,
           "text": "Aklındaki hikâye orada kalmasın. Bir cümleyle başla, gerisini birlikte hareketlendirelim. *Rudywizz Motion.* Link profilde.",
-          "mood": "happy",
-          "voice": "ses/24-rudy.mp3",
-          "place": "corner"
+          "voice": "ses/24-rudy.mp3"
         },
         {
           "who": "Rudy",
-          "at": 227.78,
+          "at": 238.93,
           "text": "GitHub'da bir yıldız bırakırsan Bit çok sevinir.",
-          "pose": "celebrate",
-          "mood": "happy",
           "voice": "ses/25-rudy.mp3"
         },
         {
           "who": "Bit",
-          "at": 231.29,
+          "at": 242.39,
           "text": "Yıldız… yükleniyor.",
-          "mood": "loading",
           "voice": "ses/26-bit.mp3"
         }
       ]

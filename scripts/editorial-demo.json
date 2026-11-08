@@ -1,0 +1,18 @@
+{
+  "format": "9:16",
+  "lang": "en",
+  "scenes": [{ "style": "retro-grid", "text": " ", "duration": 7, "camera": "drift" }],
+  "overlays": [
+    {
+      "style": "editorial",
+      "from": 0,
+      "to": 7,
+      "sections": [{ "at": 0, "title": "Captions" }],
+      "tags": [{ "from": 0.3, "to": 6.8, "label": "STYLE", "text": "editorial" }],
+      "lines": [
+        { "who": "Rudy", "at": 0.5, "text": "Captions that read like a *magazine.*" },
+        { "who": "Bit", "at": 3.6, "text": "Timed to the voice, word by *word.*" }
+      ]
+    }
+  ]
+}

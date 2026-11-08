@@ -72,6 +72,8 @@ const items = [
   ['story-3d-bricks', ['story-3d', '--duration', '7', '--set', 'finish="brick"', '--set', 'set="office"', '--text', STORY]],
   ['doodle-story', ['doodle-story', '--duration', '7']],
   ['presenter', [path.join(ROOT, 'scripts/presenter-demo.json')]],
+  ['room', [path.join(ROOT, 'scripts/room-demo.json')]],
+  ['editorial', [path.join(ROOT, 'scripts/editorial-demo.json')]],
   // engine showcase: every transition in a row
   ['transitions', [path.join(ROOT, 'scripts/transitions-demo.json')]],
 ]
