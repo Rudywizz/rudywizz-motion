@@ -63,6 +63,14 @@ const items = [
   ['parchment-letter', ['parchment-letter', '--duration', '6']],
   ['look-engrave', ['image', '--image', path.join(DEMO, 'seyyah.svg'), '--look', 'engrave', '--duration', '5', '--camera', 'push-in', '--grade', 'sepia', '--film', '0.5']],
   ['look-sketch', ['image', '--image', path.join(DEMO, 'portrait.svg'), '--look', 'sketch', '--duration', '5', '--camera', 'drift']],
+  ['map-usa', ['map-route', '--duration', '6', '--lang', 'en', '--set', 'route=["Seattle","Denver","Chicago","New York"]', '--text', 'Road Trip']],
+  ['map-japan', ['map-route', '--duration', '6', '--lang', 'en', '--set', 'theme="light"', '--set', 'route=["Tokyo","Kyoto","Hiroshima"]', '--text', 'Japan']],
+  // stories & hosts
+  ['story-3d', ['story-3d', '--duration', '7']],
+  ['story-3d-clay', ['story-3d', '--duration', '7', '--set', 'finish="clay"']],
+  ['story-3d-bricks', ['story-3d', '--duration', '7', '--set', 'finish="bricks"']],
+  ['doodle-story', ['doodle-story', '--duration', '7']],
+  ['presenter', [path.join(ROOT, 'scripts/presenter-demo.json')]],
   // engine showcase: every transition in a row
   ['transitions', [path.join(ROOT, 'scripts/transitions-demo.json')]],
 ]

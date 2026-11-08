@@ -116,6 +116,24 @@ const schema = {
     lang: { type: 'string', description: 'Language for casing rules, e.g. "tr" (i → İ)' },
     bpm: { type: 'number', description: 'Tempo for beat-synced styles and the beat-punch camera' },
     audio: { type: 'string', description: 'Audio file path (relative to this JSON)' },
+    music: {
+      description: 'Code-made, royalty-free music as long as the video; ducks under voice lines. Ignored when "audio" is set.',
+      oneOf: [
+        { enum: ['upbeat', 'chill', 'retro', 'cinematic'] },
+        {
+          type: 'object',
+          additionalProperties: false,
+          required: ['mood'],
+          properties: {
+            mood: { enum: ['upbeat', 'chill', 'retro', 'cinematic'] },
+            bpm: { type: 'number', minimum: 50, maximum: 200, description: 'Tempo (defaults to the mood, or the composition bpm)' },
+            key: { type: 'string', description: 'Key, e.g. "F", "C#", "Bb"' },
+            seed: { type: 'number', description: 'Another seed = another melody' },
+            volume: { type: 'number', minimum: 0, maximum: 2, description: 'Music level under voices (default 0.5)' },
+          },
+        },
+      ],
+    },
     alpha: { type: 'boolean', description: 'Transparent background (.mov / .webm output)' },
     motionBlur: { type: 'integer', minimum: 1, maximum: 16, description: 'Sub-frames per frame (4–8 = filmic)' },
     cameraBlur: { type: 'boolean', default: true },

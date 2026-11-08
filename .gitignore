@@ -6,3 +6,7 @@ out/
 !gallery/**
 .DS_Store
 _site/
+
+# voice recordings for the promo (kept local)
+promo/tanitim/ses/
+promo/tanitim/metin.txt

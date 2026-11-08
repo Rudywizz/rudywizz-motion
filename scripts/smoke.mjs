@@ -2,7 +2,7 @@
 // Smoke tests: renders a still of every style and template, checks determinism,
 // output formats and that bad input fails with a helpful message.
 // Usage: node scripts/smoke.mjs [--jobs 4] [--quick]
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -67,7 +67,27 @@ for (const ext of quick ? ['mp4'] : ['mp4', 'webm', 'mov', 'gif']) {
     if (r.code !== 0 || !fs.existsSync(f) || fs.statSync(f).size < 1000) throw new Error(r.out);
   }]);
 }
+tests.push(['music: every mood, same seed → same track', async () => {
+  for (const mood of ['upbeat', 'chill', 'retro', 'cinematic']) {
+    const a = path.join(OUT, `${mood}-a.wav`);
+    const b = path.join(OUT, `${mood}-b.wav`);
+    for (const f of [a, b]) {
+      const r = await run(['music', mood, '--duration', '3', '--seed', '2', '--out', f, '--quiet']);
+      if (r.code !== 0 || !fs.existsSync(f)) throw new Error(r.out);
+    }
+    if (sha(a) !== sha(b)) throw new Error(`${mood}: two tracks with the same seed differ`);
+    if (fs.statSync(a).size !== 44 + 3 * 44100 * 4) throw new Error(`${mood}: wrong length`);
+  }
+}]);
+tests.push(['render with --music', async () => {
+  const f = path.join(OUT, 'music.mp4');
+  const r = await run(['render', 'captions', '--duration', '1', '--size', '180', '--music', 'retro', '--out', f, '--quiet']);
+  if (r.code !== 0 || !fs.existsSync(f)) throw new Error(r.out);
+  const p = spawnSync('ffprobe', ['-v', 'error', '-select_streams', 'a', '-show_entries', 'stream=codec_name', '-of', 'csv=p=0', f]);
+  if (!String(p.stdout).includes('aac')) throw new Error('no audio stream');
+}]);
 const mustFail = [
+  [['render', 'neon-sign', '--music', 'polka'], /Unknown music mood "polka"/],
   [['render', 'neon-sing'], /Did you mean "neon-sign"/],
   [['still', 'neon-sign', '--camera', 'orbt'], /Did you mean "orbit"/],
   [['still', 'neon-sign', '--size', 'abc'], /--size expects a number/],

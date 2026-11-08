@@ -1,0 +1,12 @@
+{
+  "description": "Wedding save-the-date: sepia letter writes itself → departures board with date and place → map to the venue",
+  "format": "9:16",
+  "lang": "en",
+  "look": { "grade": "matte", "bloom": 0.25, "leak": 0.3, "grain": 0.05, "vignette": 0.3 },
+  "scenes": [
+    { "style": "parchment-letter", "text": "Ayşe & Can / are getting married", "duration": 6, "transition": { "type": "ink", "duration": 0.7 } },
+    { "style": "split-flap", "title": "SAVE THE DATE", "text": "12 . 06 . 2027 / Bodrum", "duration": 5,
+      "transition": { "type": "burn", "duration": 0.6 } },
+    { "style": "map-route", "route": ["İstanbul", "Bodrum"], "text": "See you there", "mode": "turkey", "theme": "atlas", "duration": 5 }
+  ]
+}

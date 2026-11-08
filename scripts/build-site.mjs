@@ -25,14 +25,22 @@ const GROUPS = [
   ['kinetic', 'Kinetic type', ['word-stack', 'glitch-title', 'scramble', 'ticker-rows', 'typewriter', 'highlight-quote', 'beat-cut', 'lyric-video', 'murmuration', 'neon-sign', 'inflate', 'ink-bleed', 'halftone-press', 'led-marquee', 'split-flap', 'vhs-memory', 'pixel-quest', 'signal-tune']],
   ['3d', '3D', ['extrude-3d', 'cube-spin', 'particle-sphere', 'text-tunnel', 'retro-grid', 'card-carousel']],
   ['social', 'Social & broadcast', ['lower-third', 'chat-story', 'bar-chart', 'countdown', 'cta-follow', 'captions', 'odometer', 'receipt', 'orbit-ring']],
+  ['stories', 'Stories & hosts', ['story-3d', 'doodle-story', 'presenter']],
   ['maps', 'Maps & history', ['map-route', 'history-title', 'parchment-letter']],
 ];
 // extra gallery tiles that are not a style id of their own
 const EXTRA = {
   'map-route': [
-    ['map-globe', 'map-route · globe', `--set 'route=["Paris","Rome","Istanbul"]'`],
-    ['map-atlas', 'map-route · atlas', `--set 'map=atlas'`],
-    ['map-turkey', 'map-route · Turkey', `--set 'map=turkey'`],
+    ['map-globe', 'map-route · globe', `--set 'route=["İstanbul","Roma","Londra"]' --set mode='"globe"'`],
+    ['map-usa', 'map-route · any country', `--set 'route=["Seattle","Denver","Chicago","New York"]'`],
+    ['map-japan', 'map-route · Japan', `--set 'route=["Tokyo","Kyoto","Hiroshima"]' --set theme='"light"'`],
+    ['map-atlas', 'map-route · atlas', `--set theme='"atlas"'`],
+    ['map-turkey', 'map-route · Türkiye', ''],
+  ],
+  'story-3d': [
+    ['story-3d', 'story-3d · vinyl', ''],
+    ['story-3d-clay', 'story-3d · clay', `--set finish='"clay"'`],
+    ['story-3d-bricks', 'story-3d · bricks', `--set finish='"bricks"'`],
   ],
 };
 const IMAGE_TILES = [
@@ -47,7 +55,7 @@ for (const [key, , ids] of GROUPS) {
     const s = styles[id];
     if (!s) throw new Error(`build-site: unknown style ${id}`);
     if (EXTRA[id]) {
-      for (const [img, name, flag] of EXTRA[id]) tiles.push({ key, img, name, tagline: s.tagline, cmd: `render ${id} ${flag}` });
+      for (const [img, name, flag] of EXTRA[id]) tiles.push({ key, img, name, tagline: s.tagline, cmd: `render ${id}${flag ? ' ' + flag : ''}` });
     } else {
       tiles.push({ key, img: id, name: id, tagline: s.tagline, cmd: `render ${id}` });
     }
@@ -179,7 +187,7 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
 <main>
 <div class="wrap hero">
   <h1>Motion graphics,<br><em>rendered from code.</em></h1>
-  <p class="lead">Kinetic typography, 3D titles, lower thirds, chat stories, charts and map flights. One command gives you an MP4, a transparent MOV/WebM for your editor, a GIF or a WebP. No After Effects, no AI video model: every frame is drawn by code, so every render is exact and repeatable.</p>
+  <p class="lead">Kinetic typography, 3D titles, lower thirds, chat stories, charts, flights across a world map, characters who act out your script and your own mascot as host, with music made by code. One command gives you an MP4, a transparent MOV/WebM for your editor, a GIF or a WebP. No After Effects, no AI video model: every frame is drawn by code, so every render is exact and repeatable.</p>
   <div class="cta">
     <a class="btn primary" href="${REPO}">★ Star on GitHub</a>
     <a class="btn" href="#install">Get started</a>

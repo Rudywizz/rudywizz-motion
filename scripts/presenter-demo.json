@@ -1,0 +1,15 @@
+{
+  "format": "9:16",
+  "lang": "en",
+  "scenes": [
+    {
+      "style": "presenter",
+      "duration": 9,
+      "backdrop": "studio",
+      "label": "RUDYWIZZ MOTION",
+      "place": "stage",
+      "cast": [{ "name": "Rudy", "rig": "../promo/characters/rudy/rig.json" }, { "name": "Bit", "rig": "bit" }],
+      "text": "Rudy [point, happy]: Your mascot can *host* your video. / Bit [love]: Lip-synced. Blinking. Very professional. / Rudy [celebrate]: Just draw it and give it a voice!"
+    }
+  ]
+}

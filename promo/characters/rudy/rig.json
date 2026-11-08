@@ -1,0 +1,27 @@
+{
+  "name": "Rudy",
+  "grid": [115, 258],
+  "layers": [
+    { "src": "alt.png" },
+    { "src": "ust.png", "move": "breath" },
+    { "src": "bas.png", "move": "head" }
+  ],
+  "eyes": [
+    { "src": "goz-sol.png", "x": 52, "y": 41, "w": 13, "h": 3 },
+    { "src": "goz-sag.png", "x": 77, "y": 41, "w": 11, "h": 3 }
+  ],
+  "lid": "#bb7650",
+  "lash": "#2b1610",
+  "brows": [
+    { "src": "kas-sol-ic.png", "part": "inner" },
+    { "src": "kas-sol-dis.png", "part": "outer" },
+    { "src": "kas-sag-ic.png", "part": "inner" },
+    { "src": "kas-sag-dis.png", "part": "outer" }
+  ],
+  "mouths": [null, "agiz-1.png", "agiz-2.png", "agiz-3.png", "agiz-4.png", "agiz-5.png"],
+  "poses": {
+    "point": { "src": "poses/point_right.png", "cell": [204, 258], "frames": 6, "anchor": 57, "intro": [0, 1, 2], "loop": [3, 4], "outro": [5] },
+    "think": { "src": "poses/think.png", "cell": [114, 259], "frames": 6, "anchor": 57, "intro": [0], "loop": [1, 2, 3, 4, 5], "outro": [] },
+    "celebrate": { "src": "poses/celebrate.png", "cell": [119, 242], "frames": 6, "anchor": 59, "intro": [0, 1], "loop": [2, 3, 4], "outro": [5] }
+  }
+}

@@ -1,0 +1,321 @@
+{
+  "$schema": "../skills/rudywizz-motion/schema/composition.schema.json",
+  "description": "YouTube launch video (16:9, ~90 s): every frame rendered by rudywizz-motion itself",
+  "format": "16:9",
+  "lang": "en",
+  "look": {
+    "grade": "teal-orange",
+    "bloom": 0.3,
+    "grain": 0.03,
+    "aberration": 0.12,
+    "vignette": 0.25
+  },
+  "scenes": [
+    {
+      "style": "glitch-title",
+      "text": "This video / has no editor",
+      "subtitle": "NO AFTER EFFECTS · NO TIMELINE · NO AI",
+      "duration": 3.4,
+      "camera": "drift",
+      "transition": {
+        "type": "glitch",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "typewriter",
+      "theme": "terminal",
+      "title": "~/my-channel",
+      "speed": 32,
+      "text": "npx rudywizz-motion render promo.json / ✓ 2900 frames · 1080p / ✓ done → promo.mp4",
+      "duration": 5,
+      "transition": {
+        "type": "zoom",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "word-stack",
+      "text": "Motion / graphics / from / code",
+      "duration": 3.4,
+      "camera": "push-in",
+      "transition": {
+        "type": "whip",
+        "duration": 0.4,
+        "dir": "left"
+      }
+    },
+    {
+      "style": "split-flap",
+      "title": "CHAPTER 1",
+      "text": "Kinetic / typography",
+      "duration": 3.6,
+      "transition": {
+        "type": "flash",
+        "duration": 0.3
+      }
+    },
+    {
+      "style": "neon-sign",
+      "text": "Open / late",
+      "duration": 3,
+      "camera": "orbit",
+      "transition": {
+        "type": "ink",
+        "duration": 0.55
+      }
+    },
+    {
+      "style": "scramble",
+      "text": "Access / granted",
+      "duration": 3,
+      "transition": {
+        "type": "pixelate",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "ink-bleed",
+      "text": "Ink / that spreads",
+      "duration": 3.2,
+      "transition": {
+        "type": "liquid",
+        "duration": 0.55
+      }
+    },
+    {
+      "style": "inflate",
+      "text": "Y2K / chrome",
+      "duration": 3,
+      "camera": "crash-zoom",
+      "transition": {
+        "type": "whip",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "split-flap",
+      "title": "CHAPTER 2",
+      "text": "Real / 3D",
+      "duration": 3,
+      "transition": {
+        "type": "zoom",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "extrude-3d",
+      "text": "Big / news",
+      "duration": 3.2,
+      "transition": {
+        "type": "cube",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "cube-spin",
+      "text": "Intros / Reels / Shorts / Ads",
+      "duration": 4,
+      "transition": {
+        "type": "zoom",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "text-tunnel",
+      "text": "Fly through your words",
+      "duration": 3.4,
+      "transition": {
+        "type": "leak",
+        "duration": 0.55
+      }
+    },
+    {
+      "style": "particle-sphere",
+      "text": "Particles",
+      "duration": 3.4,
+      "transition": {
+        "type": "burn",
+        "duration": 0.6
+      }
+    },
+    {
+      "style": "split-flap",
+      "title": "CHAPTER 3",
+      "text": "Maps / that fly",
+      "duration": 3,
+      "transition": {
+        "type": "iris",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "map-route",
+      "route": [
+        "London",
+        "Istanbul",
+        "Dubai",
+        "Tokyo"
+      ],
+      "text": "Type the cities. Get the flight.",
+      "mode": "globe",
+      "duration": 6,
+      "transition": {
+        "type": "whip",
+        "duration": 0.45
+      }
+    },
+    {
+      "style": "map-route",
+      "route": [
+        "İstanbul",
+        "Kapadokya",
+        "Antalya"
+      ],
+      "text": "81 provinces built in",
+      "mode": "turkey",
+      "duration": 5,
+      "transition": {
+        "type": "burn",
+        "duration": 0.6
+      }
+    },
+    {
+      "style": "split-flap",
+      "title": "CHAPTER 4",
+      "text": "Ready for / social",
+      "duration": 3,
+      "transition": {
+        "type": "doors",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "chat-story",
+      "name": "Client",
+      "text": "can you make 20 reels by friday? / >sure / all different styles? / >one command each / wait what",
+      "duration": 6.5,
+      "transition": {
+        "type": "glitch",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "lower-third",
+      "text": "Your Name / Host · Your Channel",
+      "theme": "glass",
+      "duration": 4,
+      "transition": {
+        "type": "wipe",
+        "duration": 0.45
+      }
+    },
+    {
+      "style": "bar-chart",
+      "text": "Hours saved per video",
+      "note": "Illustrative",
+      "unit": " h",
+      "items": [
+        [
+          "Keyframing",
+          3.5
+        ],
+        [
+          "Text layout",
+          2
+        ],
+        [
+          "Exporting",
+          1
+        ],
+        [
+          "Rendering",
+          0.5
+        ]
+      ],
+      "duration": 5.5,
+      "transition": {
+        "type": "zoom",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "captions",
+      "text": "Auto captions with the active word highlighted, transparent for your editor",
+      "maxWords": 3,
+      "duration": 4.4,
+      "transition": {
+        "type": "blinds",
+        "duration": 0.45
+      }
+    },
+    {
+      "style": "split-flap",
+      "title": "CHAPTER 5",
+      "text": "Cinema / engine",
+      "duration": 3,
+      "transition": {
+        "type": "ripple",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "orbit-ring",
+      "text": "19 camera moves / 20 transitions / 9 colour grades",
+      "duration": 5,
+      "camera": "tilt-left",
+      "transition": {
+        "type": "stretch",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "card-carousel",
+      "text": "9:16 / 1:1 / 4:5 / 16:9 / Alpha MOV / GIF",
+      "duration": 5,
+      "transition": {
+        "type": "flash",
+        "duration": 0.3
+      }
+    },
+    {
+      "style": "typewriter",
+      "theme": "terminal",
+      "title": "claude code",
+      "prompt": ">",
+      "speed": 36,
+      "text": "make a 15s reel: map intro / Istanbul → Rome, glitchy title, / follow button at the end / ✓ rendering 450 frames",
+      "duration": 6,
+      "transition": {
+        "type": "glitch",
+        "duration": 0.4
+      }
+    },
+    {
+      "style": "odometer",
+      "text": "36 styles",
+      "from": 0,
+      "duration": 3.6,
+      "camera": "push-in",
+      "transition": {
+        "type": "zoom",
+        "duration": 0.5
+      }
+    },
+    {
+      "style": "retro-grid",
+      "text": "Free / & open source",
+      "duration": 3.6,
+      "transition": {
+        "type": "ink",
+        "duration": 0.55
+      }
+    },
+    {
+      "style": "cta-follow",
+      "text": "Rudywizz/rudywizz-motion / Star on GitHub / npm i -g rudywizz-motion",
+      "done": "Starred",
+      "duration": 8
+    }
+  ]
+}

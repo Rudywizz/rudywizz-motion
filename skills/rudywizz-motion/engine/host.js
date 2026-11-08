@@ -30,6 +30,7 @@ function showError(err) {
   window.RM = { ready: true, error: String(err && err.message ? err.message : err) };
 }
 
+const CUES = []; // audio cues collected from styles during setup → window.RM.cues
 const imgCache = new Map();
 function loadImage(url) {
   if (imgCache.has(url)) return imgCache.get(url);
@@ -81,6 +82,10 @@ function makeApi(canvas, W, H, p) {
       }
     },
     loadImage,
+    /** Ask the CLI to play an audio file (a `voices` entry) at local time `at` of this scene. */
+    cue(voice, at) {
+      if (voice && voice.id != null) CUES.push({ id: voice.id, at: (p.sceneStart || 0) + at });
+    },
     asset: (path) => new URL(path, location.href).href, // engine-relative (data/…, fonts/…)
   };
 }
@@ -113,10 +118,11 @@ async function sceneRuntime(sc, comp) {
   const { width: W, height: H, fps, seed } = comp;
   const canvas = rm.offscreen(W, H);
   const ctx = canvas.getContext('2d', { alpha: true });
-  const common = { fps, seed: seed + sc.i * 17, duration: sc.duration, clean: !!comp.clean, ...(comp.lang ? { lang: comp.lang } : {}) };
+  const common = { fps, seed: seed + sc.i * 17, duration: sc.duration, clean: !!comp.clean, sceneStart: sc.start };
+  const lang = comp.lang ? { lang: comp.lang } : {}; // a scene's own `lang` wins over the composition's
   let base;
   if (sc.type === 'style') {
-    const r = await styleRuntime(sc.style, canvas, W, H, { ...sc.params, ...common, alpha: !!comp.alpha });
+    const r = await styleRuntime(sc.style, canvas, W, H, { ...lang, ...sc.params, ...common, alpha: !!comp.alpha });
     base = (t) => r.draw(t);
   } else if (sc.type === 'image') {
     const layers = sc.layers ? sc.layers.map((l) => ({ depth: 0, ...l })) : [{ src: sc.src, depth: 0 }];
@@ -160,7 +166,7 @@ async function sceneRuntime(sc, comp) {
   let overlay = null;
   if (sc.overlay && sc.overlay.style) {
     const { style, ...rest } = sc.overlay;
-    overlay = await styleRuntime(style, canvas, W, H, { ...rest, ...common, alpha: true, overlay: true, duration: rest.duration ?? sc.duration });
+    overlay = await styleRuntime(style, canvas, W, H, { ...lang, ...rest, ...common, alpha: true, overlay: true, duration: rest.duration ?? sc.duration });
   }
   const look = sc.look ? (typeof sc.look === 'string' ? { type: sc.look } : sc.look) : { type: 'none' };
   return {
@@ -206,7 +212,7 @@ async function main() {
   const overlays = [];
   for (const [k, ov] of comp.overlays.entries()) {
     const { style, from = 0, to = comp.duration, ...rest } = ov;
-    overlays.push({ from, to, r: await styleRuntime(style, overlayCanvas, W, H, { ...rest, fps: comp.fps, seed: comp.seed + 99 + k, duration: to - from, alpha: true, overlay: true, clean: !!comp.clean, ...(comp.lang ? { lang: comp.lang } : {}) }) });
+    overlays.push({ from, to, r: await styleRuntime(style, overlayCanvas, W, H, { ...(comp.lang ? { lang: comp.lang } : {}), ...rest, fps: comp.fps, seed: comp.seed + 99 + k, duration: to - from, sceneStart: from, alpha: true, overlay: true, clean: !!comp.clean }) });
   }
 
   const post = { grain: 0.035, vignette: 0.25, ...comp.look, opaque: !comp.alpha };
@@ -283,7 +289,7 @@ async function main() {
     comp2d.presentAccum();
   };
 
-  window.RM = { ready: true, duration: comp.duration, fps: comp.fps, width: W, height: H, render };
+  window.RM = { ready: true, duration: comp.duration, fps: comp.fps, width: W, height: H, render, cues: CUES };
 
   if (input.preview) {
     document.body.classList.add('preview');

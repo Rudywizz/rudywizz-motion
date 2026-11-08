@@ -1,0 +1,11 @@
+{
+  "description": "YouTube end screen: thanks card → animated subscribe click with confetti → next-video teaser. Leave the last 10 s clean for YouTube's end-screen elements",
+  "format": "16:9",
+  "look": { "bloom": 0.25, "grain": 0.03, "vignette": 0.25 },
+  "scenes": [
+    { "style": "word-stack", "text": "Thanks / for / watching", "duration": 3, "transition": { "type": "whip", "duration": 0.4 } },
+    { "style": "cta-follow", "text": "@yourchannel / Subscribe / New video every Friday", "done": "Subscribed", "duration": 5,
+      "transition": { "type": "zoom", "duration": 0.5 } },
+    { "style": "retro-grid", "text": "Watch / next", "duration": 12 }
+  ]
+}

@@ -57,6 +57,56 @@
       "type": "string",
       "description": "Audio file path (relative to this JSON)"
     },
+    "music": {
+      "description": "Code-made, royalty-free music as long as the video; ducks under voice lines. Ignored when \"audio\" is set.",
+      "oneOf": [
+        {
+          "enum": [
+            "upbeat",
+            "chill",
+            "retro",
+            "cinematic"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mood"
+          ],
+          "properties": {
+            "mood": {
+              "enum": [
+                "upbeat",
+                "chill",
+                "retro",
+                "cinematic"
+              ]
+            },
+            "bpm": {
+              "type": "number",
+              "minimum": 50,
+              "maximum": 200,
+              "description": "Tempo (defaults to the mood, or the composition bpm)"
+            },
+            "key": {
+              "type": "string",
+              "description": "Key, e.g. \"F\", \"C#\", \"Bb\""
+            },
+            "seed": {
+              "type": "number",
+              "description": "Another seed = another melody"
+            },
+            "volume": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2,
+              "description": "Music level under voices (default 0.5)"
+            }
+          }
+        }
+      ]
+    },
     "alpha": {
       "type": "boolean",
       "description": "Transparent background (.mov / .webm output)"
@@ -146,6 +196,7 @@
               "countdown",
               "cta-follow",
               "cube-spin",
+              "doodle-story",
               "extrude-3d",
               "glitch-title",
               "halftone-press",
@@ -164,11 +215,13 @@
               "parchment-letter",
               "particle-sphere",
               "pixel-quest",
+              "presenter",
               "receipt",
               "retro-grid",
               "scramble",
               "signal-tune",
               "split-flap",
+              "story-3d",
               "text-tunnel",
               "ticker-rows",
               "typewriter",
@@ -522,6 +575,7 @@
                   "countdown",
                   "cta-follow",
                   "cube-spin",
+                  "doodle-story",
                   "extrude-3d",
                   "glitch-title",
                   "halftone-press",
@@ -540,11 +594,13 @@
                   "parchment-letter",
                   "particle-sphere",
                   "pixel-quest",
+                  "presenter",
                   "receipt",
                   "retro-grid",
                   "scramble",
                   "signal-tune",
                   "split-flap",
+                  "story-3d",
                   "text-tunnel",
                   "ticker-rows",
                   "typewriter",
@@ -948,6 +1004,73 @@
                       "description": "Glossy floor reflection (true/false)",
                       "default": true,
                       "type": "boolean"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "style": {
+                      "const": "doodle-story"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "text": {
+                      "description": "Script: `Name [pose, emotion, shot]: words`, one beat per line. `* text` narration, a 0–1 number in the tags walks there",
+                      "default": "Pip [wave, happy]: Hi, I'm Pip! / Momo [surprised]: You can talk?! / Pip [shrug, smug]: I'm drawn by code. / Momo [think, thinking]: So... I am too? / Pip [point, wink]: Every wobbly line. / Momo [celebrate, starstruck]: That is SO cool! / Momo [jump, laughing]: / Pip [dance, excited]:",
+                      "type": "string"
+                    },
+                    "cast": {
+                      "description": "Characters: [{ name, body (bean|block|ball|tall), color, x (0–1), size }]",
+                      "default": [
+                        {
+                          "name": "Pip",
+                          "body": "bean",
+                          "color": "#ff8a5b"
+                        },
+                        {
+                          "name": "Momo",
+                          "body": "block",
+                          "color": "#7cc6f2"
+                        }
+                      ]
+                    },
+                    "paper": {
+                      "description": "Paper colour",
+                      "default": "#f5eedf",
+                      "type": "string"
+                    },
+                    "ink": {
+                      "description": "Ink colour",
+                      "default": "#2a221d",
+                      "type": "string"
+                    },
+                    "boil": {
+                      "description": "Line redraws per second (8–12 = hand-drawn; 0 = still)",
+                      "default": 10,
+                      "type": "number"
+                    },
+                    "sheet": {
+                      "description": "true = model sheet: every emotion in a grid",
+                      "default": false,
+                      "type": "boolean"
+                    },
+                    "dialogue": {
+                      "description": "bubbles | none",
+                      "default": "bubbles",
+                      "type": "string"
+                    },
+                    "voices": {
+                      "description": "Audio files, one per spoken line in script order (null skips a line). Each line lasts as long as its audio, the mouth follows its loudness, and the render mixes them in",
+                      "default": []
+                    },
+                    "cuts": {
+                      "description": "auto | wide",
+                      "default": "auto",
+                      "type": "string"
                     }
                   }
                 }
@@ -1404,7 +1527,7 @@
                       "type": "string"
                     },
                     "route": {
-                      "description": "Array of places: names (Turkish ok), \"lat,lon\" strings or {name, lat, lon}",
+                      "description": "Array of places: any city, region or country in ~25 languages, \"City, Country\" or \"City, State\" to disambiguate (\"Portland, Maine\", \"Valencia, Venezuela\"), \"lat,lon\" strings or {name, lat, lon}",
                       "default": [
                         "İstanbul",
                         "Kapadokya",
@@ -1412,8 +1535,13 @@
                       ]
                     },
                     "mode": {
-                      "description": "globe | flat | turkey | auto",
+                      "description": "globe | flat | country (one country with its states/provinces) | auto",
                       "default": "auto",
+                      "type": "string"
+                    },
+                    "country": {
+                      "description": "Country for mode \"country\" (name in any language or ISO code, e.g. \"Japan\", \"Almanya\", \"BR\"); auto-detected when every stop is in one country",
+                      "default": "",
                       "type": "string"
                     },
                     "theme": {
@@ -1427,7 +1555,7 @@
                       "type": "string"
                     },
                     "highlight": {
-                      "description": "Countries (e.g. \"Türkiye\", \"Italy\") or provinces to tint",
+                      "description": "Countries (any language, e.g. \"Türkiye\", \"Deutschland\") or states/provinces to tint",
                       "default": []
                     },
                     "labels": {
@@ -1732,6 +1860,71 @@
                 "if": {
                   "properties": {
                     "style": {
+                      "const": "presenter"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "text": {
+                      "description": "Script played in order: `Name [pose, mood, place]: words` per line ( / or newline between lines). *word* is highlighted",
+                      "default": "Bit [happy]: Hi. I am Bit. / Bit [question]: Give me a voice file and I will lip-sync it. / Bit [love]: Or just text. I am flexible.",
+                      "type": "string"
+                    },
+                    "cast": {
+                      "description": "Characters: [{ name, rig: \"path/to/rig.json\" | \"bit\", side: left|right, scale }]. rig.json lists the layer PNGs of a pixel character (see SKILL.md)",
+                      "default": [
+                        {
+                          "name": "Bit",
+                          "rig": "bit"
+                        }
+                      ]
+                    },
+                    "lines": {
+                      "description": "Timed lines instead of a script: [{ who, at (s), text, voice (audio file), pose, mood, place }]. A line with only `at` + `place` just moves the hosts",
+                      "default": []
+                    },
+                    "voices": {
+                      "description": "With a script: audio files, one per line in order. Each line lasts as long as its audio and the mouth follows it",
+                      "default": []
+                    },
+                    "place": {
+                      "description": "Starting layout: corner (small, bottom) | stage (big, centre) | left | right | hidden",
+                      "default": "corner",
+                      "type": "string"
+                    },
+                    "captions": {
+                      "description": "bubble (speech bubbles, words appear as they are said) | none",
+                      "default": "bubble",
+                      "type": "string"
+                    },
+                    "accent": {
+                      "description": "Highlight colour for *words*",
+                      "default": "#ff6b5a",
+                      "type": "string"
+                    },
+                    "bg": {
+                      "description": "Background when used as a scene (as an overlay it is transparent)",
+                      "default": "#16131c",
+                      "type": "string"
+                    },
+                    "backdrop": {
+                      "description": "none | studio — a soft-lit stage behind the hosts when used as a scene",
+                      "default": "none",
+                      "type": "string"
+                    },
+                    "label": {
+                      "description": "Small mono caption at the top of the studio backdrop (e.g. \"RUDYWIZZ · 03 · HOW IT WORKS\")",
+                      "default": "",
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "style": {
                       "const": "receipt"
                     }
                   }
@@ -1981,6 +2174,81 @@
                     "accent": {
                       "description": "Colour of the header + last row",
                       "default": "#ffb300",
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "style": {
+                      "const": "story-3d"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "text": {
+                      "description": "Script: one beat per line — `Name [pose, emotion, shot]: words`. `* text` = narration card, `[wide]` = camera-only beat, a number 0–1 in the tags walks there",
+                      "default": "Rudy [wave, happy]: Hey! I'm Rudy. / Ada [surprised]: Wait. You're 3D? / Rudy [present, excited]: Every frame of me is code. / Ada [think, thinking]: So I can write a whole film... / Ada [celebrate, excited]: ...just by typing it?! / Rudy [dance, happy, wide]: Yep!",
+                      "type": "string"
+                    },
+                    "set": {
+                      "description": "studio | room | office | street | park | night | space",
+                      "default": "studio",
+                      "type": "string"
+                    },
+                    "cast": {
+                      "description": "Characters: [{ name, skin, hair, hairStyle (short|long|bun|curly|spiky|bob|bald), shirt, pants, shoes, accessory (none|glasses|cap|headphones|beard), accent, x (0–1), height }]",
+                      "default": [
+                        {
+                          "name": "Rudy",
+                          "hairStyle": "spiky",
+                          "hair": "#2a1d16",
+                          "shirt": "#ff6b4a",
+                          "pants": "#2d3a5a",
+                          "skin": "#f2c29b"
+                        },
+                        {
+                          "name": "Ada",
+                          "hairStyle": "bun",
+                          "hair": "#7a3b1d",
+                          "shirt": "#3da5ff",
+                          "pants": "#3b2f5c",
+                          "skin": "#e3a882",
+                          "accessory": "glasses",
+                          "accent": "#e0503a"
+                        }
+                      ]
+                    },
+                    "finish": {
+                      "description": "vinyl | clay | brick — vinyl toys, hand-made clay (stop motion on twos) or glossy toy bricks (studded set)",
+                      "default": "vinyl",
+                      "type": "string"
+                    },
+                    "dialogue": {
+                      "description": "subtitles | bubbles | none",
+                      "default": "subtitles",
+                      "type": "string"
+                    },
+                    "voices": {
+                      "description": "Audio files, one per spoken line in script order (null skips a line). Each line lasts as long as its audio, the mouth follows its loudness, and the render mixes them in",
+                      "default": []
+                    },
+                    "cuts": {
+                      "description": "auto (director picks shots) | wide (one locked wide shot)",
+                      "default": "auto",
+                      "type": "string"
+                    },
+                    "bg": {
+                      "description": "Background colour (studio set / sky)",
+                      "default": null,
+                      "type": "null"
+                    },
+                    "accent": {
+                      "description": "Set accent colour (rug, picture, studio floor tint)",
+                      "default": "#ff6b4a",
                       "type": "string"
                     }
                   }
@@ -2670,6 +2938,76 @@
             "if": {
               "properties": {
                 "style": {
+                  "const": "doodle-story"
+                }
+              },
+              "required": [
+                "style"
+              ]
+            },
+            "then": {
+              "properties": {
+                "text": {
+                  "description": "Script: `Name [pose, emotion, shot]: words`, one beat per line. `* text` narration, a 0–1 number in the tags walks there",
+                  "default": "Pip [wave, happy]: Hi, I'm Pip! / Momo [surprised]: You can talk?! / Pip [shrug, smug]: I'm drawn by code. / Momo [think, thinking]: So... I am too? / Pip [point, wink]: Every wobbly line. / Momo [celebrate, starstruck]: That is SO cool! / Momo [jump, laughing]: / Pip [dance, excited]:",
+                  "type": "string"
+                },
+                "cast": {
+                  "description": "Characters: [{ name, body (bean|block|ball|tall), color, x (0–1), size }]",
+                  "default": [
+                    {
+                      "name": "Pip",
+                      "body": "bean",
+                      "color": "#ff8a5b"
+                    },
+                    {
+                      "name": "Momo",
+                      "body": "block",
+                      "color": "#7cc6f2"
+                    }
+                  ]
+                },
+                "paper": {
+                  "description": "Paper colour",
+                  "default": "#f5eedf",
+                  "type": "string"
+                },
+                "ink": {
+                  "description": "Ink colour",
+                  "default": "#2a221d",
+                  "type": "string"
+                },
+                "boil": {
+                  "description": "Line redraws per second (8–12 = hand-drawn; 0 = still)",
+                  "default": 10,
+                  "type": "number"
+                },
+                "sheet": {
+                  "description": "true = model sheet: every emotion in a grid",
+                  "default": false,
+                  "type": "boolean"
+                },
+                "dialogue": {
+                  "description": "bubbles | none",
+                  "default": "bubbles",
+                  "type": "string"
+                },
+                "voices": {
+                  "description": "Audio files, one per spoken line in script order (null skips a line). Each line lasts as long as its audio, the mouth follows its loudness, and the render mixes them in",
+                  "default": []
+                },
+                "cuts": {
+                  "description": "auto | wide",
+                  "default": "auto",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "style": {
                   "const": "extrude-3d"
                 }
               },
@@ -3151,7 +3489,7 @@
                   "type": "string"
                 },
                 "route": {
-                  "description": "Array of places: names (Turkish ok), \"lat,lon\" strings or {name, lat, lon}",
+                  "description": "Array of places: any city, region or country in ~25 languages, \"City, Country\" or \"City, State\" to disambiguate (\"Portland, Maine\", \"Valencia, Venezuela\"), \"lat,lon\" strings or {name, lat, lon}",
                   "default": [
                     "İstanbul",
                     "Kapadokya",
@@ -3159,8 +3497,13 @@
                   ]
                 },
                 "mode": {
-                  "description": "globe | flat | turkey | auto",
+                  "description": "globe | flat | country (one country with its states/provinces) | auto",
                   "default": "auto",
+                  "type": "string"
+                },
+                "country": {
+                  "description": "Country for mode \"country\" (name in any language or ISO code, e.g. \"Japan\", \"Almanya\", \"BR\"); auto-detected when every stop is in one country",
+                  "default": "",
                   "type": "string"
                 },
                 "theme": {
@@ -3174,7 +3517,7 @@
                   "type": "string"
                 },
                 "highlight": {
-                  "description": "Countries (e.g. \"Türkiye\", \"Italy\") or provinces to tint",
+                  "description": "Countries (any language, e.g. \"Türkiye\", \"Deutschland\") or states/provinces to tint",
                   "default": []
                 },
                 "labels": {
@@ -3500,6 +3843,74 @@
             "if": {
               "properties": {
                 "style": {
+                  "const": "presenter"
+                }
+              },
+              "required": [
+                "style"
+              ]
+            },
+            "then": {
+              "properties": {
+                "text": {
+                  "description": "Script played in order: `Name [pose, mood, place]: words` per line ( / or newline between lines). *word* is highlighted",
+                  "default": "Bit [happy]: Hi. I am Bit. / Bit [question]: Give me a voice file and I will lip-sync it. / Bit [love]: Or just text. I am flexible.",
+                  "type": "string"
+                },
+                "cast": {
+                  "description": "Characters: [{ name, rig: \"path/to/rig.json\" | \"bit\", side: left|right, scale }]. rig.json lists the layer PNGs of a pixel character (see SKILL.md)",
+                  "default": [
+                    {
+                      "name": "Bit",
+                      "rig": "bit"
+                    }
+                  ]
+                },
+                "lines": {
+                  "description": "Timed lines instead of a script: [{ who, at (s), text, voice (audio file), pose, mood, place }]. A line with only `at` + `place` just moves the hosts",
+                  "default": []
+                },
+                "voices": {
+                  "description": "With a script: audio files, one per line in order. Each line lasts as long as its audio and the mouth follows it",
+                  "default": []
+                },
+                "place": {
+                  "description": "Starting layout: corner (small, bottom) | stage (big, centre) | left | right | hidden",
+                  "default": "corner",
+                  "type": "string"
+                },
+                "captions": {
+                  "description": "bubble (speech bubbles, words appear as they are said) | none",
+                  "default": "bubble",
+                  "type": "string"
+                },
+                "accent": {
+                  "description": "Highlight colour for *words*",
+                  "default": "#ff6b5a",
+                  "type": "string"
+                },
+                "bg": {
+                  "description": "Background when used as a scene (as an overlay it is transparent)",
+                  "default": "#16131c",
+                  "type": "string"
+                },
+                "backdrop": {
+                  "description": "none | studio — a soft-lit stage behind the hosts when used as a scene",
+                  "default": "none",
+                  "type": "string"
+                },
+                "label": {
+                  "description": "Small mono caption at the top of the studio backdrop (e.g. \"RUDYWIZZ · 03 · HOW IT WORKS\")",
+                  "default": "",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "style": {
                   "const": "receipt"
                 }
               },
@@ -3773,6 +4184,84 @@
             "if": {
               "properties": {
                 "style": {
+                  "const": "story-3d"
+                }
+              },
+              "required": [
+                "style"
+              ]
+            },
+            "then": {
+              "properties": {
+                "text": {
+                  "description": "Script: one beat per line — `Name [pose, emotion, shot]: words`. `* text` = narration card, `[wide]` = camera-only beat, a number 0–1 in the tags walks there",
+                  "default": "Rudy [wave, happy]: Hey! I'm Rudy. / Ada [surprised]: Wait. You're 3D? / Rudy [present, excited]: Every frame of me is code. / Ada [think, thinking]: So I can write a whole film... / Ada [celebrate, excited]: ...just by typing it?! / Rudy [dance, happy, wide]: Yep!",
+                  "type": "string"
+                },
+                "set": {
+                  "description": "studio | room | office | street | park | night | space",
+                  "default": "studio",
+                  "type": "string"
+                },
+                "cast": {
+                  "description": "Characters: [{ name, skin, hair, hairStyle (short|long|bun|curly|spiky|bob|bald), shirt, pants, shoes, accessory (none|glasses|cap|headphones|beard), accent, x (0–1), height }]",
+                  "default": [
+                    {
+                      "name": "Rudy",
+                      "hairStyle": "spiky",
+                      "hair": "#2a1d16",
+                      "shirt": "#ff6b4a",
+                      "pants": "#2d3a5a",
+                      "skin": "#f2c29b"
+                    },
+                    {
+                      "name": "Ada",
+                      "hairStyle": "bun",
+                      "hair": "#7a3b1d",
+                      "shirt": "#3da5ff",
+                      "pants": "#3b2f5c",
+                      "skin": "#e3a882",
+                      "accessory": "glasses",
+                      "accent": "#e0503a"
+                    }
+                  ]
+                },
+                "finish": {
+                  "description": "vinyl | clay | brick — vinyl toys, hand-made clay (stop motion on twos) or glossy toy bricks (studded set)",
+                  "default": "vinyl",
+                  "type": "string"
+                },
+                "dialogue": {
+                  "description": "subtitles | bubbles | none",
+                  "default": "subtitles",
+                  "type": "string"
+                },
+                "voices": {
+                  "description": "Audio files, one per spoken line in script order (null skips a line). Each line lasts as long as its audio, the mouth follows its loudness, and the render mixes them in",
+                  "default": []
+                },
+                "cuts": {
+                  "description": "auto (director picks shots) | wide (one locked wide shot)",
+                  "default": "auto",
+                  "type": "string"
+                },
+                "bg": {
+                  "description": "Background colour (studio set / sky)",
+                  "default": null,
+                  "type": "null"
+                },
+                "accent": {
+                  "description": "Set accent colour (rug, picture, studio floor tint)",
+                  "default": "#ff6b4a",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "style": {
                   "const": "text-tunnel"
                 }
               },
@@ -4035,6 +4524,7 @@
               "countdown",
               "cta-follow",
               "cube-spin",
+              "doodle-story",
               "extrude-3d",
               "glitch-title",
               "halftone-press",
@@ -4053,11 +4543,13 @@
               "parchment-letter",
               "particle-sphere",
               "pixel-quest",
+              "presenter",
               "receipt",
               "retro-grid",
               "scramble",
               "signal-tune",
               "split-flap",
+              "story-3d",
               "text-tunnel",
               "ticker-rows",
               "typewriter",
@@ -4471,6 +4963,73 @@
             "if": {
               "properties": {
                 "style": {
+                  "const": "doodle-story"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "text": {
+                  "description": "Script: `Name [pose, emotion, shot]: words`, one beat per line. `* text` narration, a 0–1 number in the tags walks there",
+                  "default": "Pip [wave, happy]: Hi, I'm Pip! / Momo [surprised]: You can talk?! / Pip [shrug, smug]: I'm drawn by code. / Momo [think, thinking]: So... I am too? / Pip [point, wink]: Every wobbly line. / Momo [celebrate, starstruck]: That is SO cool! / Momo [jump, laughing]: / Pip [dance, excited]:",
+                  "type": "string"
+                },
+                "cast": {
+                  "description": "Characters: [{ name, body (bean|block|ball|tall), color, x (0–1), size }]",
+                  "default": [
+                    {
+                      "name": "Pip",
+                      "body": "bean",
+                      "color": "#ff8a5b"
+                    },
+                    {
+                      "name": "Momo",
+                      "body": "block",
+                      "color": "#7cc6f2"
+                    }
+                  ]
+                },
+                "paper": {
+                  "description": "Paper colour",
+                  "default": "#f5eedf",
+                  "type": "string"
+                },
+                "ink": {
+                  "description": "Ink colour",
+                  "default": "#2a221d",
+                  "type": "string"
+                },
+                "boil": {
+                  "description": "Line redraws per second (8–12 = hand-drawn; 0 = still)",
+                  "default": 10,
+                  "type": "number"
+                },
+                "sheet": {
+                  "description": "true = model sheet: every emotion in a grid",
+                  "default": false,
+                  "type": "boolean"
+                },
+                "dialogue": {
+                  "description": "bubbles | none",
+                  "default": "bubbles",
+                  "type": "string"
+                },
+                "voices": {
+                  "description": "Audio files, one per spoken line in script order (null skips a line). Each line lasts as long as its audio, the mouth follows its loudness, and the render mixes them in",
+                  "default": []
+                },
+                "cuts": {
+                  "description": "auto | wide",
+                  "default": "auto",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "style": {
                   "const": "extrude-3d"
                 }
               }
@@ -4919,7 +5478,7 @@
                   "type": "string"
                 },
                 "route": {
-                  "description": "Array of places: names (Turkish ok), \"lat,lon\" strings or {name, lat, lon}",
+                  "description": "Array of places: any city, region or country in ~25 languages, \"City, Country\" or \"City, State\" to disambiguate (\"Portland, Maine\", \"Valencia, Venezuela\"), \"lat,lon\" strings or {name, lat, lon}",
                   "default": [
                     "İstanbul",
                     "Kapadokya",
@@ -4927,8 +5486,13 @@
                   ]
                 },
                 "mode": {
-                  "description": "globe | flat | turkey | auto",
+                  "description": "globe | flat | country (one country with its states/provinces) | auto",
                   "default": "auto",
+                  "type": "string"
+                },
+                "country": {
+                  "description": "Country for mode \"country\" (name in any language or ISO code, e.g. \"Japan\", \"Almanya\", \"BR\"); auto-detected when every stop is in one country",
+                  "default": "",
                   "type": "string"
                 },
                 "theme": {
@@ -4942,7 +5506,7 @@
                   "type": "string"
                 },
                 "highlight": {
-                  "description": "Countries (e.g. \"Türkiye\", \"Italy\") or provinces to tint",
+                  "description": "Countries (any language, e.g. \"Türkiye\", \"Deutschland\") or states/provinces to tint",
                   "default": []
                 },
                 "labels": {
@@ -5247,6 +5811,71 @@
             "if": {
               "properties": {
                 "style": {
+                  "const": "presenter"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "text": {
+                  "description": "Script played in order: `Name [pose, mood, place]: words` per line ( / or newline between lines). *word* is highlighted",
+                  "default": "Bit [happy]: Hi. I am Bit. / Bit [question]: Give me a voice file and I will lip-sync it. / Bit [love]: Or just text. I am flexible.",
+                  "type": "string"
+                },
+                "cast": {
+                  "description": "Characters: [{ name, rig: \"path/to/rig.json\" | \"bit\", side: left|right, scale }]. rig.json lists the layer PNGs of a pixel character (see SKILL.md)",
+                  "default": [
+                    {
+                      "name": "Bit",
+                      "rig": "bit"
+                    }
+                  ]
+                },
+                "lines": {
+                  "description": "Timed lines instead of a script: [{ who, at (s), text, voice (audio file), pose, mood, place }]. A line with only `at` + `place` just moves the hosts",
+                  "default": []
+                },
+                "voices": {
+                  "description": "With a script: audio files, one per line in order. Each line lasts as long as its audio and the mouth follows it",
+                  "default": []
+                },
+                "place": {
+                  "description": "Starting layout: corner (small, bottom) | stage (big, centre) | left | right | hidden",
+                  "default": "corner",
+                  "type": "string"
+                },
+                "captions": {
+                  "description": "bubble (speech bubbles, words appear as they are said) | none",
+                  "default": "bubble",
+                  "type": "string"
+                },
+                "accent": {
+                  "description": "Highlight colour for *words*",
+                  "default": "#ff6b5a",
+                  "type": "string"
+                },
+                "bg": {
+                  "description": "Background when used as a scene (as an overlay it is transparent)",
+                  "default": "#16131c",
+                  "type": "string"
+                },
+                "backdrop": {
+                  "description": "none | studio — a soft-lit stage behind the hosts when used as a scene",
+                  "default": "none",
+                  "type": "string"
+                },
+                "label": {
+                  "description": "Small mono caption at the top of the studio backdrop (e.g. \"RUDYWIZZ · 03 · HOW IT WORKS\")",
+                  "default": "",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "style": {
                   "const": "receipt"
                 }
               }
@@ -5496,6 +6125,81 @@
                 "accent": {
                   "description": "Colour of the header + last row",
                   "default": "#ffb300",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "style": {
+                  "const": "story-3d"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "text": {
+                  "description": "Script: one beat per line — `Name [pose, emotion, shot]: words`. `* text` = narration card, `[wide]` = camera-only beat, a number 0–1 in the tags walks there",
+                  "default": "Rudy [wave, happy]: Hey! I'm Rudy. / Ada [surprised]: Wait. You're 3D? / Rudy [present, excited]: Every frame of me is code. / Ada [think, thinking]: So I can write a whole film... / Ada [celebrate, excited]: ...just by typing it?! / Rudy [dance, happy, wide]: Yep!",
+                  "type": "string"
+                },
+                "set": {
+                  "description": "studio | room | office | street | park | night | space",
+                  "default": "studio",
+                  "type": "string"
+                },
+                "cast": {
+                  "description": "Characters: [{ name, skin, hair, hairStyle (short|long|bun|curly|spiky|bob|bald), shirt, pants, shoes, accessory (none|glasses|cap|headphones|beard), accent, x (0–1), height }]",
+                  "default": [
+                    {
+                      "name": "Rudy",
+                      "hairStyle": "spiky",
+                      "hair": "#2a1d16",
+                      "shirt": "#ff6b4a",
+                      "pants": "#2d3a5a",
+                      "skin": "#f2c29b"
+                    },
+                    {
+                      "name": "Ada",
+                      "hairStyle": "bun",
+                      "hair": "#7a3b1d",
+                      "shirt": "#3da5ff",
+                      "pants": "#3b2f5c",
+                      "skin": "#e3a882",
+                      "accessory": "glasses",
+                      "accent": "#e0503a"
+                    }
+                  ]
+                },
+                "finish": {
+                  "description": "vinyl | clay | brick — vinyl toys, hand-made clay (stop motion on twos) or glossy toy bricks (studded set)",
+                  "default": "vinyl",
+                  "type": "string"
+                },
+                "dialogue": {
+                  "description": "subtitles | bubbles | none",
+                  "default": "subtitles",
+                  "type": "string"
+                },
+                "voices": {
+                  "description": "Audio files, one per spoken line in script order (null skips a line). Each line lasts as long as its audio, the mouth follows its loudness, and the render mixes them in",
+                  "default": []
+                },
+                "cuts": {
+                  "description": "auto (director picks shots) | wide (one locked wide shot)",
+                  "default": "auto",
+                  "type": "string"
+                },
+                "bg": {
+                  "description": "Background colour (studio set / sky)",
+                  "default": null,
+                  "type": "null"
+                },
+                "accent": {
+                  "description": "Set accent colour (rug, picture, studio floor tint)",
+                  "default": "#ff6b4a",
                   "type": "string"
                 }
               }

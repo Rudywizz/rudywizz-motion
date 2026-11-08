@@ -9,7 +9,7 @@
 
 **Koddan render edilen sinematik motion graphics.**
 
-Kinetik tipografi · 3D başlıklar · harita uçuşları · alt yazı bantları, altyazılar ve sohbet hikâyeleri · sepya tarih belgeselleri · kendi çekimlerinden reels — <br>
+Kinetik tipografi · 3D başlıklar · dünya haritasında uçuşlar · 3B ve elle çizilmiş karakter hikâyeleri · videoyu sunan kendi maskotun · alt yazı bantları, altyazılar ve sohbet hikâyeleri · sepya tarih belgeselleri · kodla üretilen müzik — <br>
 gerçek kamera hareketleri, 20 shader geçişi, film tadında renk ve motion blur ile.
 
 [![CI](https://github.com/Rudywizz/rudywizz-motion/actions/workflows/ci.yml/badge.svg)](https://github.com/Rudywizz/rudywizz-motion/actions/workflows/ci.yml)
@@ -31,7 +31,7 @@ After Effects yok, satın alınacak şablon yok, yapay zekâ video modeli yok: h
 
 ## Galeri
 
-36 stil. Aşağıdaki her önizleme `npm run gallery` ile üretilmiş gerçek bir render.
+39 stil. Aşağıdaki her önizleme `npm run gallery` ile üretilmiş gerçek bir render.
 
 ### Kinetik tipografi
 
@@ -63,13 +63,23 @@ Her stil kamerayla 3D uzaya da taşınabilir: `--camera orbit`, `tilt-reveal`, `
 
 `--alpha --out isim.mov` ekle, çıkan dosyayı Premiere, Final Cut, DaVinci Resolve ya da CapCut'ta doğrudan görüntünün üstüne bırak.
 
+### Hikâyeler ve sunucular
+
+| | | |
+|:-:|:-:|:-:|
+| <img src="gallery/story-3d.webp" width="240"><br>**story-3d** · oyuncak | <img src="gallery/story-3d-clay.webp" width="240"><br>**story-3d** · kil | <img src="gallery/story-3d-bricks.webp" width="240"><br>**story-3d** · tuğla |
+| <img src="gallery/doodle-story.webp" width="240"><br>**doodle-story** | <img src="gallery/presenter.webp" width="240"><br>**presenter** · kendi karakterin + Bit |  |
+
+Senaryoyu yaz (`Ece [think]: …`), karakterler oynasın: kamera açıları, el kol hareketleri, ses dosyana uyan dudak hareketleri. Kendi piksel karakterini çiz, videolarını o sunsun.
+
 ### Haritalar, tarih ve kendi görsellerin
 
 | | | |
 |:-:|:-:|:-:|
-| <img src="gallery/map-globe.webp" width="240"><br>**map-route** · küre | <img src="gallery/map-atlas.webp" width="240"><br>**map-route** · atlas | <img src="gallery/map-turkey.webp" width="240"><br>**map-route** · Türkiye |
+| <img src="gallery/map-globe.webp" width="240"><br>**map-route** · küre | <img src="gallery/map-usa.webp" width="240"><br>**map-route** · her ülke (ABD eyaletleri) | <img src="gallery/map-japan.webp" width="240"><br>**map-route** · Japonya |
+| <img src="gallery/map-atlas.webp" width="240"><br>**map-route** · atlas | <img src="gallery/map-turkey.webp" width="240"><br>**map-route** · Türkiye | <img src="gallery/transitions.webp" width="240"><br>**20 geçiş** |
 | <img src="gallery/look-engrave.webp" width="240"><br>**image** · `--look engrave` | <img src="gallery/history-title.webp" width="240"><br>**history-title** | <img src="gallery/parchment-letter.webp" width="240"><br>**parchment-letter** |
-| <img src="gallery/look-sketch.webp" width="240"><br>**image** · `--look sketch` | <img src="gallery/transitions.webp" width="240"><br>**20 geçiş** | |
+| <img src="gallery/look-sketch.webp" width="240"><br>**image** · `--look sketch` |  |  |
 
 ## Neden farklı?
 
@@ -77,7 +87,8 @@ Her stil kamerayla 3D uzaya da taşınabilir: `--camera orbit`, `tilt-reveal`, `
 - **Gerçek bir compositor:** Her sahne kendi tuvalinde çiziliyor. Üstüne WebGL2 zinciri kamera, geçiş, bloom, lens, kromatik aberasyon, ışık sızıntısı, film hasarı ve renk grade'i ekliyor.
 - **Motion blur'lu kamera:** 19 hareket var (punch-in, whip, orbit, tilt-reveal, vertigo, ritme oturan beat-punch…). Hızlı hareketler gerçek obtüratör gibi bulanıklaşıyor.
 - **Her format:** 9:16, 1:1, 4:5, 16:9, istediğin boyutta. Metin sığdırılıyor, satıra bölünüyor, gerekirse heceleniyor; kadrajdan asla taşmıyor.
-- **Çevrimdışı haritalar:** Dünya küresi, düz dünya haritası ve Türkiye'nin 81 ili. Şehir adlarını yaz, uçuş animasyonu hazır.
+- **Kodla üretilen müzik:** `--music upbeat` (ya da `chill`, `retro`, `cinematic`) videonun süresine tam oturan, özgün bir fon müziğini koddan üretir: hazır parça yok, lisans yok, telif uyarısı yok. Konuşmalar sırasında sesi kendiliğinden kısılır. `rudywizz-motion music chill --duration 30` ile .wav olarak da kaydedebilirsin.
+- **Çevrimdışı haritalar:** Dünya küresi, düz dünya haritası ve her ülkenin eyalet/il sınırlarıyla yakın görünümü (Türkiye'nin 81 ili dahil). Şehir adlarını yaklaşık 25 dilde yaz (`"Viyana"`, `"München"`, `"Portland, Maine"`), uçuş animasyonu hazır.
 - **Kendi çekimlerin:** Klip ve fotoğraflarına hız rampası, el kamerası, altyazı, parallax katmanları ve grade.
 - **Önce Unicode:** Gelen 17 fontun hepsi Latin Extended'ı destekliyor (ğ ş ı İ ç ö ü…). Büyük harf çevirme dile duyarlı (`i → İ`).
 
@@ -147,6 +158,19 @@ Taslakları `--size 540` ile hızlıca al, son hâli varsayılan 1080'de render 
 | `lyric-teaser` | Ritme oturan kelimeler → şarkı sözü satırları → VHS kapanış (parçanı ekle) | 9:16 |
 | `launch` | TV açılışı → dönen özellik halkaları → krom açılış → risograf kapanış | 9:16 |
 | `tour` | Orijinal stillerin 30 saniyelik turu | 9:16 |
+| `black-friday` | İndirim reklamı: glitch açılış → LED fiyat panoları → dönen indirim sayacı → fiş → son gün geri sayımı | 9:16 |
+| `new-year` | Yılbaşı geri sayımı: kalkış panosu → 3·2·1 → parçacıklarla yıl → neon tebrik | 9:16 |
+| `youtube-outro` | Bitiş ekranı: teşekkürler → konfetili abone ol tıklaması → YouTube bitiş kartları için 12 sn boş alan | 16:9 |
+| `birthday` | Doğum günü: grup sohbeti sürprizi → krom balon harfler → yaş sayacı → kişisel not | 9:16 |
+| `save-the-date` | Düğün davetiyesi: kendini yazan mektup → tarih ve yer panosu → mekâna harita | 9:16 |
+| `podcast-clip` | Podcast / röportaj klibi: bölüm başlığı → alıntı kartı → kelime kelime altyazı + konuk isim bandı | 9:16 |
+
+### Kendisiyle yapıldı
+
+[`promo/`](promo/) klasöründeki tanıtım videoları sıradan kompozisyonlardır: 16:9 YouTube videosu, Türkçe Instagram reel'i ve İngilizce Short.
+```bash
+npx rudywizz-motion render promo/instagram-reel-tr.json --out reel.mp4
+```
 
 ## Kendi çekimlerinden reel
 
@@ -164,7 +188,8 @@ Taslakları `--size 540` ile hızlıca al, son hâli varsayılan 1080'de render 
 }
 ```
 ```bash
-npx rudywizz-motion render reel.json --audio parca.mp3 --out reel.mp4
+npx rudywizz-motion render reel.json --audio parca.mp3 --out reel.mp4   # kendi parçan
+npx rudywizz-motion render reel.json --music upbeat --out reel.mp4      # ya da kodla üretilen müzik
 ```
 `$schema` satırı sayesinde VS Code ve diğer editörler her stil seçeneğini otomatik tamamlar.
 Yazım hataları render'dan önce yakalanır: `unknown camera "orbt". Did you mean "orbit"?`

@@ -1,0 +1,12 @@
+{
+  "description": "New Year countdown: synthwave year → 3·2·1 → neon greeting (edit the year and words)",
+  "format": "9:16",
+  "look": { "grade": "kodak", "bloom": 0.45, "leak": 0.3, "grain": 0.04, "vignette": 0.3 },
+  "scenes": [
+    { "style": "split-flap", "title": "NEXT STOP", "text": "2027", "duration": 3.5, "transition": { "type": "flash", "duration": 0.3 } },
+    { "style": "countdown", "text": "Happy / New Year", "from": 3, "accent": "#ffd23f", "duration": 4.5, "camera": "beat-punch",
+      "transition": { "type": "leak", "duration": 0.6 } },
+    { "style": "particle-sphere", "text": "2027", "duration": 4, "transition": { "type": "burn", "duration": 0.6 } },
+    { "style": "neon-sign", "text": "Happy / 2027", "duration": 4, "camera": "orbit" }
+  ]
+}

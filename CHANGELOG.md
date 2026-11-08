@@ -5,10 +5,22 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 ## Unreleased
 
 ### Added
+- **6 new templates** for the videos people make most: `black-friday`, `new-year`, `youtube-outro`, `birthday`, `save-the-date`, `podcast-clip`.
+- `promo/`: the launch videos (YouTube 16:9, Instagram reel in Turkish, English Short), rendered by rudywizz-motion itself.
 - Project website with a filterable live gallery (GitHub Pages, built by `npm run site`).
 - Logo (light and dark) in the README.
+- **Story styles:** `story-3d` (toy-like 3D characters with a virtual director; `finish` vinyl · clay stop motion · toy bricks) and `doodle-story` (hand-drawn boiling ink, 34 emotions).
+- **`presenter`:** your own pixel mascot (a folder of layer PNGs + `rig.json`) or Bit, the built-in robot, hosts any video: lip-synced to your voice lines, blinking, posing, speech bubbles.
+- **Voice lines:** `voices` (story styles) and `lines[].voice` (presenter) — each line lasts as long as its audio, mouths follow its loudness and the render mixes the audio in.
+- **Code-made music:** `--music <mood>` / `"music"` in a composition (`upbeat`, `chill`, `retro`, `cinematic`) synthesises an original, royalty-free track (drums, bass, pads, arpeggios and a hook; no samples) exactly as long as the video. Voice lines duck it. `rudywizz-motion music <mood>` writes it as a .wav.
+- **World maps:** `map-route` now zooms into any country with its states or provinces (`mode: "country"`, auto-detected), finds cities, regions and countries in ~25 languages ("München", "Londres", "Viyana") and takes `"City, Country"` / `"City, State"` to pick between namesakes.
+
+### Fixed
+- `map-route` labels used Turkish capitalisation for every language ("PARİS"); they now follow the composition language.
+- A scene's own `lang` now wins over the composition's `lang` (mixed-language videos, e.g. an English command inside a Turkish reel).
 
 ### Changed
+- With voice lines, music (yours or generated) now dips while someone speaks instead of playing at a fixed 35%.
 - CI installs ffmpeg with the OS package manager instead of a third-party action.
 
 ## 2.1.0 — 2026-11

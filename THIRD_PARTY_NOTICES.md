@@ -39,6 +39,7 @@ videos or images you make with them.
 |---|---|---|
 | [d3-geo](https://github.com/d3/d3-geo) (Mike Bostock) | ISC | bundled in `engine/vendor/geo.min.js` · [license](skills/rudywizz-motion/engine/vendor/D3-GEO-LICENSE) |
 | [topojson-client](https://github.com/topojson/topojson-client) (Michael Bostock) | ISC | bundled in `engine/vendor/geo.min.js` · [license](skills/rudywizz-motion/engine/vendor/TOPOJSON-LICENSE) |
+| [three.js](https://github.com/mrdoob/three.js) r187 (three.js authors) | MIT | bundled in `engine/vendor/three.bundle.min.js` (story-3d) · [license](skills/rudywizz-motion/engine/vendor/THREE-LICENSE) |
 | [Playwright](https://github.com/microsoft/playwright) (Microsoft) | Apache-2.0 | npm dependency, not bundled |
 
 ## Map data

@@ -1,0 +1,16 @@
+{
+  "description": "Black Friday / sale ad: LED price boards → stamped discount → receipt of savings → countdown to the deadline",
+  "format": "9:16",
+  "look": { "grade": "cyber", "bloom": 0.4, "grain": 0.04, "vignette": 0.3 },
+  "scenes": [
+    { "style": "glitch-title", "text": "Black / Friday", "subtitle": "ONE WEEKEND ONLY", "duration": 3, "camera": "crash-zoom",
+      "transition": { "type": "flash", "duration": 0.3 } },
+    { "style": "led-marquee", "text": "Up to 50% off / Everything / Free shipping", "duration": 4.5,
+      "transition": { "type": "whip", "duration": 0.4 } },
+    { "style": "odometer", "text": "50 off", "from": 0, "suffix": "%", "accent": "#ff2b5e", "duration": 3.5, "camera": "punch-in",
+      "transition": { "type": "glitch", "duration": 0.4 } },
+    { "style": "receipt", "header": "YOUR STORE", "text": "You saved / a lot", "items": [["HOODIE", "-50%"], ["SNEAKERS", "-40%"], ["CAP", "-30%"]],
+      "total": "-120 USD", "footer": "SALE ENDS SUNDAY", "duration": 5.5, "transition": { "type": "zoom", "duration": 0.5 } },
+    { "style": "countdown", "text": "Ends / Sunday", "from": 3, "accent": "#ff2b5e", "duration": 4 }
+  ]
+}
