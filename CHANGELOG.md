@@ -16,11 +16,12 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 - **World maps:** `map-route` now zooms into any country with its states or provinces (`mode: "country"`, auto-detected), finds cities, regions and countries in ~25 languages ("München", "Londres", "Viyana") and takes `"City, Country"` / `"City, State"` to pick between namesakes.
 
 ### Fixed
+- `typewriter` shrinks the text instead of hyphenating a long word (commands like `rudywizz-motion` stay whole).
 - `map-route` labels used Turkish capitalisation for every language ("PARİS"); they now follow the composition language.
 - A scene's own `lang` now wins over the composition's `lang` (mixed-language videos, e.g. an English command inside a Turkish reel).
 
 ### Changed
-- With voice lines, music (yours or generated) now dips while someone speaks instead of playing at a fixed 35%.
+- With voice lines, music (yours or generated) now dips while someone speaks instead of playing at a fixed 35%, and the mix is levelled to -14 LUFS (Instagram / YouTube loudness).
 - CI installs ffmpeg with the OS package manager instead of a third-party action.
 
 ## 2.1.0 — 2026-11

@@ -71,6 +71,12 @@ export default {
       return out;
     };
     let size = Math.min(W * (W > H ? 0.06 : 0.088), H * 0.085);
+    // commands and URLs read badly when split: shrink (up to ~45%) before breaking a word
+    const widest = () => {
+      ctx.font = api.font(size, fam, wt);
+      return Math.max(...paras.flatMap((para) => api.words(para).map((w) => ctx.measureText(w).width)));
+    };
+    for (let k = 0, s0 = size; k < 20 && size > s0 * 0.55 && widest() > maxW; k++) size *= 0.94;
     let lines = wrapBreak(size);
     for (let k = 0; k < 40 && lines.length * size * T.lh > maxH; k++) {
       size *= 0.93;

@@ -71,7 +71,7 @@ const BEHIND = [
     act: [{ pose: 'point', mood: 'happy', place: 'corner' }, { mood: 'happy' }],
     scenes: [
       { style: 'bar-chart', text: 'Türkiye’nin en kalabalık şehirleri', note: 'Nüfus, milyon (2024)' },
-      { style: 'odometer', text: '81 il', camera: 'punch-in' },
+      { style: 'odometer', text: '4683 bölge', camera: 'punch-in' },
       { style: 'map-route', route: ['İstanbul', 'Paris', 'New York', 'Tokyo'], theme: 'dark' },
       { style: 'map-route', route: ['Tokyo', 'Kyoto', 'Hiroshima', 'Sapporo'], theme: 'light' },
       { style: 'map-route', route: ['Roma', 'Kartaca', 'Atina'], theme: 'atlas' },

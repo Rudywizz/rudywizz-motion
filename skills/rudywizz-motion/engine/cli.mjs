@@ -453,7 +453,7 @@ function mixAudio(cues, music, duration, tmp, volume = 0.5) {
     last = '[all]';
   }
   const out = path.join(tmp, 'mix.wav');
-  const graph = `${chains.join(';')};${last}apad,atrim=0:${duration.toFixed(3)},alimiter=limit=0.95[out]`;
+  const graph = `${chains.join(';')};${last}apad,atrim=0:${duration.toFixed(3)},loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,alimiter=limit=0.89[out]`; // social-media loudness (-14 LUFS)
   const r = spawnSync('ffmpeg', ['-v', 'error', '-y', ...inputs, '-filter_complex', graph, '-map', '[out]', '-ac', '2', out]);
   if (r.status !== 0) die(`ffmpeg could not mix the voices:\n${r.stderr}`);
   return out;
