@@ -52,6 +52,13 @@ for (const id of templates) {
     if (r.code !== 0 || !fs.existsSync(f)) throw new Error(r.out);
   }]);
 }
+tests.push(['--version matches package.json (root, skill, plugin)', async () => {
+  const want = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
+  const got = (await run(['--version'])).out.trim();
+  const skill = JSON.parse(fs.readFileSync(path.join(ROOT, 'skills/rudywizz-motion/package.json'), 'utf8')).version;
+  const plugin = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude-plugin/plugin.json'), 'utf8')).version;
+  if (got !== want || skill !== want || plugin !== want) throw new Error(`package ${want}, cli ${got}, skill ${skill}, plugin ${plugin}`);
+}]);
 tests.push(['deterministic (same input → same pixels)', async () => {
   const a = path.join(OUT, 'det-a.png');
   const b = path.join(OUT, 'det-b.png');

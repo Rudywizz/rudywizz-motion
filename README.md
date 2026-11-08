@@ -31,7 +31,7 @@ No After Effects, no templates to buy, no AI video model: every frame is drawn b
 
 ## Gallery
 
-39 styles. Every preview below is a real render from `npm run gallery`.
+41 styles. Every preview below is a real render from `npm run gallery`.
 
 ### Kinetic typography
 
@@ -68,9 +68,10 @@ Add `--alpha --out name.mov` and drop the result straight onto your footage in P
 | | | |
 |:-:|:-:|:-:|
 | <img src="gallery/story-3d.webp" width="240"><br>**story-3d** · vinyl | <img src="gallery/story-3d-clay.webp" width="240"><br>**story-3d** · clay | <img src="gallery/story-3d-bricks.webp" width="240"><br>**story-3d** · bricks |
-| <img src="gallery/doodle-story.webp" width="240"><br>**doodle-story** | <img src="gallery/presenter.webp" width="240"><br>**presenter** · your mascot + Bit |  |
+| <img src="gallery/doodle-story.webp" width="240"><br>**doodle-story** | <img src="gallery/presenter.webp" width="240"><br>**presenter** · your mascot + Bit | <img src="gallery/room.webp" width="240"><br>**room** · 3D studio, cinematic camera |
+| <img src="gallery/editorial.webp" width="240"><br>**editorial** · magazine captions on the voice | | |
 
-Write a script (`Ece [think]: …`) and characters act it out: camera shots, gestures, lip sync to your voice files. Draw your own pixel mascot and it hosts your videos.
+Write a script (`Ece [think]: …`) and characters act it out: camera shots, gestures, lip sync to your voice files. Draw your own pixel mascot and it hosts your videos, on a stage or inside `room`: a cut-away 3D studio loft with a shot list (push, orbit, crane, truck) where the camera can dive into the TV or monitor and come out in your next scene. `editorial` lays magazine-style captions on top, timed word by word to the voice files. Optional photoreal furniture: point `models` at a folder of [Poly Haven](https://polyhaven.com/models) glTF models (CC0).
 
 ### Maps, history & your images
 
@@ -105,6 +106,7 @@ npm install -g rudywizz-motion
 rudywizz-motion doctor              # uses your installed Chrome/Edge, or: npx playwright install chromium
 rudywizz-motion render neon-sign --text "Hello"
 ```
+Update later with `npm install -g rudywizz-motion@latest` (check with `rudywizz-motion --version`).
 
 **CLI from source**
 ```bash

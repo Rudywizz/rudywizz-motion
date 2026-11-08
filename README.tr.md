@@ -31,7 +31,7 @@ After Effects yok, satın alınacak şablon yok, yapay zekâ video modeli yok: h
 
 ## Galeri
 
-39 stil. Aşağıdaki her önizleme `npm run gallery` ile üretilmiş gerçek bir render.
+41 stil. Aşağıdaki her önizleme `npm run gallery` ile üretilmiş gerçek bir render.
 
 ### Kinetik tipografi
 
@@ -68,9 +68,10 @@ Her stil kamerayla 3D uzaya da taşınabilir: `--camera orbit`, `tilt-reveal`, `
 | | | |
 |:-:|:-:|:-:|
 | <img src="gallery/story-3d.webp" width="240"><br>**story-3d** · oyuncak | <img src="gallery/story-3d-clay.webp" width="240"><br>**story-3d** · kil | <img src="gallery/story-3d-bricks.webp" width="240"><br>**story-3d** · tuğla |
-| <img src="gallery/doodle-story.webp" width="240"><br>**doodle-story** | <img src="gallery/presenter.webp" width="240"><br>**presenter** · kendi karakterin + Bit |  |
+| <img src="gallery/doodle-story.webp" width="240"><br>**doodle-story** | <img src="gallery/presenter.webp" width="240"><br>**presenter** · kendi karakterin + Bit | <img src="gallery/room.webp" width="240"><br>**room** · 3B stüdyo, sinematik kamera |
+| <img src="gallery/editorial.webp" width="240"><br>**editorial** · sese oturan dergi altyazısı | | |
 
-Senaryoyu yaz (`Ece [think]: …`), karakterler oynasın: kamera açıları, el kol hareketleri, ses dosyana uyan dudak hareketleri. Kendi piksel karakterini çiz, videolarını o sunsun.
+Senaryoyu yaz (`Ece [think]: …`), karakterler oynasın: kamera açıları, el kol hareketleri, ses dosyana uyan dudak hareketleri. Kendi piksel karakterini çiz, videolarını o sunsun: sahnede ya da `room` içinde. `room`, kesitli bir 3B stüdyo dairesi; kamera planlarını sen yazarsın (push, orbit, crane, truck), kamera televizyona ya da monitöre dalıp bir sonraki sahneden çıkar. `editorial` üstüne dergi tarzı altyazılar koyar, ses dosyalarına kelime kelime oturur. İstersen gerçekçi mobilya: `models` ile [Poly Haven](https://polyhaven.com/models) glTF modellerinin (CC0) bulunduğu klasörü göster.
 
 ### Haritalar, tarih ve kendi görsellerin
 
@@ -102,6 +103,7 @@ npm install -g rudywizz-motion
 rudywizz-motion doctor              # kurulu Chrome/Edge kullanılır; yoksa: npx playwright install chromium
 rudywizz-motion render neon-sign --text "Merhaba"
 ```
+Sonradan güncellemek için `npm install -g rudywizz-motion@latest` (sürümü `rudywizz-motion --version` gösterir).
 
 **Kaynaktan CLI**
 ```bash

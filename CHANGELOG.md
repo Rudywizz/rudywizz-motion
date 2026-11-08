@@ -2,9 +2,11 @@
 
 All notable changes to this project. Versions follow [Semantic Versioning](https://semver.org).
 
-## Unreleased
+## 2.2.0 — 2026-11
 
 ### Added
+- **`room`:** a cut-away 3D studio loft (desk + monitor, sofa under a neon sign, TV between speakers, gallery wall, map poster, night window). Pixel hosts appear in it for their lines; a shot list (`establish`, `host`, `desk`, `tv`, `gallery`… × `push`, `pull`, `orbit`, `crane`, `truck`, `dive`) moves the camera, and `dive` flies into a screen so the next scene comes out of it. Optional glTF furniture via `models` (e.g. Poly Haven, CC0).
+- **`editorial`:** magazine-style caption overlay timed word by word to voice files (pauses in the recording pause the words), one hero word per phrase in big condensed caps, masthead with section counter, style tags.
 - **6 new templates** for the videos people make most: `black-friday`, `new-year`, `youtube-outro`, `birthday`, `save-the-date`, `podcast-clip`.
 - `promo/`: the launch videos (YouTube 16:9, Instagram reel in Turkish, English Short), rendered by rudywizz-motion itself.
 - Project website with a filterable live gallery (GitHub Pages, built by `npm run site`).
@@ -16,6 +18,8 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 - **World maps:** `map-route` now zooms into any country with its states or provinces (`mode: "country"`, auto-detected), finds cities, regions and countries in ~25 languages ("München", "Londres", "Viyana") and takes `"City, Country"` / `"City, State"` to pick between namesakes.
 
 ### Fixed
+- `story-3d` clay: the lumpy skull no longer swallows an eye and the brows; clay and brick glasses stay see-through.
+- Website previews carry a content hash in their URL, so a re-rendered preview shows up without a hard refresh.
 - `typewriter` shrinks the text instead of hyphenating a long word (commands like `rudywizz-motion` stay whole).
 - `map-route` labels used Turkish capitalisation for every language ("PARİS"); they now follow the composition language.
 - A scene's own `lang` now wins over the composition's `lang` (mixed-language videos, e.g. an English command inside a Turkish reel).

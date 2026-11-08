@@ -7,10 +7,10 @@
 //
 // Lines: [{ who, at, text, voice, pose, mood, place }] or a script
 // ("Rudy [point, happy]: words / Bit [surprised]: words") that plays in order.
-const BIT = { W: 30, H: 34 };
+export const BIT = { W: 30, H: 34 };
 const C = { k: '#14101a', g: '#cfdcd9', G: '#8ea6a2', h: '#f4f9f8', s: '#061113', t: '#14d8c0', T: '#0b6b62', a: '#ff6b5a', y: '#ffb547' };
 
-const BIT_MOODS = { happy: 'mutlu', neutral: 'notr', surprised: 'saskin', question: 'soru', curious: 'soru', blank: 'bos', deadpan: 'bos', love: 'kalp', loading: 'yukleniyor', thinking: 'yukleniyor', off: 'kapali', cute: 'bebek' };
+export const BIT_MOODS = { happy: 'mutlu', neutral: 'notr', surprised: 'saskin', question: 'soru', curious: 'soru', blank: 'bos', deadpan: 'bos', love: 'kalp', loading: 'yukleniyor', thinking: 'yukleniyor', off: 'kapali', cute: 'bebek' };
 // brow offsets (px, minus = up) for [inner, outer]
 const BROWS = { neutral: [0, 0], surprised: [-1, -1], angry: [1, 0], sad: [-1, 0], happy: [-1, -1], curious: [-1, 0] };
 const PLACES = ['corner', 'stage', 'hidden', 'left', 'right'];
@@ -52,30 +52,7 @@ export default {
     const portrait = H > W * 1.1;
 
     // ── cast ────────────────────────────────────────────────────────────────
-    const cast = [];
-    for (const [i, c] of (p.cast || []).entries()) {
-      const m = { name: c.name || `Host ${i + 1}`, side: c.side || (i === 0 ? 'left' : 'right'), scale: c.scale || 1, seed: i * 17 + 3 };
-      if (!c.rig || c.rig === 'bit') {
-        m.kind = 'bit';
-        m.grid = [BIT.W, BIT.H];
-      } else {
-        const rig = typeof c.rig === 'string' ? await (await fetch(c.rig)).json() : c.rig;
-        m.kind = 'rig';
-        m.rig = rig;
-        m.grid = rig.grid;
-        const base = typeof c.rig === 'string' ? c.rig.replace(/[^/]*$/, '') : '';
-        const load = (src) => (src ? api.loadImage(/^(blob:|data:|https?:|\/)/.test(src) ? src : base + src) : null);
-        m.img = {
-          layers: await Promise.all(rig.layers.map((l) => load(l.src))),
-          eyes: await Promise.all((rig.eyes || []).map((e) => load(e.src))),
-          brows: await Promise.all((rig.brows || []).map((b) => load(b.src))),
-          mouths: await Promise.all((rig.mouths || []).map((s) => load(s))),
-          poses: Object.fromEntries(await Promise.all(Object.entries(rig.poses || {}).map(async ([k, v]) => [k, await load(v.src)]))),
-        };
-      }
-      m.cv = document.createElement('canvas');
-      cast.push(m);
-    }
+    const cast = await loadCast(api, p.cast);
     const byName = new Map(cast.map((m) => [m.name.toLowerCase(), m]));
 
     // ── lines ───────────────────────────────────────────────────────────────
@@ -208,6 +185,35 @@ export default {
   },
 };
 
+/** Load the characters of a cast list ([{ name, rig: path | object | "bit", side, scale }]). Shared with `room`. */
+export async function loadCast(api, list) {
+  const cast = [];
+  for (const [i, c] of (list || []).entries()) {
+    const m = { name: c.name || `Host ${i + 1}`, side: c.side || (i === 0 ? 'left' : 'right'), scale: c.scale || 1, seed: i * 17 + 3 };
+    if (!c.rig || c.rig === 'bit') {
+      m.kind = 'bit';
+      m.grid = [BIT.W, BIT.H];
+    } else {
+      const rig = typeof c.rig === 'string' ? await (await fetch(c.rig)).json() : c.rig;
+      m.kind = 'rig';
+      m.rig = rig;
+      m.grid = rig.grid;
+      const base = typeof c.rig === 'string' ? c.rig.replace(/[^/]*$/, '') : '';
+      const load = (src) => (src ? api.loadImage(/^(blob:|data:|https?:|\/)/.test(src) ? src : base + src) : null);
+      m.img = {
+        layers: await Promise.all(rig.layers.map((l) => load(l.src))),
+        eyes: await Promise.all((rig.eyes || []).map((e) => load(e.src))),
+        brows: await Promise.all((rig.brows || []).map((b) => load(b.src))),
+        mouths: await Promise.all((rig.mouths || []).map((s) => load(s))),
+        poses: Object.fromEntries(await Promise.all(Object.entries(rig.poses || {}).map(async ([k, v]) => [k, await load(v.src)]))),
+      };
+    }
+    m.cv = document.createElement('canvas');
+    cast.push(m);
+  }
+  return cast;
+}
+
 // ── helpers ─────────────────────────────────────────────────────────────────
 const lerp = (a, b, k) => a + (b - a) * k;
 const ease = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
@@ -216,7 +222,7 @@ function fakeTalk(t, seed) {
   return Math.max(0, s);
 }
 
-function parseScript(text, voices) {
+export function parseScript(text, voices) {
   const out = [];
   const parts = String(text || '').split(/\n|\s\/\s/).map((s) => s.trim()).filter(Boolean);
   let vi = 0;
@@ -253,7 +259,7 @@ function blit(ctx, cv, x, y, px, gw = cv.width, gh = cv.height) {
 }
 
 /** Mouth shape from loudness: 0 closed · 1 slight · 2 wide A · 3 E/I · 4 O/U · 5 F/V. Held ≥ 3 frames. */
-function mouthShape(env, lf, seed) {
+export function mouthShape(env, lf, seed) {
   const slot = Math.floor(lf / 3);
   const at = (i) => (env ? env[Math.max(0, Math.min(env.length - 1, i))] || 0 : 0);
   const v = (at(slot * 3) + at(slot * 3 + 1) + at(slot * 3 + 2)) / 3;
@@ -271,7 +277,7 @@ function hashN(a, b) {
   return s - Math.floor(s);
 }
 
-function drawRig(m, { t, f, fps, mood, loud, line, pose, gaze, env, lf }) {
+export function drawRig(m, { t, f, fps, mood, loud, line, pose, gaze, env, lf }) {
   const rig = m.rig;
   const cv = m.cv;
   if (pose) {
@@ -333,7 +339,7 @@ function drawRig(m, { t, f, fps, mood, loud, line, pose, gaze, env, lf }) {
   return { cv, anchor: gw / 2, gw, gh };
 }
 
-function drawBit(m, { t, f, fps, mood, loud, talking, wave }) {
+export function drawBit(m, { t, f, fps, mood, loud, talking, wave }) {
   const cv = m.cv;
   if (cv.width !== BIT.W) { cv.width = BIT.W; cv.height = BIT.H; }
   const c = cv.getContext('2d');

@@ -1,0 +1,39 @@
+{
+  "format": "9:16",
+  "lang": "en",
+  "scenes": [
+    {
+      "style": "room",
+      "duration": 9,
+      "cast": [{ "name": "Rudy", "rig": "../promo/characters/rudy/rig.json" }, { "name": "Bit", "rig": "bit" }],
+      "images": ["../gallery/neon-sign.webp", "../gallery/retro-grid.webp", "../gallery/glitch-title.webp", "../gallery/story-3d.webp", "../gallery/split-flap.webp", "../gallery/map-japan.webp"],
+      "gallery": [0, 1, 2, 3, 4],
+      "poster": 5,
+      "tv": [{ "at": 0, "image": 3 }],
+      "monitor": [{ "at": 0, "text": "npx rudywizz-motion / render room / ✓ room.mp4" }],
+      "lines": [
+        { "who": "Rudy", "at": 1.6, "text": "Welcome to the studio.", "spot": "sofa" },
+        { "who": "Bit", "at": 4.0, "text": "Every frame is code.", "spot": "sofa" }
+      ],
+      "shots": [
+        { "at": 0, "cam": "establish", "move": "push" },
+        { "at": 1.4, "cam": "host", "move": "push" },
+        { "at": 4.8, "cam": "gallery", "move": "truck" },
+        { "at": 6.9, "cam": "tv", "move": "dive" }
+      ]
+    }
+  ],
+  "overlays": [
+    {
+      "style": "editorial",
+      "from": 0,
+      "to": 9,
+      "pos": "top",
+      "sections": [{ "at": 0, "title": "The room" }],
+      "lines": [
+        { "who": "Rudy", "at": 1.6, "text": "Welcome to the *studio.*" },
+        { "who": "Bit", "at": 4.0, "text": "Every frame is *code.*" }
+      ]
+    }
+  ]
+}
