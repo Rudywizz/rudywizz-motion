@@ -1,6 +1,6 @@
 {
   "name": "rudywizz-motion",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Cinematic motion graphics rendered from code: kinetic typography, 3D titles, map route animations, social templates and reels from your clips, with camera moves, shader transitions and colour grades. A CLI and a set of Claude Code skills.",
   "type": "module",
   "license": "MIT",

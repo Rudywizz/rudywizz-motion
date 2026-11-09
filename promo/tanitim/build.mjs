@@ -274,6 +274,7 @@ SECTIONS.forEach((sec, si) => {
 });
 
 // ── segments → scenes ───────────────────────────────────────────────────────
+const LOGO = '../../.github/logo/logo-dark.svg';
 const ROOM_BASE = {
   style: 'room',
   // Poly Haven furniture (CC0, not in the repo: put the glTF folders in promo/oda/); procedural furniture otherwise
@@ -288,7 +289,8 @@ const scenes = segs.map((sg, i) => {
   const prev = segs[i - 1];
   const transition = { type: prev && prev.kind === 'room' && prev.dive ? 'flash' : TRANS[ti++ % TRANS.length], duration: prev && prev.dive ? 0.25 : TR };
   if (sg.kind === 'room') {
-    const images = [...galleryStills, ...sg.images];
+    // the sign above the sofa is our logo (dark variant: light letters for the dark wall)
+    const images = [...galleryStills, ...sg.images, LOGO];
     const off = galleryStills.length;
     return {
       ...ROOM_BASE,
@@ -297,6 +299,7 @@ const scenes = segs.map((sg, i) => {
       transition,
       images,
       gallery: galleryStills.map((_, k) => k),
+      logo: images.length - 1,
       ...(sg.poster != null ? { poster: off + sg.poster } : {}),
       tv: sg.tv.map((x) => ({ ...x, image: off + x.image })),
       monitor: sg.monitor.map((x) => (x.image != null ? { ...x, image: off + x.image } : x)),

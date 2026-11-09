@@ -146,7 +146,7 @@ Rules of thumb
 | story-3d | Toy-like 3D characters act out a script with a virtual director (shots, gestures, lip sync) | `text` script, `finish` vinyl·clay·brick, `voices`, `dialogue` |
 | doodle-story | The same script as boiling hand-drawn ink, 34 emotions | `text` script, `voices`, `dialogue` |
 | presenter | Your pixel mascot (or Bit the robot) hosts the video, lip-synced to voice lines | `cast`, `lines`, `place`, `captions`, `backdrop` |
-| room | Cut-away 3D studio loft; hosts appear for their lines, a shot list moves the camera and can dive into the TV / monitor / map poster; screens show your images | `cast`, `lines` (with `spot`), `shots`, `images`, `tv`, `monitor`, `gallery`, `poster`, `models`, `mixVoices` |
+| room | Cut-away 3D studio loft; hosts appear for their lines, a shot list moves the camera and can dive into the TV / monitor / map poster; screens show your images | `cast`, `lines` (with `spot`), `shots`, `images`, `tv`, `monitor`, `gallery`, `poster`, `logo`, `neon`, `models`, `mixVoices` |
 | editorial | Overlay: magazine captions timed word by word to voice files, hero word in big caps, masthead, section counter, style tags | `lines`, `sections`, `tags`, `zones`, `pos`, `masthead` |
 
 **Room + editorial:** put the voice lines on an `editorial` overlay (it plays the audio and captions it) and give the `room` scene the same lines with `"mixVoices": false` (it only lip-syncs). End a room shot list with `{ "cam": "tv", "move": "dive" }` and set `"transition": { "type": "flash" }` on the next scene: the camera flies into the screen and comes out in that scene. `promo/tanitim/build.mjs` builds a whole film this way.

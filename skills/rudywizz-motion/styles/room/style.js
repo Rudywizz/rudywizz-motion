@@ -51,7 +51,7 @@ const CAMS = {
   desk: { at: [-2.2, 1.0, BACK + 0.6], dir: [0.42, 0.22, 1], w: 2.1, fov: 32 },
   monitor: { at: [MON.x, MON.y, MON.z], dir: [0.18, 0.06, 1], w: 1.35, fov: 30 },
   sofa: { at: [SOFA.x - 0.2, 1.0, BACK + 0.9], dir: [-0.18, 0.16, 1], w: 2.9, fov: 32, pat: [SOFA.x - 0.3, 0.85, -1.0], pdir: [-0.1, 0.3, 1], pw: 2.6 },
-  neon: { at: [NEON.x, NEON.y - 0.1, NEON.z], dir: [-0.08, -0.12, 1], w: 1.9, fov: 30 },
+  neon: { at: [NEON.x, NEON.y - 0.1, NEON.z], dir: [-0.08, -0.12, 1], w: 1.9, fov: 30, pat: [NEON.x, NEON.y - 0.45, NEON.z], pdir: [-0.08, -0.05, 1], pw: 2.3 },
   tv: { at: [TV.x, TV.y - 0.12, TV.z], dir: [-0.3, 0.05, 1], w: 2.6, fov: 32 },
   gallery: { at: [GAL.x, 1.7, 0.1], dir: [-1, 0.12, 0.42], w: 3.6, fov: 32 },
   map: { at: [MAP.x, MAP.y, MAP.z], dir: [0.12, 0.02, 1], w: 1.15, fov: 30 },
@@ -89,6 +89,7 @@ export default {
     gallery: [],
     poster: null,
     neon: 'rudywizz',
+    logo: null,
     models: null,
     bpm: 112,
     mixVoices: true,
@@ -105,6 +106,7 @@ export default {
     gallery: 'Image indexes framed on the right wall',
     poster: 'Image index for the map poster on the back wall',
     neon: 'Neon sign text above the sofa',
+    logo: 'Image index (from images) lit up as the sign above the sofa instead of the neon text: a logo on a transparent background (SVG or PNG)',
     models: 'Folder of glTF furniture (optional; procedural furniture otherwise)',
     bpm: 'Speaker cones and the LED strip pulse on this tempo',
     mixVoices: 'false when an overlay already plays the same voice lines (avoids playing them twice)',
@@ -358,7 +360,7 @@ export default {
       }
     }
     // neon sign
-    const neon = neonSign(p.neon || 'rudywizz', p.accent);
+    const neon = p.logo != null && tex[p.logo] ? logoSign(tex[p.logo].image) : neonSign(p.neon || 'rudywizz', p.accent);
     neon.mesh.position.set(NEON.x, NEON.y, NEON.z + 0.01);
     room.add(neon.mesh);
 
@@ -709,7 +711,11 @@ function drawMonitor(api, s, t) {
   const text = e && e.text ? String(e.text) : '$ _';
   const typed = e && e.text ? Math.floor((t - e.at) * (e.speed || 24)) : 3;
   const lines = text.split(/\n|\s\/\s/);
-  const fs = Math.round(H * 0.075);
+  // shrink until the longest line fits the screen
+  let fs = Math.round(H * 0.075);
+  c.font = `700 ${fs}px "JetBrains Mono"`;
+  const widest = Math.max(...lines.map((ln) => c.measureText("$ " + ln).width));
+  if (widest > W * 0.9) fs = Math.floor((fs * W * 0.9) / widest);
   c.font = `700 ${fs}px "JetBrains Mono"`;
   let left = typed;
   lines.forEach((ln, i) => {
@@ -896,6 +902,47 @@ function posterTexture() {
     c.ellipse(380, 200, 90, 110, -0.2, 0, 7);
     c.fill();
   }, 1);
+}
+
+// a logo image as a lit sign: the image itself, plus a glow made from its own colours
+function logoSign(img) {
+  const maxW = 1.7;
+  const maxH = 0.6;
+  const ar = (img.width || 4) / (img.height || 1);
+  const w = Math.min(maxW, maxH * ar);
+  const h = w / ar;
+  const pad = 0.18; // room for the glow around the logo
+  const cv = document.createElement('canvas');
+  cv.width = 2048;
+  cv.height = Math.round((2048 * (h + pad * 2)) / (w + pad * 2));
+  const t = new THREE.CanvasTexture(cv);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = 8;
+  const mat = new THREE.MeshBasicMaterial({ map: t, transparent: true, toneMapped: false, depthWrite: false });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w + pad * 2, h + pad * 2), mat);
+  const k = cv.width / (w + pad * 2);
+  const x = pad * k, y = pad * k, iw = w * k, ih = h * k;
+  let last = -1;
+  const set = (on) => {
+    if (on === last) return;
+    last = on;
+    const c = cv.getContext('2d');
+    c.clearRect(0, 0, cv.width, cv.height);
+    const lit = on > 0.5;
+    // glow: blurred copies of the logo
+    for (const [blur, a] of [[60, 0.7], [26, 0.8], [10, 0.9]]) {
+      c.save();
+      c.filter = `blur(${blur}px)`;
+      c.globalAlpha = a * (lit ? 1 : 0.25);
+      c.drawImage(img, x, y, iw, ih);
+      c.restore();
+    }
+    c.globalAlpha = lit ? 1 : 0.45;
+    c.drawImage(img, x, y, iw, ih);
+    c.globalAlpha = 1;
+    t.needsUpdate = true;
+  };
+  return { mesh, set };
 }
 
 function neonSign(text, accent) {

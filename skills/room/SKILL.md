@@ -37,6 +37,7 @@ Options (`--set key=value`, JSON values allowed):
 - `gallery` — Image indexes framed on the right wall
 - `poster` — Image index for the map poster on the back wall
 - `neon` — Neon sign text above the sofa
+- `logo` — Image index (from images) lit up as the sign above the sofa instead of the neon text: a logo on a transparent background (SVG or PNG)
 - `models` — Folder of glTF furniture (optional; procedural furniture otherwise)
 - `bpm` — Speaker cones and the LED strip pulse on this tempo
 - `mixVoices` — false when an overlay already plays the same voice lines (avoids playing them twice)
