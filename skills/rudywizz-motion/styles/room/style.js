@@ -709,7 +709,11 @@ function drawMonitor(api, s, t) {
   const text = e && e.text ? String(e.text) : '$ _';
   const typed = e && e.text ? Math.floor((t - e.at) * (e.speed || 24)) : 3;
   const lines = text.split(/\n|\s\/\s/);
-  const fs = Math.round(H * 0.075);
+  // shrink until the longest line fits the screen
+  let fs = Math.round(H * 0.075);
+  c.font = `700 ${fs}px "JetBrains Mono"`;
+  const widest = Math.max(...lines.map((ln) => c.measureText('$ ' + ln).width));
+  if (widest > W * 0.9) fs = Math.floor((fs * W * 0.9) / widest);
   c.font = `700 ${fs}px "JetBrains Mono"`;
   let left = typed;
   lines.forEach((ln, i) => {

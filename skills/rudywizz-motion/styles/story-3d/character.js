@@ -86,7 +86,8 @@ function buildHair(style, head, m, accent) {
   }
   if (style === 'long' || style === 'bob') {
     const len = style === 'long' ? R * 1.5 : R * 0.75;
-    const back = new THREE.Mesh(new THREE.CylinderGeometry(R * 1.02, R * 1.1, len, 32, 1, true, Math.PI * 0.62, Math.PI * 1.76), m);
+    const back = new THREE.Mesh(new THREE.CylinderGeometry(R * 1.02, R * 1.1, len, 32, 1, true, Math.PI * 0.32, Math.PI * 1.36), m);
+    // three.js cylinders start at +z (the face): leave the front 0.64π open
     back.material.side = THREE.DoubleSide;
     back.position.y = -len / 2 + R * 0.25;
     back.castShadow = true;
