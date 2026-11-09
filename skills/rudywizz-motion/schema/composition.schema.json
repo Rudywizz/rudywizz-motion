@@ -2179,6 +2179,11 @@
                       "default": "rudywizz",
                       "type": "string"
                     },
+                    "logo": {
+                      "description": "Image index (from images) lit up as the sign above the sofa instead of the neon text: a logo on a transparent background (SVG or PNG)",
+                      "default": null,
+                      "type": "null"
+                    },
                     "models": {
                       "description": "Folder of glTF furniture (optional; procedural furniture otherwise)",
                       "default": null,
@@ -4337,6 +4342,11 @@
                   "default": "rudywizz",
                   "type": "string"
                 },
+                "logo": {
+                  "description": "Image index (from images) lit up as the sign above the sofa instead of the neon text: a logo on a transparent background (SVG or PNG)",
+                  "default": null,
+                  "type": "null"
+                },
                 "models": {
                   "description": "Folder of glTF furniture (optional; procedural furniture otherwise)",
                   "default": null,
@@ -6457,6 +6467,11 @@
                   "description": "Neon sign text above the sofa",
                   "default": "rudywizz",
                   "type": "string"
+                },
+                "logo": {
+                  "description": "Image index (from images) lit up as the sign above the sofa instead of the neon text: a logo on a transparent background (SVG or PNG)",
+                  "default": null,
+                  "type": "null"
                 },
                 "models": {
                   "description": "Folder of glTF furniture (optional; procedural furniture otherwise)",

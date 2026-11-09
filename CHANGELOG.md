@@ -4,6 +4,9 @@ All notable changes to this project. Versions follow [Semantic Versioning](https
 
 ## 2.2.1 — 2026-11
 
+### Added
+- `room`: `logo` lights up your logo (SVG/PNG from `images`) as the sign above the sofa instead of the neon text.
+
 ### Fixed
 - `story-3d`: long and bob hair no longer cover the face (the back of the hair was open at the side instead of the front).
 - `room`: monitor text shrinks to fit instead of running off the screen.
